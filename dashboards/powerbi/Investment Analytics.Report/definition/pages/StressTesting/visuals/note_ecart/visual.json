@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "note_ecart",
+  "position": {
+    "x": 16,
+    "y": 336,
+    "z": 1000,
+    "height": 84,
+    "width": 1248,
+    "tabOrder": 1500
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Lecture : le placement choqué, moins le même placement sans choc, en francs. Zéro veut dire que rien n'a changé. Le choc de taux n'est pas sur cette courbe : il ne change pas le placement. Il change le Sharpe, dans les barres du dessous. Marché, Récession et Volatilité sont les trois courbes.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "12px"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

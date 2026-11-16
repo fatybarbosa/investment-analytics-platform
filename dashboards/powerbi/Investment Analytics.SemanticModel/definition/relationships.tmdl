@@ -1,0 +1,116 @@
+relationship Rapportstrategy
+	fromColumn: Rapport.strategy
+	toColumn: Strategie.strategy
+
+relationship Secteurstrategy
+	fromColumn: Secteur.strategy
+	toColumn: Strategie.strategy
+
+relationship ZoneGeostrategy
+	fromColumn: ZoneGeo.strategy
+	toColumn: Strategie.strategy
+
+relationship Expositionstrategy
+	fromColumn: Exposition.strategy
+	toColumn: Strategie.strategy
+
+relationship Positionstrategy
+	fromColumn: Position.strategy
+	toColumn: Strategie.strategy
+
+relationship Limitesstrategy
+	fromColumn: Limites.strategy
+	toColumn: Strategie.strategy
+
+relationship Cheminstrategy
+	fromColumn: Chemin.strategy
+	toColumn: Strategie.strategy
+
+relationship Performancestrategy
+	fromColumn: Performance.strategy
+	toColumn: Strategie.strategy
+
+relationship RendementActifstrategy
+	fromColumn: RendementActif.strategy
+	toColumn: Strategie.strategy
+
+relationship Risquestrategy
+	fromColumn: Risque.strategy
+	toColumn: Strategie.strategy
+
+relationship Queuestrategy
+	fromColumn: Queue.strategy
+	toColumn: Strategie.strategy
+
+relationship Stressstrategy
+	fromColumn: Stress.strategy
+	toColumn: Strategie.strategy
+
+relationship CheminStressstrategy
+	fromColumn: CheminStress.strategy
+	toColumn: Strategie.strategy
+
+relationship Stressshock
+	fromColumn: Stress.shock
+	toColumn: Choc.shock
+
+relationship CheminStressshock
+	fromColumn: CheminStress.shock
+	toColumn: Choc.shock
+
+relationship Effectifstrategy
+	fromColumn: Effectif.strategy
+	toColumn: Strategie.strategy
+
+relationship Rotationstrategy
+	fromColumn: Rotation.strategy
+	toColumn: Strategie.strategy
+
+relationship Contributionstrategy
+	fromColumn: Contribution.strategy
+	toColumn: Strategie.strategy
+
+relationship DixPremieresstrategy
+	fromColumn: DixPremieres.strategy
+	toColumn: Strategie.strategy
+
+relationship a92229d2-c659-429e-9552-0fdd0d232ece
+	joinOnDateBehavior: datePartOnly
+	fromColumn: HistoriqueQualite.execution_date
+	toColumn: LocalDateTable_b25a1315-7847-4530-a2d2-9114680b3953.Date
+
+relationship e81e2039-41b8-445c-be29-7f597a0f3495
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Limites.month
+	toColumn: LocalDateTable_0c13a1ac-b81e-4bf4-8a0e-68d30a9d001d.Date
+
+relationship b3f92253-f043-4576-a3df-bf9f5556b372
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Chemin.month
+	toColumn: LocalDateTable_c0ddda13-7a10-49ce-99c9-717a0bf86493.Date
+
+relationship 2bb36974-5651-45cf-b8ba-e0a531a3c322
+	joinOnDateBehavior: datePartOnly
+	fromColumn: RendementActif.month
+	toColumn: LocalDateTable_c88a85b8-78b6-418d-87f5-cc078329acd2.Date
+
+relationship a4facdc3-87e8-4f41-8d3a-42ed286363d7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: CheminStress.month
+	toColumn: LocalDateTable_93401ff6-3d84-45c5-a840-e4745e78cc4f.Date
+
+relationship 594e4630-5038-4a6a-ab52-4754065a8fcb
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Effectif.month
+	toColumn: LocalDateTable_3f76485a-55a1-4e04-9a2a-5dd8d71b48f7.Date
+
+relationship 21265d9e-a39a-4592-91c8-07df9045b9e2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Rotation.month
+	toColumn: LocalDateTable_9fe7d8a7-9ee1-42c3-a140-04370e0832b1.Date
+
+relationship 86df085a-be7f-48ea-b2ec-c0daa91cac14
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Contribution.month
+	toColumn: LocalDateTable_9e5b030d-0f46-47a2-b24c-34884f4f21c1.Date
+

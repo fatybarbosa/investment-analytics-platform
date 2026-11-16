@@ -1,5 +1,4 @@
 month,fund_name,fund_currency,nav_total_return,chf_per_unit,prior_chf_per_unit,benchmark_return_chf
-2016-10,iShares MSCI Global Sustainable Development Goals ETF,USD,-0.037000000000000005,0.9884,0.9684,-0.01711152416356887
 2016-11,iShares MSCI Global Sustainable Development Goals ETF,USD,-0.0144,1.0128,0.9884,0.009930878186968917
 2016-12,iShares MSCI Global Sustainable Development Goals ETF,USD,0.0155,1.016,1.0128,0.01870853080568735
 2017-01,iShares MSCI Global Sustainable Development Goals ETF,USD,0.032,0.9954,1.016,0.011075590551181014
@@ -119,3 +118,4 @@ month,fund_name,fund_currency,nav_total_return,chf_per_unit,prior_chf_per_unit,b
 2026-07,iShares MSCI Global Sustainable Development Goals ETF,USD,-0.0018323200000000001,0.8064,0.8095,-0.005654827483631886
 2026-08,iShares MSCI Global Sustainable Development Goals ETF,USD,0.03613243,0.80885,0.8064,0.03928040179253478
 2026-09,iShares MSCI Global Sustainable Development Goals ETF,USD,-0.0549814,0.83278,0.80885,-0.027022822886814568
+2026-10,iShares MSCI Global Sustainable Development Goals ETF,USD,-0.01082842,0.82122,0.83278,-0.024559325478998084

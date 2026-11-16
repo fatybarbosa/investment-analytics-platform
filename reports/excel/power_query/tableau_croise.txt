@@ -1,0 +1,14 @@
+Trois tableaux croisés dynamiques, un seul cache, table SourcesCroisees.
+SourcesCroisees référence les requêtes Rendements, Benchmark, Secteurs, Contributions et StressPublie.
+Elle ne relit pas les CSV. Recalcul et la vue d'ensemble lisent les tables chargées par ces mêmes requêtes.
+La famille rendement sert au contrôle : même nombre de lignes et même somme que Rendements plus Benchmark.
+Croise_secteurs : famille = poids, lignes = libelle, colonnes = strategy, somme de valeur.
+Croise_contributions : famille = contribution, mêmes axes, somme de valeur.
+Croise_stress : famille = stress, lignes = libelle puis mesure, colonnes = strategy, somme de valeur.
+Segments strategy et periode, reliés aux trois tableaux parce qu'ils partagent le cache.
+Les poids sectoriels n'ont pas de mois dans le CSV : leur période est le dernier mois publié.
+Le stress est rattaché au dernier mois de la fenêtre. Un segment de mois antérieur le masque.
+Le journal de qualité est un classeur, pas un CSV : il n'a pas de requête dans ce dossier.
+
+Les fichiers .m sont aussi créés dans le classeur par Excel (Queries.Add).
+S'ils manquent : Données, Obtenir les données, Requête vide, Éditeur avancé, coller le .m.

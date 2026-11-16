@@ -1,0 +1,10 @@
+expression ProjectRoot = "C:/Users/MameBARBOSAMONTEIRO/projet01" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 7a931170-b72c-5027-bdeb-f17e4177fc78
+
+	annotation PBI_ResultType = Text
+
+expression SeuilPaires = 0.5 meta [IsParameterQuery=true, Type="Number", IsParameterQueryRequired=true]
+	lineageTag: 2ec99e4f-1271-5e06-8ffa-2e2e43b43739
+
+	annotation PBI_ResultType = Number
+

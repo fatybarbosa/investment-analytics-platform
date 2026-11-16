@@ -1,223 +1,88 @@
 strategy,yahoo_symbol,ticker,name,listing_currency,weight,sector,country,zone,asset_class,exposure
-equal_weight,002129.SZ,002129,TCL ZHONGHUAN RENEWABLE ENERGY TEC,CNY,0.0181818181818181,Information Technology,China,Asie-Pacifique,Equity,CNY
-equal_weight,002202.SZ,002202,GOLDWIND SCIENCE&TECHNOLOGY LTD A,CNY,0.0181818181818181,Industrials,China,Asie-Pacifique,Equity,CNY
-equal_weight,0066.HK,66,MTR CORPORATION,HKD,0.0181818181818181,Industrials,Hong Kong,Asie-Pacifique,Equity,HKD
-equal_weight,010120.KS,010120,LS ELECTRIC LTD,KRW,0.0181818181818181,Industrials,Korea (South),Asie-Pacifique,Equity,KRW
-equal_weight,0916.HK,916,CHINA LONGYUAN POWER GROUP H,HKD,0.0181818181818181,Utilities,China,Asie-Pacifique,Equity,HKD
-equal_weight,3898.HK,3898,ZHUZHOU CRRC TIMES ELECTRIC LTD H,HKD,0.0181818181818181,Industrials,China,Asie-Pacifique,Equity,HKD
-equal_weight,9020.T,9020,EAST JAPAN RAILWAY,JPY,0.0181818181818181,Industrials,Japan,Asie-Pacifique,Equity,JPY
-equal_weight,9022.T,9022,CENTRAL JAPAN RAILWAY,JPY,0.0181818181818181,Industrials,Japan,Asie-Pacifique,Equity,JPY
-equal_weight,ANA.MC,ANA,ACCIONA,EUR,0.0181818181818181,Utilities,Spain,Europe,Equity,EUR
-equal_weight,EDPR.LS,EDPR,EDP RENEWABLES SA,EUR,0.0181818181818181,Utilities,Portugal,Europe,Equity,EUR
-equal_weight,ELI.BR,ELI,ELIA GROUP SA,EUR,0.0181818181818181,Utilities,Belgium,Europe,Equity,EUR
-equal_weight,FSLR,FSLR,FIRST SOLAR,USD,0.0181818181818181,Information Technology,United States,Amériques,Equity,USD
-equal_weight,HOT.DE,HOT,HOCHTIEF AG,EUR,0.0181818181818181,Industrials,Germany,Europe,Equity,EUR
-equal_weight,MAS,MAS,MASCO,USD,0.0181818181818181,Industrials,United States,Amériques,Equity,USD
-equal_weight,MRVL,MRVL,MARVELL TECHNOLOGY,USD,0.0181818181818181,Information Technology,United States,Amériques,Equity,USD
-equal_weight,NVDA,NVDA,NVIDIA,USD,0.0181818181818181,Information Technology,United States,Amériques,Equity,USD
-equal_weight,PSON.L,PSON,PEARSON PLC,GBP,0.0181818181818181,Consumer Discretionary,United Kingdom,Europe,Equity,GBP
-equal_weight,SCA-B.ST,SCA B,SVENSKA CELLULOSA B,SEK,0.0181818181818181,Materials,Sweden,Europe,Equity,SEK
-equal_weight,TAL,TAL,TAL EDUCATION GROUP ADR REPTG,USD,0.0181818181818181,Consumer Discretionary,China,Asie-Pacifique,Equity,USD
-equal_weight,UU.L,UU.,UNITED UTILITIES GROUP PLC,GBP,0.0181818181818181,Utilities,United Kingdom,Europe,Equity,GBP
-equal_weight,VER.VI,VER,VERBUND AG,EUR,0.0181818181818181,Utilities,Austria,Europe,Equity,EUR
-equal_weight,VWS.CO,VWS,VESTAS WIND SYSTEMS,DKK,0.0181818181818181,Industrials,Denmark,Europe,Equity,DKK
-equal_weight,000895.SZ,000895,HENAN SHUANGHUI INVESTMENT & DEVEL,CNY,0.0166666666666666,Consumer Staples,China,Asie-Pacifique,Equity,CNY
-equal_weight,0322.HK,322,TINGYI (CAYMAN ISLANDS) HOLDINGS,HKD,0.0166666666666666,Consumer Staples,China,Asie-Pacifique,Equity,HKD
-equal_weight,1044.HK,1044,HENGAN INTERNATIONAL GROUP,HKD,0.0166666666666666,Consumer Staples,China,Asie-Pacifique,Equity,HKD
-equal_weight,2319.HK,2319,CHINA MENGNIU DAIRY LTD,HKD,0.0166666666666666,Consumer Staples,China,Asie-Pacifique,Equity,HKD
-equal_weight,8113.T,8113,UNICHARM,JPY,0.0166666666666666,Consumer Staples,Japan,Asie-Pacifique,Equity,JPY
-equal_weight,KIMBERA.MX,KIMBERA,KIMBERLY-CLARK DE MEXICO CLASS A,MXN,0.0166666666666666,Consumer Staples,Mexico,Amériques,Equity,MXN
-equal_weight,KMB,KMB,KIMBERLY CLARK,USD,0.0166666666666666,Consumer Staples,United States,Amériques,Equity,USD
-equal_weight,MOWI.OL,MOWI,MOWI,NOK,0.0166666666666666,Consumer Staples,Norway,Europe,Equity,NOK
-equal_weight,SALM.OL,SALM,SALMAR,NOK,0.0166666666666666,Consumer Staples,Norway,Europe,Equity,NOK
-equal_weight,SAP.TO,SAP,SAPUTO,CAD,0.0166666666666666,Consumer Staples,Canada,Amériques,Equity,CAD
-equal_weight,SIGMAFA.MX,SIGMAFA,ALFA A,MXN,0.0166666666666666,Consumer Staples,Mexico,Amériques,Equity,MXN
-equal_weight,TSN,TSN,TYSON FOODS INC CLASS A,USD,0.0166666666666666,Consumer Staples,United States,Amériques,Equity,USD
-equal_weight,0012.HK,12,HENDERSON LAND DEVELOPMENT LTD,HKD,0.0133333333333333,Real Estate,Hong Kong,Asie-Pacifique,Equity,HKD
-equal_weight,001979.SZ,001979,CHINA MERCHANTS SHEKOU INDUSTRIAL,CNY,0.0133333333333333,Real Estate,China,Asie-Pacifique,Equity,CNY
-equal_weight,8951.T,8951,NIPPON BUILDING FUND REIT,JPY,0.0133333333333333,Real Estate,Japan,Asie-Pacifique,Equity,JPY
-equal_weight,COV.PA,COV,COVIVIO SA,EUR,0.0133333333333333,Real Estate,France,Europe,Equity,EUR
-equal_weight,DLR,DLR,DIGITAL REALTY TRUST REIT,USD,0.0133333333333333,Real Estate,United States,Amériques,Equity,USD
-equal_weight,EQIX,EQIX,EQUINIX REIT,USD,0.0133333333333333,Real Estate,United States,Amériques,Equity,USD
-equal_weight,GFC.PA,GFC,GECINA SA,EUR,0.0133333333333333,Real Estate,France,Europe,Equity,EUR
-equal_weight,LAND.L,LAND,LAND SECURITIES GROUP REIT PLC,GBP,0.0133333333333333,Real Estate,United Kingdom,Europe,Equity,GBP
-equal_weight,LI.PA,LI,KLEPIERRE REIT SA,EUR,0.0133333333333333,Real Estate,France,Europe,Equity,EUR
-equal_weight,NRP.JO,NRP,NEPI ROCKCASTLE,ZAR,0.0133333333333333,Real Estate,South Africa,Moyen-Orient et Afrique,Equity,ZAR
-equal_weight,SCG.AX,SCG,SCENTRE GROUP,AUD,0.0133333333333333,Real Estate,Australia,Asie-Pacifique,Equity,AUD
-equal_weight,SGRO.L,SGRO,SEGRO REIT PLC,GBP,0.0133333333333333,Real Estate,United Kingdom,Europe,Equity,GBP
-equal_weight,SPSN.SW,SPSN,SWISS PRIME SITE AG,CHF,0.0133333333333333,Real Estate,Switzerland,Europe,Equity,CHF
-equal_weight,SUI,SUI,SUN COMMUNITIES REIT INC,USD,0.0133333333333333,Real Estate,United States,Amériques,Equity,USD
-equal_weight,WY,WY,WEYERHAEUSER REIT,USD,0.0133333333333333,Real Estate,United States,Amériques,Equity,USD
-equal_weight,1093.HK,1093,CSPC PHARMACEUTICAL GROUP,HKD,0.008,Health Care,China,Asie-Pacifique,Equity,HKD
-equal_weight,4151.T,4151,KYOWA KIRIN LTD,JPY,0.008,Health Care,Japan,Asie-Pacifique,Equity,JPY
-equal_weight,4507.T,4507,SHIONOGI,JPY,0.008,Health Care,Japan,Asie-Pacifique,Equity,JPY
-equal_weight,4519.T,4519,CHUGAI PHARMACEUTICAL LTD,JPY,0.008,Health Care,Japan,Asie-Pacifique,Equity,JPY
-equal_weight,4523.T,4523,EISAI,JPY,0.008,Health Care,Japan,Asie-Pacifique,Equity,JPY
-equal_weight,4543.T,4543,TERUMO,JPY,0.008,Health Care,Japan,Asie-Pacifique,Equity,JPY
-equal_weight,4568.T,4568,DAIICHI SANKYO LTD,JPY,0.008,Health Care,Japan,Asie-Pacifique,Equity,JPY
-equal_weight,ALNY,ALNY,ALNYLAM PHARMACEUTICALS,USD,0.008,Health Care,United States,Amériques,Equity,USD
-equal_weight,BMY,BMY,BRISTOL MYERS SQUIBB,USD,0.008,Health Care,United States,Amériques,Equity,USD
-equal_weight,CSL.AX,CSL,CSL,AUD,0.008,Health Care,Australia,Asie-Pacifique,Equity,AUD
-equal_weight,DEMANT.CO,DEMANT,DEMANT,DKK,0.008,Health Care,Denmark,Europe,Equity,DKK
-equal_weight,DXCM,DXCM,DEXCOM INC,USD,0.008,Health Care,United States,Amériques,Equity,USD
-equal_weight,EW,EW,EDWARDS LIFESCIENCES,USD,0.008,Health Care,United States,Amériques,Equity,USD
-equal_weight,GMAB.CO,GMAB,GENMAB,DKK,0.008,Health Care,Denmark,Europe,Equity,DKK
-equal_weight,INCY,INCY,INCYTE CORP,USD,0.008,Health Care,United States,Amériques,Equity,USD
-equal_weight,INSM,INSM,INSMED,USD,0.008,Health Care,United States,Amériques,Equity,USD
-equal_weight,IPN.PA,IPN,IPSEN SA,EUR,0.008,Health Care,France,Europe,Equity,EUR
-equal_weight,NBIX,NBIX,NEUROCRINE BIOSCIENCES,USD,0.008,Health Care,United States,Amériques,Equity,USD
-equal_weight,NOVN.SW,NOVN,NOVARTIS AG,CHF,0.008,Health Care,Switzerland,Europe,Equity,CHF
-equal_weight,REC.MI,REC,RECORDATI INDUSTRIA CHIMICA E FARM,EUR,0.008,Health Care,Italy,Europe,Equity,EUR
-equal_weight,REGN,REGN,REGENERON PHARMACEUTICALS,USD,0.008,Health Care,United States,Amériques,Equity,USD
-equal_weight,SOBI.ST,SOBI,SWEDISH ORPHAN BIOVITRUM,SEK,0.008,Health Care,Sweden,Europe,Equity,SEK
-equal_weight,SOON.SW,SOON,SONOVA HOLDING AG,CHF,0.008,Health Care,Switzerland,Europe,Equity,CHF
-equal_weight,UTHR,UTHR,UNITED THERAPEUTICS,USD,0.008,Health Care,United States,Amériques,Equity,USD
-equal_weight,VRTX,VRTX,VERTEX PHARMACEUTICALS,USD,0.008,Health Care,United States,Amériques,Equity,USD
-minimum_volatility,ELI.BR,ELI,ELIA GROUP SA,EUR,0.05,Utilities,Belgium,Europe,Equity,EUR
+equal_weight,002129.SZ,002129,TCL ZHONGHUAN RENEWABLE ENERGY TEC,CNY,0.0344827586206896,Information Technology,China,Asie-Pacifique,Equity,CNY
+equal_weight,0916.HK,916,CHINA LONGYUAN POWER GROUP H,HKD,0.0344827586206896,Utilities,China,Asie-Pacifique,Equity,HKD
+equal_weight,1044.HK,1044,HENGAN INTERNATIONAL GROUP,HKD,0.0344827586206896,Consumer Staples,China,Asie-Pacifique,Equity,HKD
+equal_weight,3898.HK,3898,ZHUZHOU CRRC TIMES ELECTRIC LTD H,HKD,0.0344827586206896,Industrials,China,Asie-Pacifique,Equity,HKD
+equal_weight,4507.T,4507,SHIONOGI,JPY,0.0344827586206896,Health Care,Japan,Asie-Pacifique,Equity,JPY
+equal_weight,4523.T,4523,EISAI,JPY,0.0344827586206896,Health Care,Japan,Asie-Pacifique,Equity,JPY
+equal_weight,4568.T,4568,DAIICHI SANKYO LTD,JPY,0.0344827586206896,Health Care,Japan,Asie-Pacifique,Equity,JPY
+equal_weight,8951.T,8951,NIPPON BUILDING FUND REIT,JPY,0.0344827586206896,Real Estate,Japan,Asie-Pacifique,Equity,JPY
+equal_weight,9022.T,9022,CENTRAL JAPAN RAILWAY,JPY,0.0344827586206896,Industrials,Japan,Asie-Pacifique,Equity,JPY
+equal_weight,ALNY,ALNY,ALNYLAM PHARMACEUTICALS,USD,0.0344827586206896,Health Care,United States,Amériques,Equity,USD
+equal_weight,BMY,BMY,BRISTOL MYERS SQUIBB,USD,0.0344827586206896,Health Care,United States,Amériques,Equity,USD
+equal_weight,C38U.SI,CICT,CAPITALAND INTEGRATED COMMERCIAL T,SGD,0.0344827586206896,Real Estate,Singapore,Asie-Pacifique,Equity,SGD
+equal_weight,COV.PA,COV,COVIVIO SA,EUR,0.0344827586206896,Real Estate,France,Europe,Equity,EUR
+equal_weight,DEMANT.CO,DEMANT,DEMANT,DKK,0.0344827586206896,Health Care,Denmark,Europe,Equity,DKK
+equal_weight,DLR,DLR,DIGITAL REALTY TRUST REIT,USD,0.0344827586206896,Real Estate,United States,Amériques,Equity,USD
+equal_weight,EQIX,EQIX,EQUINIX REIT,USD,0.0344827586206896,Real Estate,United States,Amériques,Equity,USD
+equal_weight,GFC.PA,GFC,GECINA SA,EUR,0.0344827586206896,Real Estate,France,Europe,Equity,EUR
+equal_weight,GMAB.CO,GMAB,GENMAB,DKK,0.0344827586206896,Health Care,Denmark,Europe,Equity,DKK
+equal_weight,LAND.L,LAND,LAND SECURITIES GROUP REIT PLC,GBP,0.0344827586206896,Real Estate,United Kingdom,Europe,Equity,GBP
+equal_weight,NRP.JO,NRP,NEPI ROCKCASTLE,ZAR,0.0344827586206896,Real Estate,South Africa,Moyen-Orient et Afrique,Equity,ZAR
+equal_weight,PSON.L,PSON,PEARSON PLC,GBP,0.0344827586206896,Consumer Discretionary,United Kingdom,Europe,Equity,GBP
+equal_weight,REC.MI,REC,RECORDATI INDUSTRIA CHIMICA E FARM,EUR,0.0344827586206896,Health Care,Italy,Europe,Equity,EUR
+equal_weight,SALM.OL,SALM,SALMAR,NOK,0.0344827586206896,Consumer Staples,Norway,Europe,Equity,NOK
+equal_weight,SCA-B.ST,SCA B,SVENSKA CELLULOSA B,SEK,0.0344827586206896,Materials,Sweden,Europe,Equity,SEK
+equal_weight,SOBI.ST,SOBI,SWEDISH ORPHAN BIOVITRUM,SEK,0.0344827586206896,Health Care,Sweden,Europe,Equity,SEK
+equal_weight,SOON.SW,SOON,SONOVA HOLDING AG,CHF,0.0344827586206896,Health Care,Switzerland,Europe,Equity,CHF
+equal_weight,SPSN.SW,SPSN,SWISS PRIME SITE AG,CHF,0.0344827586206896,Real Estate,Switzerland,Europe,Equity,CHF
+equal_weight,SUI,SUI,SUN COMMUNITIES REIT INC,USD,0.0344827586206896,Real Estate,United States,Amériques,Equity,USD
+equal_weight,VWS.CO,VWS,VESTAS WIND SYSTEMS,DKK,0.0344827586206896,Industrials,Denmark,Europe,Equity,DKK
+minimum_volatility,1044.HK,1044,HENGAN INTERNATIONAL GROUP,HKD,0.05,Consumer Staples,China,Asie-Pacifique,Equity,HKD
+minimum_volatility,3898.HK,3898,ZHUZHOU CRRC TIMES ELECTRIC LTD H,HKD,0.05,Industrials,China,Asie-Pacifique,Equity,HKD
+minimum_volatility,4507.T,4507,SHIONOGI,JPY,0.05,Health Care,Japan,Asie-Pacifique,Equity,JPY
+minimum_volatility,4523.T,4523,EISAI,JPY,0.05,Health Care,Japan,Asie-Pacifique,Equity,JPY
+minimum_volatility,8951.T,8951,NIPPON BUILDING FUND REIT,JPY,0.05,Real Estate,Japan,Asie-Pacifique,Equity,JPY
+minimum_volatility,9022.T,9022,CENTRAL JAPAN RAILWAY,JPY,0.05,Industrials,Japan,Asie-Pacifique,Equity,JPY
+minimum_volatility,C38U.SI,CICT,CAPITALAND INTEGRATED COMMERCIAL T,SGD,0.05,Real Estate,Singapore,Asie-Pacifique,Equity,SGD
+minimum_volatility,DEMANT.CO,DEMANT,DEMANT,DKK,0.05,Health Care,Denmark,Europe,Equity,DKK
+minimum_volatility,DLR,DLR,DIGITAL REALTY TRUST REIT,USD,0.05,Real Estate,United States,Amériques,Equity,USD
 minimum_volatility,PSON.L,PSON,PEARSON PLC,GBP,0.05,Consumer Discretionary,United Kingdom,Europe,Equity,GBP
-minimum_volatility,8951.T,8951,NIPPON BUILDING FUND REIT,JPY,0.0499530052897328,Real Estate,Japan,Asie-Pacifique,Equity,JPY
-minimum_volatility,SPSN.SW,SPSN,SWISS PRIME SITE AG,CHF,0.0494238397282906,Real Estate,Switzerland,Europe,Equity,CHF
-minimum_volatility,3898.HK,3898,ZHUZHOU CRRC TIMES ELECTRIC LTD H,HKD,0.0483981997492215,Industrials,China,Asie-Pacifique,Equity,HKD
-minimum_volatility,EDPR.LS,EDPR,EDP RENEWABLES SA,EUR,0.0472914713660819,Utilities,Portugal,Europe,Equity,EUR
-minimum_volatility,NOVN.SW,NOVN,NOVARTIS AG,CHF,0.0460836915152929,Health Care,Switzerland,Europe,Equity,CHF
-minimum_volatility,9022.T,9022,CENTRAL JAPAN RAILWAY,JPY,0.0450071027906784,Industrials,Japan,Asie-Pacifique,Equity,JPY
-minimum_volatility,DLR,DLR,DIGITAL REALTY TRUST REIT,USD,0.0413162466529014,Real Estate,United States,Amériques,Equity,USD
-minimum_volatility,0066.HK,66,MTR CORPORATION,HKD,0.0390756146477906,Industrials,Hong Kong,Asie-Pacifique,Equity,HKD
-minimum_volatility,MRVL,MRVL,MARVELL TECHNOLOGY,USD,0.0383517604705549,Information Technology,United States,Amériques,Equity,USD
-minimum_volatility,DXCM,DXCM,DEXCOM INC,USD,0.0355705999718125,Health Care,United States,Amériques,Equity,USD
-minimum_volatility,SAP.TO,SAP,SAPUTO,CAD,0.0345013897148197,Consumer Staples,Canada,Amériques,Equity,CAD
-minimum_volatility,MOWI.OL,MOWI,MOWI,NOK,0.0335795477311796,Consumer Staples,Norway,Europe,Equity,NOK
-minimum_volatility,IPN.PA,IPN,IPSEN SA,EUR,0.0308870221049035,Health Care,France,Europe,Equity,EUR
-minimum_volatility,TAL,TAL,TAL EDUCATION GROUP ADR REPTG,USD,0.0285536697303342,Consumer Discretionary,China,Asie-Pacifique,Equity,USD
-minimum_volatility,2319.HK,2319,CHINA MENGNIU DAIRY LTD,HKD,0.0285372630184507,Consumer Staples,China,Asie-Pacifique,Equity,HKD
-minimum_volatility,4507.T,4507,SHIONOGI,JPY,0.0266527208820363,Health Care,Japan,Asie-Pacifique,Equity,JPY
-minimum_volatility,VWS.CO,VWS,VESTAS WIND SYSTEMS,DKK,0.0246562420048181,Industrials,Denmark,Europe,Equity,DKK
-minimum_volatility,TSN,TSN,TYSON FOODS INC CLASS A,USD,0.0246323887117829,Consumer Staples,United States,Amériques,Equity,USD
-minimum_volatility,BMY,BMY,BRISTOL MYERS SQUIBB,USD,0.0209359385143227,Health Care,United States,Amériques,Equity,USD
-minimum_volatility,COV.PA,COV,COVIVIO SA,EUR,0.0208519030473065,Real Estate,France,Europe,Equity,EUR
-minimum_volatility,SCG.AX,SCG,SCENTRE GROUP,AUD,0.0190571819661708,Real Estate,Australia,Asie-Pacifique,Equity,AUD
-minimum_volatility,SIGMAFA.MX,SIGMAFA,ALFA A,MXN,0.0189255868215472,Consumer Staples,Mexico,Amériques,Equity,MXN
-minimum_volatility,8113.T,8113,UNICHARM,JPY,0.0176821655324333,Consumer Staples,Japan,Asie-Pacifique,Equity,JPY
-minimum_volatility,0322.HK,322,TINGYI (CAYMAN ISLANDS) HOLDINGS,HKD,0.0151813234555809,Consumer Staples,China,Asie-Pacifique,Equity,HKD
-minimum_volatility,SUI,SUI,SUN COMMUNITIES REIT INC,USD,0.0144331366454831,Real Estate,United States,Amériques,Equity,USD
-minimum_volatility,4543.T,4543,TERUMO,JPY,0.013673834138293,Health Care,Japan,Asie-Pacifique,Equity,JPY
-minimum_volatility,9020.T,9020,EAST JAPAN RAILWAY,JPY,0.0135100794856624,Industrials,Japan,Asie-Pacifique,Equity,JPY
-minimum_volatility,KMB,KMB,KIMBERLY CLARK,USD,0.0133177547231819,Consumer Staples,United States,Amériques,Equity,USD
-minimum_volatility,KIMBERA.MX,KIMBERA,KIMBERLY-CLARK DE MEXICO CLASS A,MXN,0.0131817879720538,Consumer Staples,Mexico,Amériques,Equity,MXN
-minimum_volatility,4523.T,4523,EISAI,JPY,0.0109364610996908,Health Care,Japan,Asie-Pacifique,Equity,JPY
-minimum_volatility,SCA-B.ST,SCA B,SVENSKA CELLULOSA B,SEK,0.0086352315786929,Materials,Sweden,Europe,Equity,SEK
-minimum_volatility,GMAB.CO,GMAB,GENMAB,DKK,0.0078793706212993,Health Care,Denmark,Europe,Equity,DKK
-minimum_volatility,UU.L,UU.,UNITED UTILITIES GROUP PLC,GBP,0.007017867788257,Utilities,United Kingdom,Europe,Equity,GBP
-minimum_volatility,INCY,INCY,INCYTE CORP,USD,0.0059696583053963,Health Care,United States,Amériques,Equity,USD
-minimum_volatility,LI.PA,LI,KLEPIERRE REIT SA,EUR,0.0049646866701145,Real Estate,France,Europe,Equity,EUR
-minimum_volatility,4519.T,4519,CHUGAI PHARMACEUTICAL LTD,JPY,0.0013742555538293,Health Care,Japan,Asie-Pacifique,Equity,JPY
-minimum_volatility,000895.SZ,000895,HENAN SHUANGHUI INVESTMENT & DEVEL,CNY,0.0,Consumer Staples,China,Asie-Pacifique,Equity,CNY
-minimum_volatility,0012.HK,12,HENDERSON LAND DEVELOPMENT LTD,HKD,0.0,Real Estate,Hong Kong,Asie-Pacifique,Equity,HKD
-minimum_volatility,001979.SZ,001979,CHINA MERCHANTS SHEKOU INDUSTRIAL,CNY,0.0,Real Estate,China,Asie-Pacifique,Equity,CNY
-minimum_volatility,002129.SZ,002129,TCL ZHONGHUAN RENEWABLE ENERGY TEC,CNY,0.0,Information Technology,China,Asie-Pacifique,Equity,CNY
-minimum_volatility,002202.SZ,002202,GOLDWIND SCIENCE&TECHNOLOGY LTD A,CNY,0.0,Industrials,China,Asie-Pacifique,Equity,CNY
-minimum_volatility,010120.KS,010120,LS ELECTRIC LTD,KRW,0.0,Industrials,Korea (South),Asie-Pacifique,Equity,KRW
-minimum_volatility,0916.HK,916,CHINA LONGYUAN POWER GROUP H,HKD,0.0,Utilities,China,Asie-Pacifique,Equity,HKD
-minimum_volatility,1044.HK,1044,HENGAN INTERNATIONAL GROUP,HKD,0.0,Consumer Staples,China,Asie-Pacifique,Equity,HKD
-minimum_volatility,1093.HK,1093,CSPC PHARMACEUTICAL GROUP,HKD,0.0,Health Care,China,Asie-Pacifique,Equity,HKD
-minimum_volatility,4151.T,4151,KYOWA KIRIN LTD,JPY,0.0,Health Care,Japan,Asie-Pacifique,Equity,JPY
-minimum_volatility,4568.T,4568,DAIICHI SANKYO LTD,JPY,0.0,Health Care,Japan,Asie-Pacifique,Equity,JPY
-minimum_volatility,ALNY,ALNY,ALNYLAM PHARMACEUTICALS,USD,0.0,Health Care,United States,Amériques,Equity,USD
-minimum_volatility,ANA.MC,ANA,ACCIONA,EUR,0.0,Utilities,Spain,Europe,Equity,EUR
-minimum_volatility,CSL.AX,CSL,CSL,AUD,0.0,Health Care,Australia,Asie-Pacifique,Equity,AUD
-minimum_volatility,DEMANT.CO,DEMANT,DEMANT,DKK,0.0,Health Care,Denmark,Europe,Equity,DKK
-minimum_volatility,EQIX,EQIX,EQUINIX REIT,USD,0.0,Real Estate,United States,Amériques,Equity,USD
-minimum_volatility,EW,EW,EDWARDS LIFESCIENCES,USD,0.0,Health Care,United States,Amériques,Equity,USD
-minimum_volatility,FSLR,FSLR,FIRST SOLAR,USD,0.0,Information Technology,United States,Amériques,Equity,USD
-minimum_volatility,GFC.PA,GFC,GECINA SA,EUR,0.0,Real Estate,France,Europe,Equity,EUR
-minimum_volatility,HOT.DE,HOT,HOCHTIEF AG,EUR,0.0,Industrials,Germany,Europe,Equity,EUR
-minimum_volatility,INSM,INSM,INSMED,USD,0.0,Health Care,United States,Amériques,Equity,USD
-minimum_volatility,LAND.L,LAND,LAND SECURITIES GROUP REIT PLC,GBP,0.0,Real Estate,United Kingdom,Europe,Equity,GBP
-minimum_volatility,MAS,MAS,MASCO,USD,0.0,Industrials,United States,Amériques,Equity,USD
-minimum_volatility,NBIX,NBIX,NEUROCRINE BIOSCIENCES,USD,0.0,Health Care,United States,Amériques,Equity,USD
-minimum_volatility,NRP.JO,NRP,NEPI ROCKCASTLE,ZAR,0.0,Real Estate,South Africa,Moyen-Orient et Afrique,Equity,ZAR
-minimum_volatility,NVDA,NVDA,NVIDIA,USD,0.0,Information Technology,United States,Amériques,Equity,USD
-minimum_volatility,REC.MI,REC,RECORDATI INDUSTRIA CHIMICA E FARM,EUR,0.0,Health Care,Italy,Europe,Equity,EUR
-minimum_volatility,REGN,REGN,REGENERON PHARMACEUTICALS,USD,0.0,Health Care,United States,Amériques,Equity,USD
+minimum_volatility,REC.MI,REC,RECORDATI INDUSTRIA CHIMICA E FARM,EUR,0.05,Health Care,Italy,Europe,Equity,EUR
+minimum_volatility,SPSN.SW,SPSN,SWISS PRIME SITE AG,CHF,0.05,Real Estate,Switzerland,Europe,Equity,CHF
+minimum_volatility,ALNY,ALNY,ALNYLAM PHARMACEUTICALS,USD,0.0491147598670607,Health Care,United States,Amériques,Equity,USD
+minimum_volatility,BMY,BMY,BRISTOL MYERS SQUIBB,USD,0.0481690620820946,Health Care,United States,Amériques,Equity,USD
+minimum_volatility,002129.SZ,002129,TCL ZHONGHUAN RENEWABLE ENERGY TEC,CNY,0.0477265075434457,Information Technology,China,Asie-Pacifique,Equity,CNY
+minimum_volatility,SOBI.ST,SOBI,SWEDISH ORPHAN BIOVITRUM,SEK,0.0457710465984599,Health Care,Sweden,Europe,Equity,SEK
+minimum_volatility,NRP.JO,NRP,NEPI ROCKCASTLE,ZAR,0.0426048738320621,Real Estate,South Africa,Moyen-Orient et Afrique,Equity,ZAR
+minimum_volatility,4568.T,4568,DAIICHI SANKYO LTD,JPY,0.0351791960072149,Health Care,Japan,Asie-Pacifique,Equity,JPY
+minimum_volatility,0916.HK,916,CHINA LONGYUAN POWER GROUP H,HKD,0.0317656286898581,Utilities,China,Asie-Pacifique,Equity,HKD
+minimum_volatility,GFC.PA,GFC,GECINA SA,EUR,0.0283405416869102,Real Estate,France,Europe,Equity,EUR
+minimum_volatility,SOON.SW,SOON,SONOVA HOLDING AG,CHF,0.0188877803187009,Health Care,Switzerland,Europe,Equity,CHF
+minimum_volatility,EQIX,EQIX,EQUINIX REIT,USD,0.0138575982975591,Real Estate,United States,Amériques,Equity,USD
+minimum_volatility,LAND.L,LAND,LAND SECURITIES GROUP REIT PLC,GBP,0.012500740004814,Real Estate,United Kingdom,Europe,Equity,GBP
+minimum_volatility,SUI,SUI,SUN COMMUNITIES REIT INC,USD,0.0111569460258206,Real Estate,United States,Amériques,Equity,USD
+minimum_volatility,VWS.CO,VWS,VESTAS WIND SYSTEMS,DKK,0.0099748745246998,Industrials,Denmark,Europe,Equity,DKK
+minimum_volatility,SCA-B.ST,SCA B,SVENSKA CELLULOSA B,SEK,0.0049504445212986,Materials,Sweden,Europe,Equity,SEK
+minimum_volatility,COV.PA,COV,COVIVIO SA,EUR,0.0,Real Estate,France,Europe,Equity,EUR
+minimum_volatility,GMAB.CO,GMAB,GENMAB,DKK,0.0,Health Care,Denmark,Europe,Equity,DKK
 minimum_volatility,SALM.OL,SALM,SALMAR,NOK,0.0,Consumer Staples,Norway,Europe,Equity,NOK
-minimum_volatility,SGRO.L,SGRO,SEGRO REIT PLC,GBP,0.0,Real Estate,United Kingdom,Europe,Equity,GBP
-minimum_volatility,SOBI.ST,SOBI,SWEDISH ORPHAN BIOVITRUM,SEK,0.0,Health Care,Sweden,Europe,Equity,SEK
-minimum_volatility,SOON.SW,SOON,SONOVA HOLDING AG,CHF,0.0,Health Care,Switzerland,Europe,Equity,CHF
-minimum_volatility,UTHR,UTHR,UNITED THERAPEUTICS,USD,0.0,Health Care,United States,Amériques,Equity,USD
-minimum_volatility,VER.VI,VER,VERBUND AG,EUR,0.0,Utilities,Austria,Europe,Equity,EUR
-minimum_volatility,VRTX,VRTX,VERTEX PHARMACEUTICALS,USD,0.0,Health Care,United States,Amériques,Equity,USD
-minimum_volatility,WY,WY,WEYERHAEUSER REIT,USD,0.0,Real Estate,United States,Amériques,Equity,USD
-maximum_sharpe,DLR,DLR,DIGITAL REALTY TRUST REIT,USD,0.05,Real Estate,United States,Amériques,Equity,USD
-maximum_sharpe,ELI.BR,ELI,ELIA GROUP SA,EUR,0.05,Utilities,Belgium,Europe,Equity,EUR
-maximum_sharpe,NVDA,NVDA,NVIDIA,USD,0.05,Information Technology,United States,Amériques,Equity,USD
-maximum_sharpe,TAL,TAL,TAL EDUCATION GROUP ADR REPTG,USD,0.05,Consumer Discretionary,China,Asie-Pacifique,Equity,USD
-maximum_sharpe,SCA-B.ST,SCA B,SVENSKA CELLULOSA B,SEK,0.049937265482525,Materials,Sweden,Europe,Equity,SEK
-maximum_sharpe,VWS.CO,VWS,VESTAS WIND SYSTEMS,DKK,0.0485735593751257,Industrials,Denmark,Europe,Equity,DKK
-maximum_sharpe,DXCM,DXCM,DEXCOM INC,USD,0.0463332715295241,Health Care,United States,Amériques,Equity,USD
-maximum_sharpe,SALM.OL,SALM,SALMAR,NOK,0.0454025086165045,Consumer Staples,Norway,Europe,Equity,NOK
-maximum_sharpe,MOWI.OL,MOWI,MOWI,NOK,0.0448654224243773,Consumer Staples,Norway,Europe,Equity,NOK
-maximum_sharpe,TSN,TSN,TYSON FOODS INC CLASS A,USD,0.0447058218822545,Consumer Staples,United States,Amériques,Equity,USD
-maximum_sharpe,3898.HK,3898,ZHUZHOU CRRC TIMES ELECTRIC LTD H,HKD,0.043630445894273,Industrials,China,Asie-Pacifique,Equity,HKD
-maximum_sharpe,IPN.PA,IPN,IPSEN SA,EUR,0.0382946081575831,Health Care,France,Europe,Equity,EUR
-maximum_sharpe,9022.T,9022,CENTRAL JAPAN RAILWAY,JPY,0.0374087489080532,Industrials,Japan,Asie-Pacifique,Equity,JPY
-maximum_sharpe,2319.HK,2319,CHINA MENGNIU DAIRY LTD,HKD,0.0369044967400511,Consumer Staples,China,Asie-Pacifique,Equity,HKD
-maximum_sharpe,MRVL,MRVL,MARVELL TECHNOLOGY,USD,0.0348750065713773,Information Technology,United States,Amériques,Equity,USD
-maximum_sharpe,EW,EW,EDWARDS LIFESCIENCES,USD,0.0307362528112698,Health Care,United States,Amériques,Equity,USD
-maximum_sharpe,SUI,SUI,SUN COMMUNITIES REIT INC,USD,0.0306420906802415,Real Estate,United States,Amériques,Equity,USD
-maximum_sharpe,EDPR.LS,EDPR,EDP RENEWABLES SA,EUR,0.0269486602066759,Utilities,Portugal,Europe,Equity,EUR
-maximum_sharpe,EQIX,EQIX,EQUINIX REIT,USD,0.0246492899009201,Real Estate,United States,Amériques,Equity,USD
-maximum_sharpe,NBIX,NBIX,NEUROCRINE BIOSCIENCES,USD,0.0245609960299722,Health Care,United States,Amériques,Equity,USD
-maximum_sharpe,1093.HK,1093,CSPC PHARMACEUTICAL GROUP,HKD,0.0243013226751794,Health Care,China,Asie-Pacifique,Equity,HKD
-maximum_sharpe,SPSN.SW,SPSN,SWISS PRIME SITE AG,CHF,0.023397054414403,Real Estate,Switzerland,Europe,Equity,CHF
-maximum_sharpe,8951.T,8951,NIPPON BUILDING FUND REIT,JPY,0.019137146231193,Real Estate,Japan,Asie-Pacifique,Equity,JPY
-maximum_sharpe,HOT.DE,HOT,HOCHTIEF AG,EUR,0.0188249406005763,Industrials,Germany,Europe,Equity,EUR
-maximum_sharpe,0066.HK,66,MTR CORPORATION,HKD,0.0185439890488304,Industrials,Hong Kong,Asie-Pacifique,Equity,HKD
-maximum_sharpe,4523.T,4523,EISAI,JPY,0.0147599263433763,Health Care,Japan,Asie-Pacifique,Equity,JPY
-maximum_sharpe,002202.SZ,002202,GOLDWIND SCIENCE&TECHNOLOGY LTD A,CNY,0.0142250480900082,Industrials,China,Asie-Pacifique,Equity,CNY
-maximum_sharpe,GFC.PA,GFC,GECINA SA,EUR,0.0140574375915503,Real Estate,France,Europe,Equity,EUR
-maximum_sharpe,8113.T,8113,UNICHARM,JPY,0.0122738560225642,Consumer Staples,Japan,Asie-Pacifique,Equity,JPY
-maximum_sharpe,COV.PA,COV,COVIVIO SA,EUR,0.0089311823564311,Real Estate,France,Europe,Equity,EUR
-maximum_sharpe,INSM,INSM,INSMED,USD,0.0072329853964044,Health Care,United States,Amériques,Equity,USD
-maximum_sharpe,PSON.L,PSON,PEARSON PLC,GBP,0.0071800247029197,Consumer Discretionary,United Kingdom,Europe,Equity,GBP
-maximum_sharpe,4568.T,4568,DAIICHI SANKYO LTD,JPY,0.0071399036203521,Health Care,Japan,Asie-Pacifique,Equity,JPY
-maximum_sharpe,SAP.TO,SAP,SAPUTO,CAD,0.0008075787550566,Consumer Staples,Canada,Amériques,Equity,CAD
-maximum_sharpe,VER.VI,VER,VERBUND AG,EUR,0.0007191589404253,Utilities,Austria,Europe,Equity,EUR
-maximum_sharpe,000895.SZ,000895,HENAN SHUANGHUI INVESTMENT & DEVEL,CNY,0.0,Consumer Staples,China,Asie-Pacifique,Equity,CNY
-maximum_sharpe,0012.HK,12,HENDERSON LAND DEVELOPMENT LTD,HKD,0.0,Real Estate,Hong Kong,Asie-Pacifique,Equity,HKD
-maximum_sharpe,001979.SZ,001979,CHINA MERCHANTS SHEKOU INDUSTRIAL,CNY,0.0,Real Estate,China,Asie-Pacifique,Equity,CNY
+maximum_sharpe,3898.HK,3898,ZHUZHOU CRRC TIMES ELECTRIC LTD H,HKD,0.05,Industrials,China,Asie-Pacifique,Equity,HKD
+maximum_sharpe,NRP.JO,NRP,NEPI ROCKCASTLE,ZAR,0.05,Real Estate,South Africa,Moyen-Orient et Afrique,Equity,ZAR
+maximum_sharpe,PSON.L,PSON,PEARSON PLC,GBP,0.05,Consumer Discretionary,United Kingdom,Europe,Equity,GBP
+maximum_sharpe,ALNY,ALNY,ALNYLAM PHARMACEUTICALS,USD,0.0499999999999999,Health Care,United States,Amériques,Equity,USD
+maximum_sharpe,BMY,BMY,BRISTOL MYERS SQUIBB,USD,0.0499999999999999,Health Care,United States,Amériques,Equity,USD
+maximum_sharpe,SALM.OL,SALM,SALMAR,NOK,0.0499999999999996,Consumer Staples,Norway,Europe,Equity,NOK
+maximum_sharpe,REC.MI,REC,RECORDATI INDUSTRIA CHIMICA E FARM,EUR,0.0487987791025792,Health Care,Italy,Europe,Equity,EUR
+maximum_sharpe,VWS.CO,VWS,VESTAS WIND SYSTEMS,DKK,0.0476418774767269,Industrials,Denmark,Europe,Equity,DKK
+maximum_sharpe,SOBI.ST,SOBI,SWEDISH ORPHAN BIOVITRUM,SEK,0.0472539566092826,Health Care,Sweden,Europe,Equity,SEK
+maximum_sharpe,DLR,DLR,DIGITAL REALTY TRUST REIT,USD,0.0466493242979055,Real Estate,United States,Amériques,Equity,USD
+maximum_sharpe,EQIX,EQIX,EQUINIX REIT,USD,0.0466493242979055,Real Estate,United States,Amériques,Equity,USD
+maximum_sharpe,4507.T,4507,SHIONOGI,JPY,0.0466467359588993,Health Care,Japan,Asie-Pacifique,Equity,JPY
+maximum_sharpe,9022.T,9022,CENTRAL JAPAN RAILWAY,JPY,0.0456280582284102,Industrials,Japan,Asie-Pacifique,Equity,JPY
+maximum_sharpe,GMAB.CO,GMAB,GENMAB,DKK,0.0449508302599812,Health Care,Denmark,Europe,Equity,DKK
+maximum_sharpe,4568.T,4568,DAIICHI SANKYO LTD,JPY,0.0448045930241368,Health Care,Japan,Asie-Pacifique,Equity,JPY
+maximum_sharpe,DEMANT.CO,DEMANT,DEMANT,DKK,0.0443272232651327,Health Care,Denmark,Europe,Equity,DKK
+maximum_sharpe,SCA-B.ST,SCA B,SVENSKA CELLULOSA B,SEK,0.0427213072424191,Materials,Sweden,Europe,Equity,SEK
+maximum_sharpe,SPSN.SW,SPSN,SWISS PRIME SITE AG,CHF,0.0413087094226293,Real Estate,Switzerland,Europe,Equity,CHF
+maximum_sharpe,C38U.SI,CICT,CAPITALAND INTEGRATED COMMERCIAL T,SGD,0.0405492185677116,Real Estate,Singapore,Asie-Pacifique,Equity,SGD
+maximum_sharpe,LAND.L,LAND,LAND SECURITIES GROUP REIT PLC,GBP,0.0387414916233797,Real Estate,United Kingdom,Europe,Equity,GBP
+maximum_sharpe,SOON.SW,SOON,SONOVA HOLDING AG,CHF,0.0211025046622357,Health Care,Switzerland,Europe,Equity,CHF
+maximum_sharpe,SUI,SUI,SUN COMMUNITIES REIT INC,USD,0.0193466291544853,Real Estate,United States,Amériques,Equity,USD
+maximum_sharpe,COV.PA,COV,COVIVIO SA,EUR,0.0137019438873468,Real Estate,France,Europe,Equity,EUR
+maximum_sharpe,8951.T,8951,NIPPON BUILDING FUND REIT,JPY,0.0108658250874381,Real Estate,Japan,Asie-Pacifique,Equity,JPY
+maximum_sharpe,GFC.PA,GFC,GECINA SA,EUR,0.0083116678313932,Real Estate,France,Europe,Equity,EUR
 maximum_sharpe,002129.SZ,002129,TCL ZHONGHUAN RENEWABLE ENERGY TEC,CNY,0.0,Information Technology,China,Asie-Pacifique,Equity,CNY
-maximum_sharpe,010120.KS,010120,LS ELECTRIC LTD,KRW,0.0,Industrials,Korea (South),Asie-Pacifique,Equity,KRW
-maximum_sharpe,0322.HK,322,TINGYI (CAYMAN ISLANDS) HOLDINGS,HKD,0.0,Consumer Staples,China,Asie-Pacifique,Equity,HKD
 maximum_sharpe,0916.HK,916,CHINA LONGYUAN POWER GROUP H,HKD,0.0,Utilities,China,Asie-Pacifique,Equity,HKD
 maximum_sharpe,1044.HK,1044,HENGAN INTERNATIONAL GROUP,HKD,0.0,Consumer Staples,China,Asie-Pacifique,Equity,HKD
-maximum_sharpe,4151.T,4151,KYOWA KIRIN LTD,JPY,0.0,Health Care,Japan,Asie-Pacifique,Equity,JPY
-maximum_sharpe,4507.T,4507,SHIONOGI,JPY,0.0,Health Care,Japan,Asie-Pacifique,Equity,JPY
-maximum_sharpe,4519.T,4519,CHUGAI PHARMACEUTICAL LTD,JPY,0.0,Health Care,Japan,Asie-Pacifique,Equity,JPY
-maximum_sharpe,4543.T,4543,TERUMO,JPY,0.0,Health Care,Japan,Asie-Pacifique,Equity,JPY
-maximum_sharpe,9020.T,9020,EAST JAPAN RAILWAY,JPY,0.0,Industrials,Japan,Asie-Pacifique,Equity,JPY
-maximum_sharpe,ALNY,ALNY,ALNYLAM PHARMACEUTICALS,USD,0.0,Health Care,United States,Amériques,Equity,USD
-maximum_sharpe,ANA.MC,ANA,ACCIONA,EUR,0.0,Utilities,Spain,Europe,Equity,EUR
-maximum_sharpe,BMY,BMY,BRISTOL MYERS SQUIBB,USD,0.0,Health Care,United States,Amériques,Equity,USD
-maximum_sharpe,CSL.AX,CSL,CSL,AUD,0.0,Health Care,Australia,Asie-Pacifique,Equity,AUD
-maximum_sharpe,DEMANT.CO,DEMANT,DEMANT,DKK,0.0,Health Care,Denmark,Europe,Equity,DKK
-maximum_sharpe,FSLR,FSLR,FIRST SOLAR,USD,0.0,Information Technology,United States,Amériques,Equity,USD
-maximum_sharpe,GMAB.CO,GMAB,GENMAB,DKK,0.0,Health Care,Denmark,Europe,Equity,DKK
-maximum_sharpe,INCY,INCY,INCYTE CORP,USD,0.0,Health Care,United States,Amériques,Equity,USD
-maximum_sharpe,KIMBERA.MX,KIMBERA,KIMBERLY-CLARK DE MEXICO CLASS A,MXN,0.0,Consumer Staples,Mexico,Amériques,Equity,MXN
-maximum_sharpe,KMB,KMB,KIMBERLY CLARK,USD,0.0,Consumer Staples,United States,Amériques,Equity,USD
-maximum_sharpe,LAND.L,LAND,LAND SECURITIES GROUP REIT PLC,GBP,0.0,Real Estate,United Kingdom,Europe,Equity,GBP
-maximum_sharpe,LI.PA,LI,KLEPIERRE REIT SA,EUR,0.0,Real Estate,France,Europe,Equity,EUR
-maximum_sharpe,MAS,MAS,MASCO,USD,0.0,Industrials,United States,Amériques,Equity,USD
-maximum_sharpe,NOVN.SW,NOVN,NOVARTIS AG,CHF,0.0,Health Care,Switzerland,Europe,Equity,CHF
-maximum_sharpe,NRP.JO,NRP,NEPI ROCKCASTLE,ZAR,0.0,Real Estate,South Africa,Moyen-Orient et Afrique,Equity,ZAR
-maximum_sharpe,REC.MI,REC,RECORDATI INDUSTRIA CHIMICA E FARM,EUR,0.0,Health Care,Italy,Europe,Equity,EUR
-maximum_sharpe,REGN,REGN,REGENERON PHARMACEUTICALS,USD,0.0,Health Care,United States,Amériques,Equity,USD
-maximum_sharpe,SCG.AX,SCG,SCENTRE GROUP,AUD,0.0,Real Estate,Australia,Asie-Pacifique,Equity,AUD
-maximum_sharpe,SGRO.L,SGRO,SEGRO REIT PLC,GBP,0.0,Real Estate,United Kingdom,Europe,Equity,GBP
-maximum_sharpe,SIGMAFA.MX,SIGMAFA,ALFA A,MXN,0.0,Consumer Staples,Mexico,Amériques,Equity,MXN
-maximum_sharpe,SOBI.ST,SOBI,SWEDISH ORPHAN BIOVITRUM,SEK,0.0,Health Care,Sweden,Europe,Equity,SEK
-maximum_sharpe,SOON.SW,SOON,SONOVA HOLDING AG,CHF,0.0,Health Care,Switzerland,Europe,Equity,CHF
-maximum_sharpe,UTHR,UTHR,UNITED THERAPEUTICS,USD,0.0,Health Care,United States,Amériques,Equity,USD
-maximum_sharpe,UU.L,UU.,UNITED UTILITIES GROUP PLC,GBP,0.0,Utilities,United Kingdom,Europe,Equity,GBP
-maximum_sharpe,VRTX,VRTX,VERTEX PHARMACEUTICALS,USD,0.0,Health Care,United States,Amériques,Equity,USD
-maximum_sharpe,WY,WY,WEYERHAEUSER REIT,USD,0.0,Real Estate,United States,Amériques,Equity,USD
+maximum_sharpe,4523.T,4523,EISAI,JPY,0.0,Health Care,Japan,Asie-Pacifique,Equity,JPY

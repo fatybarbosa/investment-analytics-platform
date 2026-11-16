@@ -1,0 +1,50 @@
+model Model
+	culture: fr-CH
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: fr-CH
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["ProjectRoot","SeuilPaires","Strategie","Choc","Rapport","Secteur","ZoneGeo","Exposition","Position","Limites","Chemin","Performance","RendementActif","Risque","Queue","CorrelationMoyenne","Stress","CheminStress","Paires","Matrice","Odd","Controles","Problemes","HistoriqueQualite","Effectif","Rotation","Contribution","DixPremieres"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+ref table Strategie
+ref table Choc
+ref table Rapport
+ref table Secteur
+ref table ZoneGeo
+ref table Exposition
+ref table Position
+ref table Limites
+ref table Chemin
+ref table Performance
+ref table RendementActif
+ref table Risque
+ref table Queue
+ref table CorrelationMoyenne
+ref table Stress
+ref table CheminStress
+ref table Paires
+ref table Matrice
+ref table Odd
+ref table Controles
+ref table Problemes
+ref table HistoriqueQualite
+ref table Effectif
+ref table Rotation
+ref table Contribution
+ref table DixPremieres
+ref table DateTableTemplate_041a5695-ecac-4e21-93c4-dba288973e16
+ref table LocalDateTable_b25a1315-7847-4530-a2d2-9114680b3953
+ref table LocalDateTable_0c13a1ac-b81e-4bf4-8a0e-68d30a9d001d
+ref table LocalDateTable_c0ddda13-7a10-49ce-99c9-717a0bf86493
+ref table LocalDateTable_c88a85b8-78b6-418d-87f5-cc078329acd2
+ref table LocalDateTable_93401ff6-3d84-45c5-a840-e4745e78cc4f
+ref table LocalDateTable_3f76485a-55a1-4e04-9a2a-5dd8d71b48f7
+ref table LocalDateTable_9fe7d8a7-9ee1-42c3-a140-04370e0832b1
+ref table LocalDateTable_9e5b030d-0f46-47a2-b24c-34884f4f21c1
+

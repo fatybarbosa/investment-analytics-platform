@@ -37,6 +37,7 @@ from src.config import (
     MIN_POSITIONS,
     MONTHS_PER_YEAR,
     PORTFOLIO_DATA,
+    POSITION_WEIGHT_FLOOR,
     QUARTERLY_TURNOVER_CAP,
     REPORTING_CURRENCY,
     SECTOR_WEIGHT_CAP,
@@ -148,7 +149,9 @@ def month_end_levels(prices):
 def estimation_window(saron):
     """Scored months, the price history they require, and monthly SARON.
 
-    The scored window is the last MARKET_HISTORY_YEARS of SARON.
+    The scored window is the last MARKET_HISTORY_YEARS of SARON, and it
+    cannot pass the last month the fund file publishes. Phase 7 reads that
+    published return for every scored month.
     Each scored month also needs ESTIMATION_MONTHS of earlier returns,
     so the price history starts one month before that estimation sample.
     """
@@ -164,6 +167,11 @@ def estimation_window(saron):
     if labelled["value"].isna().any():
         raise RuntimeError("SARON has an empty value.")
     end = labelled["month"].max()
+    from src.performance.benchmark_return import latest_published_month
+
+    fund_end = pd.Period(latest_published_month(), freq="M")
+    if fund_end < end:
+        end = fund_end
     scored_start = end - (MARKET_HISTORY_YEARS * MONTHS_PER_YEAR - 1)
     history_start = scored_start - ESTIMATION_MONTHS
     scored_months = pd.period_range(scored_start, end, freq="M")
@@ -337,33 +345,217 @@ def _group_constraints(count, sectors, zones, currencies):
     return constraints
 
 
-def _shape_positions(weights, preference):
-    """Bring an optimized book back to the 25–40 name band.
+def _group_room(index, weights, labels, cap):
+    total = 0.0
+    label = labels[index]
+    for other, other_label in enumerate(labels):
+        if other_label == label:
+            total += float(weights[other])
+    return cap - total
 
-    Names outside the kept set are locked at zero. Numerical dust is not a
-    position, and the later projection must not put weight back on it.
+
+def _available_room(index, weights, sectors, zones, currencies):
+    rooms = [ISSUER_WEIGHT_CAP - float(weights[index])]
+    for labels, cap in (
+        (sectors, SECTOR_WEIGHT_CAP),
+        (zones, ZONE_WEIGHT_CAP),
+        (currencies, CURRENCY_WEIGHT_CAP),
+    ):
+        rooms.append(_group_room(index, weights, labels, cap))
+    return min(rooms)
+
+
+def _within_caps(weights, sectors, zones, currencies):
+    if abs(float(weights.sum()) - 1) > 1e-8:
+        return False
+    if float(weights.max()) > ISSUER_WEIGHT_CAP + 1e-8 or float(weights.min()) < -1e-12:
+        return False
+    for labels, cap in (
+        (sectors, SECTOR_WEIGHT_CAP),
+        (zones, ZONE_WEIGHT_CAP),
+        (currencies, CURRENCY_WEIGHT_CAP),
+    ):
+        for indices in _buckets(labels).values():
+            if float(weights[indices].sum()) > cap + 1e-8:
+                return False
+    return True
+
+
+def _apply_line(weights, chosen, line, sectors, zones, currencies):
+    """Lift the kept names to ``line`` without leaving a cap.
+
+    Weight is taken first from kept names in the same sector, zone and
+    listing currency, so a full group can make room for one more name.
+    """
+    trial = np.asarray(weights, dtype=float).copy()
+    chosen = [int(index) for index in chosen]
+    locked = np.ones(len(trial), dtype=bool)
+    locked[chosen] = False
+    trial[locked] = 0.0
+    short = [index for index in chosen if trial[index] < line - 1e-15]
+    for index in short:
+        deficit = line - float(trial[index])
+        donors = [donor for donor in chosen if donor != index and trial[donor] > line + 1e-15]
+
+        def rank(donor, index=index):
+            score = 0
+            if sectors[donor] == sectors[index]:
+                score += 4
+            if zones[donor] == zones[index]:
+                score += 2
+            if currencies[donor] == currencies[index]:
+                score += 1
+            return -score
+
+        if not donors:
+            return None
+        donors = sorted(donors, key=rank)
+        pool = [donor for donor in donors if rank(donor) == rank(donors[0])]
+        spare = float(sum(trial[donor] - line for donor in pool))
+        if spare + 1e-12 < deficit:
+            pool = donors
+            spare = float(sum(trial[donor] - line for donor in pool))
+        if spare + 1e-12 < deficit:
+            return None
+        for donor in pool:
+            extra = float(trial[donor]) - line
+            trial[donor] -= deficit * extra / spare
+        trial[index] = line
+    if float(trial.min()) < -1e-12 or not _within_caps(trial, sectors, zones, currencies):
+        return None
+    return trial
+
+
+def _force_min_line(weights, chosen, sectors, zones, currencies):
+    """Give every kept name a real weight before the turnover blend.
+
+    The line starts at the smallest weight the optimizer already kept
+    and is reduced only when a cap makes that line impossible.
+    A name left at numerical dust would pass the count and still not be a holding.
     """
     weights = np.asarray(weights, dtype=float).copy()
-    active = np.where(weights > 1e-8)[0]
-    if len(active) > MAX_POSITIONS:
-        keep = active[np.argsort(-weights[active])][:MAX_POSITIONS]
-    elif len(active) < MIN_POSITIONS:
-        chosen = [int(index) for index in active]
-        for index in np.argsort(-np.asarray(preference, dtype=float)):
-            if len(chosen) >= MIN_POSITIONS:
+    chosen = [int(index) for index in chosen]
+    existing = weights[np.asarray(chosen, dtype=int)]
+    existing = existing[existing > POSITION_WEIGHT_FLOOR]
+    high = float(existing.min()) if len(existing) else 1.0 / len(chosen)
+    low = POSITION_WEIGHT_FLOOR * 2
+    best = None
+    for _ in range(40):
+        line = (low + high) / 2
+        trial = _apply_line(weights, chosen, line, sectors, zones, currencies)
+        if trial is None:
+            high = line
+            continue
+        best = trial
+        low = line
+    if best is None:
+        kept = weights[np.asarray(chosen, dtype=int)]
+        raise RuntimeError(
+            "A kept name cannot be given a weight above the position floor. "
+            f"chosen={len(chosen)} above={int((kept > POSITION_WEIGHT_FLOOR).sum())} "
+            f"min={float(kept.min()) if len(kept) else 0} max={float(kept.max()) if len(kept) else 0}"
+        )
+    return best
+
+
+def _band_target(weights, preference, sectors, zones, currencies):
+    """Keep 25 to 40 names, and only add a name that still has room under the caps."""
+    weights = np.asarray(weights, dtype=float).copy()
+    chosen = [int(index) for index in np.flatnonzero(weights > 1e-4)]
+    if len(chosen) > MAX_POSITIONS:
+        chosen = [int(index) for index in np.argsort(-weights) if int(index) in set(chosen)][:MAX_POSITIONS]
+    ranking = [int(index) for index in np.argsort(-np.asarray(preference, dtype=float))]
+    for index in ranking:
+        if len(chosen) >= MIN_POSITIONS:
+            break
+        if index in chosen:
+            continue
+        placed = None
+        for line in (0.01, 0.005, 0.002, 0.001, 1e-4 * 2):
+            trial = _apply_line(weights, chosen + [index], line, sectors, zones, currencies)
+            if trial is not None:
+                placed = trial
                 break
-            if int(index) not in chosen:
-                chosen.append(int(index))
-        keep = np.asarray(chosen, dtype=int)
-        for index in keep:
-            if weights[index] <= 0:
-                weights[index] = 1e-6
-    else:
-        keep = active
-    mask = np.zeros(len(weights), dtype=bool)
-    mask[np.asarray(keep, dtype=int)] = True
-    weights[~mask] = 0.0
-    return weights, ~mask
+        if placed is None:
+            continue
+        weights = placed
+        chosen.append(index)
+    if len(chosen) < MIN_POSITIONS or len(chosen) > MAX_POSITIONS:
+        raise RuntimeError(f"The caps leave {len(chosen)} names inside the position band.")
+    locked = np.ones(len(weights), dtype=bool)
+    locked[chosen] = False
+    weights[locked] = 0.0
+    if float(weights[chosen].min()) > 1e-4 and _within_caps(weights, sectors, zones, currencies):
+        return weights, locked
+    return _force_min_line(weights, chosen, sectors, zones, currencies), locked
+
+
+def _restore_band(weights, preference, sectors, zones, currencies, previous):
+    """Put an optimized book back inside 25–40 lines after the turnover blend.
+
+    The blend can shrink a name that was only there to fill the band.
+    The weight given back is the largest one that still fits in the
+    remaining turnover budget and in the issuer, sector, zone and
+    currency caps. It stays above the position floor.
+    """
+    weights = np.asarray(weights, dtype=float).copy()
+    weights[weights <= POSITION_WEIGHT_FLOOR] = 0.0
+    invested = weights > POSITION_WEIGHT_FLOOR
+    count = int(invested.sum())
+    if MIN_POSITIONS <= count <= MAX_POSITIONS:
+        if abs(float(weights.sum()) - 1) > 1e-8 and float(weights.sum()) > 0:
+            weights /= float(weights.sum())
+        return weights
+    if count > MAX_POSITIONS:
+        keep = np.argsort(-weights)[:MAX_POSITIONS]
+        locked = np.ones(len(weights), dtype=bool)
+        locked[keep] = False
+        restored = project_mandate(weights, sectors, zones, currencies, locked)
+        if previous is not None and float(np.abs(restored - previous).sum()) > QUARTERLY_TURNOVER_CAP - 2e-8:
+            raise RuntimeError("Trimming the book to 40 names breaks the turnover cap.")
+        return restored
+    chosen = [int(index) for index in np.flatnonzero(invested)]
+    ranking = [int(index) for index in np.argsort(-np.asarray(preference, dtype=float))]
+    dust = [int(index) for index in ranking if index not in chosen]
+    for index in dust:
+        if len(chosen) >= MIN_POSITIONS:
+            break
+        if _available_room(index, weights, sectors, zones, currencies) <= POSITION_WEIGHT_FLOOR:
+            continue
+        chosen.append(index)
+    if len(chosen) < MIN_POSITIONS:
+        raise RuntimeError("The caps leave fewer than 25 names that can still receive weight.")
+    high = ISSUER_WEIGHT_CAP
+    for index in chosen:
+        if weights[index] <= POSITION_WEIGHT_FLOOR:
+            high = min(high, _available_room(index, weights, sectors, zones, currencies))
+    if previous is not None:
+        slack = QUARTERLY_TURNOVER_CAP - float(np.abs(weights - previous).sum())
+        missing = sum(1 for index in chosen if weights[index] <= POSITION_WEIGHT_FLOOR)
+        if missing:
+            high = min(high, max(slack, 0.0) / (2.0 * missing))
+    low = POSITION_WEIGHT_FLOOR * 2
+    best = None
+    if high <= low:
+        high = low
+    for _ in range(40):
+        line = (low + high) / 2
+        trial = _apply_line(weights, chosen, line, sectors, zones, currencies)
+        if trial is None:
+            high = line
+            continue
+        invested = trial[trial > POSITION_WEIGHT_FLOOR]
+        if invested.size < MIN_POSITIONS or float(invested.min()) <= 1e-4:
+            high = line
+            continue
+        if previous is not None and float(np.abs(trial - previous).sum()) > QUARTERLY_TURNOVER_CAP - 2e-8:
+            high = line
+            continue
+        best = trial
+        low = line
+    if best is None:
+        raise RuntimeError("The position band does not fit inside the turnover cap.")
+    return best
 
 
 def _respect_turnover(weights, previous, locked_out, sectors, zones, currencies):
@@ -371,7 +563,7 @@ def _respect_turnover(weights, previous, locked_out, sectors, zones, currencies)
     target = project_mandate(weights, sectors, zones, currencies, locked_out)
     if previous is None:
         return target
-    if float(np.abs(target - previous).sum()) <= QUARTERLY_TURNOVER_CAP + 1e-8:
+    if float(np.abs(target - previous).sum()) <= QUARTERLY_TURNOVER_CAP - 2e-8:
         return target
     best = np.asarray(previous, dtype=float).copy()
     low, high = 0.0, 1.0
@@ -380,7 +572,7 @@ def _respect_turnover(weights, previous, locked_out, sectors, zones, currencies)
         mixed = (1 - mid) * previous + mid * target
         mixed[locked_out] = 0.0
         mixed = project_mandate(mixed, sectors, zones, currencies, locked_out)
-        if float(np.abs(mixed - previous).sum()) <= QUARTERLY_TURNOVER_CAP + 1e-8:
+        if float(np.abs(mixed - previous).sum()) <= QUARTERLY_TURNOVER_CAP - 2e-8:
             best = mixed
             low = mid
         else:
@@ -464,8 +656,9 @@ def minimum_volatility(asset_returns, sectors, zones, currencies, previous=None)
     if objective(weights) > objective(equal) + 1e-8:
         raise RuntimeError("Minimum volatility is above the equal-weight variance on its sample.")
     preference = -np.diag(covariance)
-    shaped, locked_out = _shape_positions(weights, preference)
+    shaped, locked_out = _band_target(weights, preference, sectors, zones, currencies)
     held = _respect_turnover(shaped, previous, locked_out, sectors, zones, currencies)
+    held = _restore_band(held, preference, sectors, zones, currencies, previous)
     return pd.Series(held, index=asset_returns.columns, dtype=float)
 
 
@@ -519,8 +712,9 @@ def maximum_sharpe(asset_returns, risk_free, sectors, zones, currencies, previou
             best_weights = candidate
     if best_weights is None or best_sharpe + 1e-8 < sharpe_of(equal):
         raise RuntimeError("Maximum Sharpe is below the equal-weight Sharpe on its sample.")
-    shaped, locked_out = _shape_positions(best_weights, mean_excess)
+    shaped, locked_out = _band_target(best_weights, mean_excess, sectors, zones, currencies)
     held = _respect_turnover(shaped, previous, locked_out, sectors, zones, currencies)
+    held = _restore_band(held, mean_excess, sectors, zones, currencies, previous)
     return pd.Series(held, index=columns, dtype=float)
 
 
@@ -699,6 +893,18 @@ def mandate_weights(asset_returns, risk_free, scored_months, membership):
                     sample, sample_rate, sectors, zones, currencies, previous["maximum_sharpe"]
                 ),
             }
+            for strategy, series in decided.items():
+                if strategy == "equal_weight":
+                    continue
+                values = series.to_numpy(dtype=float)
+                invested_weights = values[values > POSITION_WEIGHT_FLOOR]
+                invested = int(invested_weights.size)
+                if invested < MIN_POSITIONS or invested > MAX_POSITIONS:
+                    raise RuntimeError(f"{strategy} {month} holds {invested} names.")
+                if float(invested_weights.min()) <= 1e-4:
+                    raise RuntimeError(
+                        f"{strategy} {month} smallest line is {float(invested_weights.min())}."
+                    )
             previous["minimum_volatility"] = decided["minimum_volatility"].to_numpy()
             previous["maximum_sharpe"] = decided["maximum_sharpe"].to_numpy()
             held = decided

@@ -1,0 +1,113 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "relative",
+  "position": {
+    "x": 848,
+    "y": 648,
+    "z": 4000,
+    "height": 300,
+    "width": 416,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Strategie"
+                    }
+                  },
+                  "Property": "livre"
+                }
+              },
+              "queryRef": "Strategie.livre",
+              "nativeQueryRef": "Livre",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Performance"
+                    }
+                  },
+                  "Property": "Écart de suivi"
+                }
+              },
+              "queryRef": "Performance.Écart de suivi",
+              "nativeQueryRef": "Écart de suivi",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Performance"
+                    }
+                  },
+                  "Property": "Ratio d'information"
+                }
+              },
+              "queryRef": "Performance.Ratio d'information",
+              "nativeQueryRef": "Ratio d'information",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Performance"
+                    }
+                  },
+                  "Property": "Mois sous le SARON"
+                }
+              },
+              "queryRef": "Performance.Mois sous le SARON",
+              "nativeQueryRef": "Mois sous le SARON",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Écart au fonds et au SARON'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

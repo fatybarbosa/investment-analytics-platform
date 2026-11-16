@@ -14,22 +14,34 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from src.config import PERFORMANCE_REPORTS
-from src.performance.build_performance import BENCHMARK_RETURNS_FILE, METRICS_OUTPUT
+from src.config import (
+    CURRENCY_WEIGHT_CAP,
+    ISSUER_WEIGHT_CAP,
+    PERFORMANCE_REPORTS,
+    SECTOR_WEIGHT_CAP,
+    ZONE_WEIGHT_CAP,
+)
+from src.performance.build_performance import (
+    ACTIVE_RETURNS_FILE,
+    BENCHMARK_RETURNS_FILE,
+    METRICS_OUTPUT,
+)
 from src.portfolio_construction.build_portfolios import (
     MONTHLY_RETURNS_FILE,
     STRATEGY_IDS,
 )
 from src.portfolio_monitoring.build_monitoring import PATH_FILE
-from src.portfolio_monitoring.dashboard import STRATEGY_COLORS, STRATEGY_LABELS
+from src.portfolio_monitoring.dashboard import FUND_LABEL, STRATEGY_COLORS, STRATEGY_LABELS
 
 
 DASHBOARD_FILE = PERFORMANCE_REPORTS / "dashboard.html"
 ROLLING_MONTHS = 12
+CHART_LABELS = list(STRATEGY_LABELS.values()) + [FUND_LABEL]
 SECTION_TITLES = (
     "Performance relative au SARON",
     "Rendement glissant sur 12 mois",
     "Performance relative au fonds",
+    "Écart mensuel avec le fonds",
     "Indicateurs annualisés",
 )
 PERCENT_MEASURES = (
@@ -51,17 +63,36 @@ def load_frames():
     monthly = pd.read_csv(MONTHLY_RETURNS_FILE)
     path = pd.read_csv(PATH_FILE)
     benchmark = pd.read_csv(BENCHMARK_RETURNS_FILE)
-    frames = {"metrics": metrics, "monthly": monthly, "path": path, "benchmark": benchmark}
+    active = pd.read_csv(ACTIVE_RETURNS_FILE)
+    frames = {
+        "metrics": metrics,
+        "monthly": monthly,
+        "path": path,
+        "benchmark": benchmark,
+        "active": active,
+    }
     for name, frame in frames.items():
-        if name != "benchmark" and set(frame["strategy"].astype(str)) != set(STRATEGY_IDS):
+        if name == "metrics":
+            present = set(frame["strategy"].astype(str))
+            if present != set(STRATEGY_IDS) | {"benchmark"}:
+                raise RuntimeError("Performance metrics do not cover the three books and the fund.")
+        elif name == "active":
+            present = set(frame["strategy"].astype(str))
+            if present != set(STRATEGY_IDS) | {"benchmark"}:
+                raise RuntimeError("The active-return file does not cover the three books and the fund.")
+            frame = frame.loc[frame["strategy"].astype(str).isin(STRATEGY_IDS)].copy()
+        elif name != "benchmark" and set(frame["strategy"].astype(str)) != set(STRATEGY_IDS):
             raise RuntimeError(f"{name} does not cover the three strategies.")
         if name == "benchmark":
             frame["month"] = frame["month"].astype(str)
             frames[name] = frame.sort_values("month", kind="mergesort")
             continue
+        labels = dict(STRATEGY_LABELS)
+        if name == "metrics":
+            labels["benchmark"] = FUND_LABEL
         frame["strategy"] = pd.Categorical(
-            frame["strategy"].astype(str).map(STRATEGY_LABELS),
-            categories=list(STRATEGY_LABELS.values()),
+            frame["strategy"].astype(str).map(labels),
+            categories=CHART_LABELS if name == "metrics" else list(STRATEGY_LABELS.values()),
             ordered=True,
         )
         sort_columns = ["strategy"]
@@ -100,8 +131,10 @@ def apply_layout(figure, title, height):
 
 def _strategy_lines(dated, column, hover):
     figure = go.Figure()
-    for label in STRATEGY_LABELS.values():
+    for label in CHART_LABELS:
         rows = dated.loc[dated["strategy"].eq(label)]
+        if rows.empty:
+            continue
         figure.add_trace(
             go.Scatter(
                 x=rows["month"],
@@ -133,6 +166,12 @@ def against_saron_figure(path, monthly):
             raise RuntimeError("A portfolio month has no SARON capital.")
         block["saron_multiple"] = block["cumulative_wealth"].to_numpy() / aligned.to_numpy()
         rows.append(block)
+    fund = _fund_frame(monthly)
+    aligned = cash.reindex(fund["month"])
+    if aligned.isna().any():
+        raise RuntimeError("A fund month has no SARON capital.")
+    fund["saron_multiple"] = fund["cumulative_wealth"].to_numpy() / aligned.to_numpy()
+    rows.append(fund)
     compared = pd.concat(rows, ignore_index=True)
     figure = _strategy_lines(
         compared,
@@ -152,6 +191,10 @@ def rolling_figure(monthly):
         growth = np.exp(np.log1p(block["portfolio_return"].astype(float)).rolling(ROLLING_MONTHS).sum())
         block["rolling_return"] = growth - 1
         rows.append(block.dropna(subset=["rolling_return"]))
+    fund = _fund_frame()
+    growth = np.exp(np.log1p(fund["portfolio_return"].astype(float)).rolling(ROLLING_MONTHS).sum())
+    fund["rolling_return"] = growth - 1
+    rows.append(fund.dropna(subset=["rolling_return"]))
     rolled = pd.concat(rows, ignore_index=True)
     figure = _strategy_lines(
         rolled,
@@ -176,6 +219,9 @@ def relative_figure(path, benchmark):
             raise RuntimeError("A portfolio month has no fund capital.")
         block["relative_wealth"] = block["cumulative_wealth"].to_numpy() / aligned.to_numpy()
         rows.append(block)
+    fund = _fund_frame()
+    fund["relative_wealth"] = 1.0
+    rows.append(fund)
     compared = pd.concat(rows, ignore_index=True)
     figure = _strategy_lines(
         compared,
@@ -186,8 +232,38 @@ def relative_figure(path, benchmark):
     return apply_layout(figure, SECTION_TITLES[2], 460)
 
 
+def _fund_frame(monthly=None):
+    """Published iShares NAV return in CHF, with the wealth path that return implies."""
+    fund = pd.read_csv(BENCHMARK_RETURNS_FILE).sort_values("month", kind="mergesort")
+    fund["portfolio_return"] = fund["benchmark_return_chf"].astype(float)
+    fund["strategy"] = FUND_LABEL
+    fund["month"] = pd.to_datetime(fund["month"])
+    fund["cumulative_wealth"] = (1 + fund["portfolio_return"]).cumprod()
+    if monthly is not None:
+        cash_source = monthly.loc[monthly["strategy"].eq(STRATEGY_LABELS["equal_weight"])]
+        if len(cash_source) != len(fund):
+            raise RuntimeError("The fund and the books do not share the same months.")
+    return fund
+
+
+def active_figure(active):
+    """Monthly return gap with the fund. The fund against itself is the zero line."""
+    dated = as_dates(active)
+    fund = _fund_frame()
+    fund["active_return"] = 0.0
+    dated = pd.concat([dated, fund.loc[:, ["month", "strategy", "active_return"]]], ignore_index=True)
+    figure = _strategy_lines(
+        dated,
+        "active_return",
+        "%{x|%Y-%m}<br>%{y:.1%}<extra>%{fullData.name}</extra>",
+    )
+    figure.add_hline(y=0, line_dash="dash", line_color="#666666")
+    figure.update_yaxes(title="Écart", tickformat=".0%")
+    return apply_layout(figure, SECTION_TITLES[3], 460)
+
+
 def _bars(figure, metrics, measures, row, percent):
-    for label in STRATEGY_LABELS.values():
+    for label in CHART_LABELS:
         row_values = metrics.loc[metrics["strategy"].eq(label)].iloc[0]
         y_values = []
         text = []
@@ -233,7 +309,7 @@ def measures_figure(metrics):
     figure.update_layout(barmode="group")
     figure.update_xaxes(tickangle=-25)
     figure.update_yaxes(tickformat=".0%", row=1, col=1)
-    figure = apply_layout(figure, SECTION_TITLES[3], 820)
+    figure = apply_layout(figure, SECTION_TITLES[4], 820)
     figure.update_layout(margin={"t": 90, "b": 110, "l": 70, "r": 30})
     return figure
 
@@ -245,6 +321,7 @@ def build_figures():
         against_saron_figure(frames["path"], frames["monthly"]),
         rolling_figure(frames["monthly"]),
         relative_figure(frames["path"], frames["benchmark"]),
+        active_figure(frames["active"]),
         measures_figure(frames["metrics"]),
     ]
 
@@ -292,18 +369,21 @@ p {{ color: #333; line-height: 1.45; }}
 <body>
 <h1>Performance des portefeuilles</h1>
 <p>Période {start} – {end}. Le détail s'affiche au survol.
-Le poids de chaque trimestre a été fixé avec les soixante mois déjà observés,
-sous une limite de 5 % par émetteur, 20 % par secteur, 50 % par zone
-et 40 % par devise de cotation.
-Le premier graphique rapporte la performance du portefeuille à celle d'un placement
-resté au SARON. Le deuxième est le rendement glissant, produit des douze rendements
-mensuels précédant chaque date. Le troisième rapporte la performance du portefeuille
-à celle de {fund_name}. Ce rendement est le rendement mensuel total de la valeur
+Les trois livres sont hypothétiques : construits rétrospectivement, ils n'ont pas été détenus.
+{fund_name} est une série réelle. Son rendement est le rendement mensuel total de la valeur
 liquidative publié par iShares, converti en francs au cours BNS de fin de mois
 ({fund_currency}). Les mois sans donnée publiée ne sont pas estimés.
-Les indicateurs sont ceux de la période. L'écart de suivi et le ratio d'information
-comparent chaque portefeuille à ce fonds. La performance cumulée et le drawdown
-figurent dans le suivi des portefeuilles.
+Le fonds est sur chaque graphique de cette page, parce que la série existe.
+Contre lui-même, sa performance relative vaut 1 et son écart mensuel vaut 0.
+Son ratio d'information n'est pas tracé : l'écart de suivi est nul, le ratio n'est pas défini.
+Le poids de chaque trimestre a été fixé avec les soixante mois déjà observés,
+sous une limite de {ISSUER_WEIGHT_CAP * 100:.0f} % par émetteur, {SECTOR_WEIGHT_CAP * 100:.0f} % par secteur, {ZONE_WEIGHT_CAP * 100:.0f} % par zone
+et {CURRENCY_WEIGHT_CAP * 100:.0f} % par devise de cotation.
+Le premier graphique rapporte la performance à celle d'un placement resté au SARON.
+Le deuxième est le rendement glissant, produit des douze rendements mensuels précédant chaque date.
+Le troisième rapporte la performance à celle du fonds. Le quatrième est l'écart de chaque mois avec ce fonds.
+Le rendement publié est mensuel : le poids n'est pas refait chaque jour,
+donc aucun rendement journalier n'est publié.
 La page est régénérée à chaque reconstruction.</p>
 {body}
 </body>

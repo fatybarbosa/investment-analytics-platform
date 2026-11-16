@@ -1,0 +1,44 @@
+table Exposition
+	lineageTag: 740515bc-b47e-583a-bfeb-59de2527ed43
+
+	measure 'Poids devise' = MAX ( Exposition[weight] )
+		formatString: 0.0%
+		lineageTag: 831b21e8-30a7-51c8-9e74-f07130d9cd69
+
+	column strategy
+		dataType: string
+		lineageTag: 45572031-e2b7-5b81-845c-0aeab259e672
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column exposure
+		dataType: string
+		lineageTag: 72048c4c-8de6-52e1-83fa-a068b732bb5d
+		summarizeBy: none
+		sourceColumn: exposure
+
+	column weight
+		dataType: double
+		lineageTag: 516a90d2-b3f8-5209-bab6-5ad75ff91821
+		summarizeBy: none
+		sourceColumn: weight
+
+	column names
+		dataType: int64
+		lineageTag: 6f808e5d-5a16-5b91-aa18-ae61a165f064
+		summarizeBy: none
+		sourceColumn: names
+
+	partition Exposition = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/05_monitoring/exposure.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"strategy", "exposure", "weight", "names"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"strategy", type text}, {"exposure", type text}, {"weight", type number}, {"names", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

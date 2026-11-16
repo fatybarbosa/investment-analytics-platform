@@ -1,0 +1,86 @@
+table Stress
+	lineageTag: 4b6eeb0f-a297-5a60-8a0e-1422c29159da
+
+	measure 'Richesse finale' = SELECTEDVALUE ( Stress[terminal_wealth] )
+		formatString: 0.00
+		lineageTag: cb61ff33-1a7f-5c3c-aa65-b5de17bff798
+
+	measure 'Drawdown stressé' = SELECTEDVALUE ( Stress[maximum_drawdown] )
+		formatString: 0.0%
+		lineageTag: b554c58f-6f44-5451-b634-2fe6d3123763
+
+	measure 'Volatilité stressée' = SELECTEDVALUE ( Stress[annualized_volatility] )
+		formatString: 0.0%
+		lineageTag: ebfa2fda-5e4c-5432-bd31-094c47f2079a
+
+	measure 'Sharpe stressé' = SELECTEDVALUE ( Stress[sharpe_ratio] )
+		formatString: 0.00
+		lineageTag: 49568254-728b-5075-b7b2-0fa276ed6e72
+
+	column strategy
+		dataType: string
+		lineageTag: f07deff3-b35c-5c7a-aee2-7274e41f5012
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column shock
+		dataType: string
+		lineageTag: 6b42d864-ae28-56e3-af3a-9d421f739c36
+		summarizeBy: none
+		sourceColumn: shock
+
+	column months
+		dataType: int64
+		lineageTag: fe37ca98-27d8-55a3-97c2-ff95f7dcb76b
+		summarizeBy: none
+		sourceColumn: months
+
+	column window_start
+		dataType: string
+		lineageTag: e888ee01-1f22-5444-8d48-68b19ad668f4
+		summarizeBy: none
+		sourceColumn: window_start
+
+	column window_end
+		dataType: string
+		lineageTag: 1e43d33d-b5f6-5194-9863-dfb22b8cd369
+		summarizeBy: none
+		sourceColumn: window_end
+
+	column terminal_wealth
+		dataType: double
+		lineageTag: 4bdb682d-1db7-5c42-a2df-9e6806ceb703
+		summarizeBy: none
+		sourceColumn: terminal_wealth
+
+	column maximum_drawdown
+		dataType: double
+		lineageTag: 14c045ea-93d1-5e07-9e01-87ddcefb4d03
+		summarizeBy: none
+		sourceColumn: maximum_drawdown
+
+	column annualized_volatility
+		dataType: double
+		lineageTag: 99467422-f563-5d12-a1b8-071f58346683
+		summarizeBy: none
+		sourceColumn: annualized_volatility
+
+	column sharpe_ratio
+		dataType: double
+		lineageTag: 23e613ea-d406-5ac2-bf74-024f2b0c50c8
+		summarizeBy: none
+		sourceColumn: sharpe_ratio
+
+	partition Stress = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/08_stress/stress_results.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"strategy", "shock", "months", "window_start", "window_end", "terminal_wealth", "maximum_drawdown", "annualized_volatility", "sharpe_ratio"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"strategy", type text}, {"shock", type text}, {"months", Int64.Type}, {"window_start", type text}, {"window_end", type text}, {"terminal_wealth", type number}, {"maximum_drawdown", type number}, {"annualized_volatility", type number}, {"sharpe_ratio", type number}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

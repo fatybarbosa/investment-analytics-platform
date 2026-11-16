@@ -18,10 +18,15 @@ data/05_monitoring/allocation_by_sector.csv
 data/05_monitoring/allocation_by_zone.csv
 data/05_monitoring/exposure.csv
 data/05_monitoring/concentration.csv
+data/05_monitoring/concentration_history.csv
+data/05_monitoring/limit_watch.csv
+data/05_monitoring/turnover.csv
 data/05_monitoring/top10_positions.csv
 data/05_monitoring/monthly_report.csv
 data/05_monitoring/portfolio_path.csv
 data/05_monitoring/sector_contribution.csv
+data/05_monitoring/holding_contribution.csv
+data/05_monitoring/weight_changes.csv
 """
 
 from pathlib import Path
@@ -29,7 +34,17 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from src.config import MONITORING_DATA
+from src.config import (
+    CURRENCY_WEIGHT_CAP,
+    ISSUER_WEIGHT_CAP,
+    MAX_POSITIONS,
+    MIN_POSITIONS,
+    MONITORING_DATA,
+    POSITION_WEIGHT_FLOOR,
+    QUARTERLY_TURNOVER_CAP,
+    SECTOR_WEIGHT_CAP,
+    ZONE_WEIGHT_CAP,
+)
 from src.governance.source_registry import (
     DATASET_KEY,
     OUTPUT_FILE_KEY,
@@ -62,17 +77,12 @@ from src.utils.logger import logger
 
 
 TOP_POSITIONS = 10
-# Optimizer dust sits near 1e-17. A published holding in this universe
-# is at least several basis points. Lines at or below this floor are
-# not positions.
-POSITION_WEIGHT_FLOOR = 1e-8
 UNCLASSIFIED = "Non classé"
 CANDIDATES_OUTPUT = "security_candidates.csv"
 WEIGHT_SUM_TOLERANCE = 1e-8
 METRIC_TOLERANCE = 1e-6
+CAP_TOLERANCE = 1e-8
 MISSING_LABELS = {"", "--", "nan", "none"}
-REQUESTED_EXPOSURES = ()
-EXPOSURE_BY_ASSET_CLASS = {}
 # Location strings published by the holdings file. A new country is
 # reported as unclassified instead of being forced into a zone.
 COUNTRY_ZONES = {
@@ -137,6 +147,45 @@ CONCENTRATION_COLUMNS = (
     "effective_holdings",
     "concentration_multiple",
 )
+CONCENTRATION_HISTORY_COLUMNS = (
+    "month",
+    "strategy",
+    "names",
+    "invested_names",
+    "maximum_weight",
+    "top_10_weight",
+    "hhi",
+    "effective_holdings",
+    "concentration_multiple",
+)
+LIMIT_COLUMNS = (
+    "month",
+    "strategy",
+    "largest_issuer",
+    "largest_issuer_weight",
+    "largest_sector",
+    "largest_sector_weight",
+    "largest_zone",
+    "largest_zone_weight",
+    "largest_currency",
+    "largest_currency_weight",
+    "issuer_over_cap",
+    "sector_over_cap",
+    "zone_over_cap",
+    "currency_over_cap",
+    "invested_names",
+    "positions_outside_band",
+)
+TURNOVER_COLUMNS = (
+    "month",
+    "strategy",
+    "gross_turnover",
+    "over_quarterly_cap",
+    "trailing_annual_turnover",
+    "over_annual_cap",
+)
+ANNUAL_TURNOVER_CAP = 4 * QUARTERLY_TURNOVER_CAP
+REBALANCE_MONTHS = (1, 4, 7, 10)
 TOP10_COLUMNS = (
     "strategy",
     "rank",
@@ -187,10 +236,35 @@ SECTOR_FILE = MONITORING_DATA / "allocation_by_sector.csv"
 ZONE_FILE = MONITORING_DATA / "allocation_by_zone.csv"
 EXPOSURE_FILE = MONITORING_DATA / "exposure.csv"
 CONCENTRATION_FILE = MONITORING_DATA / "concentration.csv"
+CONCENTRATION_HISTORY_FILE = MONITORING_DATA / "concentration_history.csv"
+LIMIT_FILE = MONITORING_DATA / "limit_watch.csv"
+TURNOVER_FILE = MONITORING_DATA / "turnover.csv"
 TOP10_FILE = MONITORING_DATA / "top10_positions.csv"
 REPORT_FILE = MONITORING_DATA / "monthly_report.csv"
 PATH_FILE = MONITORING_DATA / "portfolio_path.csv"
 CONTRIBUTION_FILE = MONITORING_DATA / "sector_contribution.csv"
+HOLDING_CONTRIBUTION_FILE = MONITORING_DATA / "holding_contribution.csv"
+HOLDING_CONTRIBUTION_COLUMNS = (
+    "month",
+    "strategy",
+    "yahoo_symbol",
+    "name",
+    "sector",
+    "weight",
+    "asset_return",
+    "month_contribution",
+    "cumulative_contribution",
+)
+WEIGHT_CHANGES_FILE = MONITORING_DATA / "weight_changes.csv"
+WEIGHT_CHANGE_COLUMNS = (
+    "month",
+    "strategy",
+    "yahoo_symbol",
+    "name",
+    "weight_before",
+    "weight_after",
+    "weight_change",
+)
 CONTRIBUTION_TOLERANCE = 1e-8
 
 
@@ -206,16 +280,6 @@ def zone_for(country):
     if country == "":
         return UNCLASSIFIED
     return COUNTRY_ZONES.get(country, UNCLASSIFIED)
-
-
-def exposure_for(asset_class):
-    """Map the three requested buckets. Any other source class keeps its name."""
-    if asset_class == "":
-        return UNCLASSIFIED
-    mapped = EXPOSURE_BY_ASSET_CLASS.get(asset_class.casefold())
-    if mapped is not None:
-        return mapped
-    return asset_class
 
 
 def require_weight_sum(weights, strategy):
@@ -348,7 +412,7 @@ def group_allocation(classified, key, key_column):
 
 
 def build_exposure(classified):
-    """Listing-currency weights. The book is equity only, so bonds and ETF are not rows."""
+    """Listing-currency weights. The mandate cap is on this currency, not on a bond or ETF bucket."""
     return group_allocation(classified, "exposure", "exposure")
 
 
@@ -365,36 +429,247 @@ def build_top10(classified):
     return pd.concat(frames, ignore_index=True)
 
 
-def build_concentration(classified, metrics):
+def concentration_facts(group):
+    """Herfindahl and the top 10 use every published weight, including zeros."""
+    values = group["weight"].to_numpy(dtype=float)
+    if values.size == 0:
+        raise RuntimeError("A strategy has no weight row in a month.")
+    hhi = float(np.square(values).sum())
+    if hhi <= 0:
+        raise RuntimeError("A month has no positive weight, so the effective number is undefined.")
+    ordered = np.sort(values)[::-1]
+    names = int(values.size)
+    return {
+        "names": names,
+        "invested_names": int(np.count_nonzero(values > POSITION_WEIGHT_FLOOR)),
+        "maximum_weight": float(ordered[0]),
+        "top_10_weight": float(ordered[:TOP_POSITIONS].sum()),
+        "hhi": hhi,
+        "effective_holdings": 1.0 / hhi,
+        "concentration_multiple": hhi * names,
+    }
+
+
+def over_cap(weight, cap):
+    return int(float(weight) > float(cap) + CAP_TOLERANCE)
+
+
+def outside_band(strategy, invested):
+    """The 25–40 band binds the two optimized books. Equal weight is the full list."""
+    if strategy == "equal_weight":
+        return 0
+    count = int(invested)
+    return int(count < MIN_POSITIONS or count > MAX_POSITIONS)
+
+
+def largest_slice(group, key):
+    """Largest invested line, or the largest invested group. Ties follow the label."""
+    invested = group.loc[group["weight"].gt(POSITION_WEIGHT_FLOOR)]
+    if invested.empty:
+        raise RuntimeError("A month has no invested line.")
+    if key == "name":
+        ordered = invested.sort_values(["weight", "yahoo_symbol"], ascending=[False, True])
+        row = ordered.iloc[0]
+        return str(row["name"]), float(row["weight"])
+    totals = (
+        invested.groupby(key, as_index=False)["weight"]
+        .sum()
+        .sort_values(["weight", key], ascending=[False, True])
+    )
+    row = totals.iloc[0]
+    return str(row[key]), float(row["weight"])
+
+
+def build_concentration_history(classified):
+    frames = []
+    for strategy in STRATEGY_IDS:
+        book = classified.loc[classified["strategy"].eq(strategy)]
+        rows = []
+        for month, group in book.groupby("month", sort=True):
+            facts = concentration_facts(group)
+            facts["month"] = str(month)
+            facts["strategy"] = strategy
+            rows.append(facts)
+        frames.append(pd.DataFrame(rows))
+    return pd.concat(frames, ignore_index=True)
+
+
+def build_limit_watch(classified):
+    """One row per month. A flag is 1 when the published weight is above the IPS cap."""
+    frames = []
+    for strategy in STRATEGY_IDS:
+        book = classified.loc[classified["strategy"].eq(strategy)]
+        rows = []
+        for month, group in book.groupby("month", sort=True):
+            issuer, issuer_weight = largest_slice(group, "name")
+            sector, sector_weight = largest_slice(group, "sector")
+            zone, zone_weight = largest_slice(group, "zone")
+            currency, currency_weight = largest_slice(group, "exposure")
+            invested = int(np.count_nonzero(group["weight"].to_numpy(dtype=float) > POSITION_WEIGHT_FLOOR))
+            rows.append(
+                {
+                    "month": str(month),
+                    "strategy": strategy,
+                    "largest_issuer": issuer,
+                    "largest_issuer_weight": issuer_weight,
+                    "largest_sector": sector,
+                    "largest_sector_weight": sector_weight,
+                    "largest_zone": zone,
+                    "largest_zone_weight": zone_weight,
+                    "largest_currency": currency,
+                    "largest_currency_weight": currency_weight,
+                    "issuer_over_cap": over_cap(issuer_weight, ISSUER_WEIGHT_CAP),
+                    "sector_over_cap": over_cap(sector_weight, SECTOR_WEIGHT_CAP),
+                    "zone_over_cap": over_cap(zone_weight, ZONE_WEIGHT_CAP),
+                    "currency_over_cap": over_cap(currency_weight, CURRENCY_WEIGHT_CAP),
+                    "invested_names": invested,
+                    "positions_outside_band": outside_band(strategy, invested),
+                }
+            )
+        frames.append(pd.DataFrame(rows))
+    return pd.concat(frames, ignore_index=True)
+
+
+def build_turnover(weights):
+    """Gross turnover when a quarter replaces the previous book.
+
+    Gross turnover is the sum of absolute weight changes. The construction
+    compares that sum with the quarterly cap. The first book has no
+    predecessor. A month inside a quarter keeps the same weights.
+    The annual figure adds the four latest quarterly changes.
+    """
+    frames = []
+    for strategy in STRATEGY_IDS:
+        book = weights.loc[weights["strategy"].eq(strategy)]
+        wide = (
+            book.pivot(index="month", columns="yahoo_symbol", values="weight")
+            .fillna(0.0)
+            .sort_index()
+        )
+        months = [str(month) for month in wide.index]
+        previous = None
+        previous_rebalance = None
+        quarterly = []
+        rows = []
+        for month in months:
+            current = wide.loc[month].to_numpy(dtype=float)
+            if previous is None:
+                previous = current
+                continue
+            change = float(np.abs(current - previous).sum())
+            rebalance = int(month[5:7]) in REBALANCE_MONTHS
+            if not rebalance:
+                if change > CAP_TOLERANCE:
+                    raise RuntimeError(
+                        f"{strategy} changes weight in {month}, outside a quarter start."
+                    )
+                previous = current
+                continue
+            if previous_rebalance is not None:
+                gap = (pd.Period(month, freq="M") - pd.Period(previous_rebalance, freq="M")).n
+                if gap != 3:
+                    raise RuntimeError(
+                        f"{strategy} rebalances in {month}, {gap} months after {previous_rebalance}."
+                    )
+            quarterly.append(change)
+            window = quarterly[-4:]
+            complete = len(window) == 4
+            annual = float(sum(window)) if complete else np.nan
+            rows.append(
+                {
+                    "month": month,
+                    "strategy": strategy,
+                    "gross_turnover": change,
+                    "over_quarterly_cap": int(change > QUARTERLY_TURNOVER_CAP + CAP_TOLERANCE),
+                    "trailing_annual_turnover": annual,
+                    "over_annual_cap": int(complete and annual > ANNUAL_TURNOVER_CAP + CAP_TOLERANCE),
+                }
+            )
+            previous = current
+            previous_rebalance = month
+        if not rows:
+            raise RuntimeError(f"{strategy} has no quarterly rebalance to measure.")
+        frames.append(pd.DataFrame(rows))
+    return pd.concat(frames, ignore_index=True)
+
+
+def build_weight_changes(weights, turnover):
+    """Weight of each name before and after a quarterly rebalance.
+
+    These are the movements of a hypothetical book. They are not
+    transactions: no order was placed and no custody record exists.
+    The absolute changes of a rebalance must add up to the gross
+    turnover already published for that month. A difference stops the run.
+    """
+    names = weights.drop_duplicates("yahoo_symbol").set_index("yahoo_symbol")["name"].astype(str)
+    frames = []
+    for strategy in STRATEGY_IDS:
+        wide = (
+            weights.loc[weights["strategy"].eq(strategy)]
+            .pivot(index="month", columns="yahoo_symbol", values="weight")
+            .fillna(0.0)
+            .sort_index()
+        )
+        months = [str(month) for month in wide.index]
+        published = turnover.loc[turnover["strategy"].eq(strategy)].set_index("month")["gross_turnover"]
+        for position, month in enumerate(months):
+            if position == 0 or month not in published.index:
+                continue
+            before = wide.iloc[position - 1]
+            after = wide.iloc[position]
+            change = after - before
+            if abs(float(change.abs().sum()) - float(published.loc[month])) > CAP_TOLERANCE:
+                raise RuntimeError(f"{strategy} weight changes of {month} do not rebuild the gross turnover.")
+            moved = change.loc[change.abs() > POSITION_WEIGHT_FLOOR]
+            frames.append(
+                pd.DataFrame(
+                    {
+                        "month": month,
+                        "strategy": strategy,
+                        "yahoo_symbol": moved.index.astype(str),
+                        "name": [names[symbol] for symbol in moved.index],
+                        "weight_before": before.loc[moved.index].to_numpy(dtype=float),
+                        "weight_after": after.loc[moved.index].to_numpy(dtype=float),
+                        "weight_change": moved.to_numpy(dtype=float),
+                    }
+                )
+            )
+    if not frames:
+        return pd.DataFrame(columns=list(WEIGHT_CHANGE_COLUMNS))
+    return pd.concat(frames, ignore_index=True)
+
+
+def build_concentration(history, metrics):
+    """The report month of the history, checked against the phase 5 metrics."""
     rows = []
     indexed = metrics.set_index("strategy")
     for strategy in STRATEGY_IDS:
-        group = classified.loc[classified["strategy"].eq(strategy)]
-        values = group["weight"].to_numpy(dtype=float)
-        hhi = float(np.square(values).sum())
-        names = int(values.size)
-        maximum = float(values.max())
-        top_weight = float(np.sort(values)[::-1][:TOP_POSITIONS].sum())
-        effective = 1.0 / hhi
         published = indexed.loc[strategy]
-        if int(published["names"]) != names:
+        month = str(published["window_end"])
+        matched = history.loc[
+            history["strategy"].eq(strategy) & history["month"].astype(str).eq(month)
+        ]
+        if len(matched) != 1:
+            raise RuntimeError(f"{strategy} has no concentration row for {month}.")
+        facts = matched.iloc[0]
+        if int(published["names"]) != int(facts["names"]):
             raise RuntimeError(f"{strategy} name count does not match the weight file.")
-        if abs(float(published["maximum_weight"]) - maximum) > METRIC_TOLERANCE:
+        if abs(float(published["maximum_weight"]) - float(facts["maximum_weight"])) > METRIC_TOLERANCE:
             raise RuntimeError(f"{strategy} maximum weight does not match phase 5.")
-        if abs(float(published["effective_holdings"]) - effective) > METRIC_TOLERANCE:
+        if abs(float(published["effective_holdings"]) - float(facts["effective_holdings"])) > METRIC_TOLERANCE:
             raise RuntimeError(f"{strategy} effective holdings do not match phase 5.")
         rows.append(
             {
                 "strategy": strategy,
                 "window_start": published["window_start"],
                 "window_end": published["window_end"],
-                "names": names,
-                "invested_names": int(np.count_nonzero(values > POSITION_WEIGHT_FLOOR)),
-                "maximum_weight": maximum,
-                "top_10_weight": top_weight,
-                "hhi": hhi,
-                "effective_holdings": effective,
-                "concentration_multiple": hhi * names,
+                "names": int(facts["names"]),
+                "invested_names": int(facts["invested_names"]),
+                "maximum_weight": float(facts["maximum_weight"]),
+                "top_10_weight": float(facts["top_10_weight"]),
+                "hhi": float(facts["hhi"]),
+                "effective_holdings": float(facts["effective_holdings"]),
+                "concentration_multiple": float(facts["concentration_multiple"]),
             }
         )
     return pd.DataFrame(rows)
@@ -466,28 +741,40 @@ def shared_asset_returns():
 
 
 def build_time_series(classified, weight_history):
-    """Path of the monthly mandate weights, and each sector's additive contribution."""
+    """Path of the monthly mandate weights, and the additive contribution of each sector and name.
+
+    The contribution of a name in a month is its weight times its CHF return.
+    The names of a month add up to the published portfolio return, and the
+    names of a sector add up to the sector line. The cumulative column is the
+    running sum of the monthly contributions. It is not compounded.
+    """
     asset_returns = shared_asset_returns()
     published = pd.read_csv(MONTHLY_RETURNS_FILE, dtype={"strategy": str, "month": str})
     sector_of = (
         classified.drop_duplicates("yahoo_symbol").set_index("yahoo_symbol")["sector"].astype(str)
     )
+    name_of = (
+        weight_history.drop_duplicates("yahoo_symbol").set_index("yahoo_symbol")["name"].astype(str)
+    )
     path_frames = []
     contribution_frames = []
+    holding_frames = []
     for strategy in STRATEGY_IDS:
-        published_symbols = set(
-            classified.loc[classified["strategy"].eq(strategy), "yahoo_symbol"].astype(str)
+        weight_symbols = set(
+            weight_history.loc[weight_history["strategy"].eq(strategy), "yahoo_symbol"].astype(str)
         )
-        if published_symbols != set(asset_returns.columns):
-            raise RuntimeError(f"{strategy} weights do not match the shared return panel.")
+        # The return panel is every complete CHF history. The book is the Eligible part of it.
+        columns = [column for column in asset_returns.columns if column in weight_symbols]
+        if len(columns) != len(weight_symbols):
+            raise RuntimeError(f"{strategy} has a weight with no CHF return.")
         panel = (
             weight_history.loc[weight_history["strategy"].eq(strategy)]
             .pivot(index="month", columns="yahoo_symbol", values="weight")
-            .reindex(index=asset_returns.index, columns=asset_returns.columns)
+            .reindex(index=asset_returns.index, columns=columns)
         )
         if panel.isna().any().any():
             raise RuntimeError(f"{strategy} is missing a weight on a scored month.")
-        contributed = asset_returns.mul(panel)
+        contributed = asset_returns.loc[:, columns].mul(panel)
         contributed.index = contributed.index.astype(str)
         total = contributed.sum(axis=1)
         official = (
@@ -520,6 +807,19 @@ def build_time_series(classified, weight_history):
         melted["sector"] = melted["yahoo_symbol"].map(sector_of)
         if melted["sector"].isna().any():
             raise RuntimeError("A name in the return panel has no sector.")
+        by_name = melted.copy()
+        by_name["weight"] = panel.set_axis(contributed.index).stack().to_numpy(dtype=float)
+        by_name["asset_return"] = (
+            asset_returns.loc[:, columns].set_axis(contributed.index).stack().to_numpy(dtype=float)
+        )
+        by_name["name"] = by_name["yahoo_symbol"].map(name_of)
+        by_name = by_name.sort_values(["yahoo_symbol", "month"], kind="mergesort")
+        by_name["cumulative_contribution"] = by_name.groupby("yahoo_symbol")["month_contribution"].cumsum()
+        by_name.insert(1, "strategy", strategy)
+        rebuilt = by_name.groupby("month")["month_contribution"].sum().reindex(total.index)
+        if not np.allclose(rebuilt.to_numpy(), official.to_numpy(), atol=CONTRIBUTION_TOLERANCE, rtol=0):
+            raise RuntimeError(f"{strategy} name contributions do not rebuild the monthly return.")
+        holding_frames.append(by_name.sort_values(["month", "yahoo_symbol"], kind="mergesort"))
         grouped = melted.groupby(["month", "sector"], as_index=False)["month_contribution"].sum()
         kept = grouped.groupby("sector")["month_contribution"].transform(
             lambda values: values.abs().max() > POSITION_WEIGHT_FLOOR
@@ -528,39 +828,95 @@ def build_time_series(classified, weight_history):
         grouped["cumulative_contribution"] = grouped.groupby("sector")["month_contribution"].cumsum()
         grouped.insert(1, "strategy", strategy)
         contribution_frames.append(grouped)
+    from src.performance.build_performance import BENCHMARK_RETURNS_FILE
+
+    published_fund = pd.read_csv(BENCHMARK_RETURNS_FILE).sort_values("month", kind="mergesort")
+    book_months = path_frames[0]["month"].astype(str).tolist()
+    if published_fund["month"].astype(str).tolist() != book_months:
+        raise RuntimeError("The fund path does not share the book months.")
+    fund_return = published_fund["benchmark_return_chf"].astype(float)
+    fund_wealth = (1 + fund_return).cumprod()
+    path_frames.append(
+        pd.DataFrame(
+            {
+                "month": book_months,
+                "strategy": "benchmark",
+                "portfolio_return": fund_return.to_numpy(),
+                "cumulative_wealth": fund_wealth.to_numpy(),
+                "drawdown": (fund_wealth / fund_wealth.cummax() - 1).to_numpy(),
+            }
+        )
+    )
     return (
         pd.concat(path_frames, ignore_index=True),
         pd.concat(contribution_frames, ignore_index=True),
+        pd.concat(holding_frames, ignore_index=True),
     )
 
 
 def build_monitoring():
-    """Publish the allocation, exposure and concentration of the current weights."""
+    """Publish the report-month book, and the concentration and caps of every month."""
     logger.info("Portfolio monitoring started")
     weights, metrics = load_published_portfolios()
     report_month = str(metrics["window_end"].iloc[0])
-    current = weights.loc[weights["month"].eq(report_month)].copy()
-    if current.empty:
+    if weights.loc[weights["month"].eq(report_month)].empty:
         raise RuntimeError("The weight file has no row for the report month.")
     classification = load_holding_classification()
-    classified = classify_holdings(current, classification)
+    classified_all = classify_holdings(weights, classification)
+    classified = classified_all.loc[classified_all["month"].eq(report_month)].copy()
     sectors = group_allocation(classified, "sector", "sector")
     zones = group_allocation(classified, "zone", "zone")
     exposure = build_exposure(classified)
-    concentration = build_concentration(classified, metrics)
+    history = build_concentration_history(classified_all)
+    limits = build_limit_watch(classified_all)
+    turnover = build_turnover(weights)
+    concentration = build_concentration(history, metrics)
     top10 = build_top10(classified)
     report = build_monthly_report(concentration, sectors, zones, exposure)
-    path, contributions = build_time_series(classified, weights)
+    for strategy in STRATEGY_IDS:
+        watched = limits.loc[
+            limits["strategy"].eq(strategy) & limits["month"].eq(report_month)
+        ].iloc[0]
+        published = report.loc[report["strategy"].eq(strategy)].iloc[0]
+        pairs = (
+            ("largest_sector", "largest_sector_weight"),
+            ("largest_zone", "largest_zone_weight"),
+            ("largest_currency", "largest_currency_weight"),
+        )
+        for label, amount in pairs:
+            if str(watched[label]) != str(published[label]):
+                raise RuntimeError(f"{strategy} {label} disagrees with the monthly report.")
+            if abs(float(watched[amount]) - float(published[amount])) > CAP_TOLERANCE:
+                raise RuntimeError(f"{strategy} {amount} disagrees with the monthly report.")
+    path, contributions, holding_contributions = build_time_series(classified, weights)
+    by_sector = holding_contributions.groupby(["strategy", "month", "sector"])["month_contribution"].sum()
+    published_sector = contributions.set_index(["strategy", "month", "sector"])["month_contribution"]
+    if (by_sector.reindex(published_sector.index) - published_sector).abs().max() > CONTRIBUTION_TOLERANCE:
+        raise RuntimeError("Name contributions do not rebuild the sector contributions.")
+    weight_changes = build_weight_changes(weights, turnover)
     outputs = {
         "holdings": (classified, HOLDINGS_FILE, HOLDING_COLUMNS),
         "sectors": (sectors, SECTOR_FILE, SECTOR_COLUMNS),
         "zones": (zones, ZONE_FILE, ZONE_COLUMNS),
         "exposure": (exposure, EXPOSURE_FILE, EXPOSURE_COLUMNS),
         "concentration": (concentration, CONCENTRATION_FILE, CONCENTRATION_COLUMNS),
+        "concentration_history": (
+            history,
+            CONCENTRATION_HISTORY_FILE,
+            CONCENTRATION_HISTORY_COLUMNS,
+        ),
+        "limits": (limits, LIMIT_FILE, LIMIT_COLUMNS),
+        "turnover": (turnover, TURNOVER_FILE, TURNOVER_COLUMNS),
         "top10": (top10, TOP10_FILE, TOP10_COLUMNS),
         "report": (report, REPORT_FILE, REPORT_COLUMNS),
         "path": (path, PATH_FILE, PATH_COLUMNS),
         "contributions": (contributions, CONTRIBUTION_FILE, CONTRIBUTION_COLUMNS),
+        "holding_contributions": (
+            holding_contributions,
+            HOLDING_CONTRIBUTION_FILE,
+            HOLDING_CONTRIBUTION_COLUMNS,
+        ),
+        "weight_changes": (weight_changes, WEIGHT_CHANGES_FILE, WEIGHT_CHANGE_COLUMNS),
     }
     written = {}
     for name, (dataframe, path, columns) in outputs.items():

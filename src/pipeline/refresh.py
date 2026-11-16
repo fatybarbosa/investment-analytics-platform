@@ -14,7 +14,14 @@ Order
 5. Rebuild the three portfolios on the latest SARON window.
 6. Describe the allocation, exposure and concentration of those weights.
 7. Measure performance from the published monthly returns.
-8. Rebuild the quality control center from the loaded tables.
+8. Measure historical VaR, expected shortfall and the shared correlation.
+9. Apply the four written shocks to the published monthly returns.
+10. Rebuild the quality control center from the loaded tables.
+11. Rebuild the Excel annex and stop if a reconciliation stays open.
+    The Power BI column receives only values of power_bi_export.csv.
+12. Write the automated comments, the executive report and the deck,
+    and stop if one of their numbers is not in a pipeline file.
+13. Rewrite the data dictionary from the files and run the SQL files.
 """
 
 import argparse
@@ -36,6 +43,8 @@ from src.governance.source_registry import (
     get_active_datasets,
 )
 from src.performance.build_performance import build_performance
+from src.risk.build_risk import build_risk
+from src.stress_testing.build_stress import build_stress
 from src.portfolio_construction.build_portfolios import build_portfolios
 from src.portfolio_monitoring.build_monitoring import build_monitoring
 from src.preparation.odd_assessment import build_odd_assessment
@@ -44,6 +53,8 @@ from src.preparation.quote_currency import complete_quote_currencies
 from src.preparation.securities_candidates import build_security_candidates
 from src.preparation.securities_master import build_security_master
 from src.quality.data_control_center import build_data_control_center
+from src.reporting.build_executive import build_executive
+from src.reporting.build_workbook import build_workbook
 from src.utils.logger import logger
 
 
@@ -246,12 +257,33 @@ def refresh(force=False):
     logger.info("Monitoring files: %s", len(monitoring))
     performance = build_performance()
     logger.info("Performance file: %s", performance["metrics"])
+    risk = build_risk()
+    logger.info("Risk file: %s", risk["metrics"])
+    stress = build_stress()
+    logger.info("Stress file: %s", stress["results"])
     report = build_data_control_center()
     logger.info("Quality report: %s", report)
+    annex = build_workbook()
+    logger.info("Excel annex: %s", annex["workbook"])
+    executive = build_executive()
+    from src.reporting.data_dictionary import write_dictionary
+
+    dictionary = write_dictionary()
+    logger.info("Data dictionary: %s", dictionary["dictionary"])
+    logger.info(
+        "Executive deliverables: %s (%s pages), %s (%s slides), %s numbers checked",
+        executive["report"],
+        executive["pages"],
+        executive["deck"],
+        executive["slides"],
+        executive["numbers_checked"],
+    )
     return {
         "acquired": published,
         "failures": failed,
         "report": report,
+        "annex": str(annex["workbook"]),
+        "executive": executive,
     }
 
 
@@ -267,6 +299,13 @@ def main():
     args = parser.parse_args()
     result = refresh(force=args.force)
     print(result["report"])
+    executive = result["executive"]
+    print(executive["report"], f"({executive['pages']} pages)")
+    print(executive["deck"], f"({executive['slides']} slides)")
+    for client_file, client_pages in executive["clients"]:
+        print(client_file, f"({client_pages} pages)")
+    print(executive["cases"])
+    print(executive["comments"], f"({executive['numbers_checked']} numbers checked, {executive['alerts']} alerts)")
     if result["failures"]:
         for dataset_id, message in sorted(result["failures"].items()):
             print(f"FAILED {dataset_id}: {message}")

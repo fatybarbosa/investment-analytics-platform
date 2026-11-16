@@ -1,0 +1,35 @@
+table Strategie
+	lineageTag: 2863f908-22d8-51a2-80a8-9190a405839f
+
+	column strategy
+		dataType: string
+		isKey
+		lineageTag: f31b2c89-8c7f-57d6-bea9-582f06ddc74f
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column livre
+		dataType: string
+		lineageTag: 411d533e-c9d9-517f-90a5-7e0aaf30aa98
+		summarizeBy: none
+		sourceColumn: livre
+		sortByColumn: ordre
+
+	column ordre
+		dataType: int64
+		lineageTag: 31bc54bd-d97a-54a9-945e-375ce58e9db2
+		summarizeBy: none
+		sourceColumn: ordre
+
+	partition Strategie = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/dashboards/powerbi/referentiel/strategie.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"strategy", type text}, {"livre", type text}, {"ordre", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

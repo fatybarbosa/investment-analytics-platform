@@ -1,0 +1,44 @@
+table Queue
+	lineageTag: 38271c42-cbff-59d7-a0b5-15f53ced46f2
+
+	measure 'Rendement de queue' = MAX ( Queue[portfolio_return] )
+		formatString: 0.0%
+		lineageTag: ca14c2a7-8446-5bb7-abd7-f0b4480ff618
+
+	column strategy
+		dataType: string
+		lineageTag: c1a2093e-1944-556d-a0cb-382df7b6ec42
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column rank
+		dataType: int64
+		lineageTag: 1b0884d3-583c-5848-8582-c2708ba62b4a
+		summarizeBy: none
+		sourceColumn: rank
+
+	column month
+		dataType: string
+		lineageTag: f9778519-5b15-5247-bcaf-9063d17cca74
+		summarizeBy: none
+		sourceColumn: month
+
+	column portfolio_return
+		dataType: double
+		lineageTag: 7a0247ea-929b-584a-86d2-fd0c77cd996c
+		summarizeBy: none
+		sourceColumn: portfolio_return
+
+	partition Queue = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/07_risk/var_tail.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"strategy", "rank", "month", "portfolio_return"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"strategy", type text}, {"rank", Int64.Type}, {"month", type text}, {"portfolio_return", type number}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

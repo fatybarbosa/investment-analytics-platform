@@ -1,0 +1,80 @@
+table Contribution
+	lineageTag: 33e6c0a4-8d52-5f93-b166-4c0e2a7d9f31
+
+	measure 'Contribution cumulée' =
+			IF (
+			    HASONEVALUE ( Contribution[strategy] ),
+			    MAX ( Contribution[cumulative_contribution] ),
+			    BLANK ()
+			)
+		formatString: 0.0%
+		lineageTag: aa043b82-6c37-5e14-d925-8a3f1c6e2b85
+
+	column month
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 5d9a1e36-0f48-5c62-b130-e7c4d2a8f693
+		summarizeBy: none
+		sourceColumn: month
+
+		variation Variation
+			isDefault
+			relationship: 86df085a-be7f-48ea-b2ec-c0daa91cac14
+			defaultHierarchy: LocalDateTable_9e5b030d-0f46-47a2-b24c-34884f4f21c1.'Hiérarchie de dates'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column strategy
+		dataType: string
+		lineageTag: 81c2f4a7-3a69-5d75-c041-9b5a3e7f1c96
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column sector
+		dataType: string
+		lineageTag: cb3e6b59-4d70-5e86-d152-0c6b4f8a2d07
+		summarizeBy: none
+		sourceColumn: sector
+
+	column cumulative_contribution
+		dataType: double
+		lineageTag: dc4f7c60-5e81-5f97-e263-1d7c5a9b3e18
+		summarizeBy: sum
+		sourceColumn: cumulative_contribution
+
+		annotation SummarizationSetBy = Automatic
+
+	column livre
+		dataType: string
+		lineageTag: e7a1c4d2-8b36-5f19-a470-2d9c6e1b4f83
+		summarizeBy: none
+		sourceColumn: livre
+		sortByColumn: ordre
+
+	column ordre
+		dataType: string
+		lineageTag: f8b2d5e3-9c47-5a20-b581-3e0d7f2c5a94
+		summarizeBy: none
+		sourceColumn: ordre
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Contribution = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/05_monitoring/sector_contribution.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"month", "strategy", "sector", "cumulative_contribution"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"month", type text}, {"strategy", type text}, {"sector", type text}, {"cumulative_contribution", type number}}),
+				    Dated = Table.TransformColumns(Typed, {{"month", each Date.FromText(_ & "-01"), type date}}),
+				    Livres = Csv.Document(File.Contents(ProjectRoot & "/dashboards/powerbi/referentiel/strategie.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    LivresPromus = Table.PromoteHeaders(Livres, [PromoteAllScalars = true]),
+				    LivresChoisis = Table.SelectColumns(LivresPromus, {"strategy", "livre", "ordre"}),
+				    Joint = Table.NestedJoin(Dated, {"strategy"}, LivresChoisis, {"strategy"}, "ref", JoinKind.Inner),
+				    Nomme = Table.ExpandTableColumn(Joint, "ref", {"livre", "ordre"}, {"livre", "ordre"})
+				in
+				    Nomme
+
+	annotation PBI_ResultType = Table
+

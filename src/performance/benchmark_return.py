@@ -304,6 +304,13 @@ def _chf_per_unit(currency):
     return series.sort_index()
 
 
+def latest_published_month():
+    """Last month whose total NAV return the fund file prints."""
+    workbook = read_text_file(_workbook_path())
+    published = _published_returns(_sheet_rows(workbook, PERFORMANCE_SHEET))
+    return max(published)
+
+
 def load_benchmark_returns(months):
     """CHF total return of the fund for each requested month."""
     workbook = read_text_file(_workbook_path())

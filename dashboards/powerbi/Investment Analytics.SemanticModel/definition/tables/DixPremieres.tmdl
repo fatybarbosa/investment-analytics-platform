@@ -1,0 +1,49 @@
+table DixPremieres
+	lineageTag: 44f7d1b5-9e63-5a04-c277-5d1f3b8e0a42
+
+	measure 'Poids du titre' = MAX ( DixPremieres[weight] )
+		formatString: 0.0%
+		lineageTag: bb154c93-7d48-5f25-e036-9b4a2d7c1f96
+
+	column strategy
+		dataType: string
+		lineageTag: 92d3a5c8-4b70-5e86-f147-0c5b3e8d2a07
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column name
+		dataType: string
+		lineageTag: a3e4b6d9-5c81-5f97-a258-1d6c4f9e3b18
+		summarizeBy: none
+		sourceColumn: name
+
+	column weight
+		dataType: double
+		lineageTag: b4f5c7e0-6d92-5a08-b369-2e7d5a0f4c29
+		summarizeBy: none
+		sourceColumn: weight
+
+	column rang
+		dataType: string
+		lineageTag: c5a6d8f1-7e03-5b19-c470-3f8e6b1a5d30
+		summarizeBy: none
+		sourceColumn: rang
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DixPremieres = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/05_monitoring/allocation_by_holding.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"strategy", "ticker", "name", "weight"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"strategy", type text}, {"ticker", type text}, {"name", type text}, {"weight", type number}}),
+				    Ranked = Table.AddColumn(Typed, "rang", each Table.RowCount(Table.SelectRows(Typed, (row) => row[strategy] = [strategy] and (row[weight] > [weight] or (row[weight] = [weight] and row[ticker] <= [ticker]))))),
+				    Top = Table.SelectRows(Ranked, each [rang] <= 10),
+				    Kept = Table.SelectColumns(Top, {"strategy", "name", "weight", "rang"})
+				in
+				    Kept
+
+	annotation PBI_ResultType = Table
+

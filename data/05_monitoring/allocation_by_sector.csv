@@ -1,25 +1,23 @@
 strategy,sector,weight,names
-equal_weight,Health Care,0.2,25
-equal_weight,Real Estate,0.19999999999999948,15
-equal_weight,Consumer Staples,0.1999999999999992,12
-equal_weight,Industrials,0.1636363636363629,9
-equal_weight,Utilities,0.1090909090909086,6
-equal_weight,Information Technology,0.0727272727272724,4
-equal_weight,Consumer Discretionary,0.0363636363636362,2
-equal_weight,Materials,0.0181818181818181,1
-minimum_volatility,Real Estate,0.1999999999999997,7
-minimum_volatility,Health Care,0.1999635527068766,10
-minimum_volatility,Consumer Staples,0.19953920768103,9
-minimum_volatility,Industrials,0.170647238678171,5
-minimum_volatility,Utilities,0.1043093391543389,3
-minimum_volatility,Consumer Discretionary,0.0785536697303342,2
-minimum_volatility,Information Technology,0.0383517604705549,1
-minimum_volatility,Materials,0.0086352315786929,1
-maximum_sharpe,Health Care,0.1933592665636614,8
-maximum_sharpe,Consumer Staples,0.1849596844408082,6
-maximum_sharpe,Industrials,0.1812067319168668,6
-maximum_sharpe,Real Estate,0.170814201174739,7
-maximum_sharpe,Information Technology,0.08487500657137731,2
-maximum_sharpe,Utilities,0.0776678191471012,3
-maximum_sharpe,Consumer Discretionary,0.057180024702919705,2
-maximum_sharpe,Materials,0.049937265482525,1
+equal_weight,Health Care,0.344827586206896,10
+equal_weight,Real Estate,0.344827586206896,10
+equal_weight,Industrials,0.1034482758620688,3
+equal_weight,Consumer Staples,0.0689655172413792,2
+equal_weight,Consumer Discretionary,0.0344827586206896,1
+equal_weight,Information Technology,0.0344827586206896,1
+equal_weight,Materials,0.0344827586206896,1
+equal_weight,Utilities,0.0344827586206896,1
+minimum_volatility,Health Care,0.397121844873531,9
+minimum_volatility,Real Estate,0.308460699847166,9
+minimum_volatility,Industrials,0.10997487452469981,3
+minimum_volatility,Consumer Discretionary,0.05,1
+minimum_volatility,Consumer Staples,0.05,1
+minimum_volatility,Information Technology,0.0477265075434457,1
+minimum_volatility,Utilities,0.0317656286898581,1
+minimum_volatility,Materials,0.0049504445212986,1
+maximum_sharpe,Health Care,0.3978846228822473,9
+maximum_sharpe,Real Estate,0.31612413417019497,10
+maximum_sharpe,Industrials,0.1432699357051371,3
+maximum_sharpe,Consumer Discretionary,0.05,1
+maximum_sharpe,Consumer Staples,0.0499999999999996,1
+maximum_sharpe,Materials,0.0427213072424191,1

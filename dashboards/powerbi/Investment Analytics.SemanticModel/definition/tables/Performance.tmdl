@@ -1,0 +1,119 @@
+table Performance
+	lineageTag: 65ef3c0a-4e9f-55d9-a818-0d2370c0b427
+
+	measure 'Rendement annualisé' = SELECTEDVALUE ( Performance[annualized_return] )
+		formatString: 0.0%
+		lineageTag: 702cecb5-9b67-5b92-b086-f7d99d5a8960
+
+	measure Sharpe = SELECTEDVALUE ( Performance[sharpe_ratio] )
+		formatString: 0.00
+		lineageTag: a8a5ea6e-c728-5265-a481-80b2a3176219
+
+	measure Sortino = SELECTEDVALUE ( Performance[sortino_ratio] )
+		formatString: 0.00
+		lineageTag: 421792a8-11b1-52cd-b10e-db79fc8e7870
+
+	measure 'Écart de suivi' = SELECTEDVALUE ( Performance[tracking_error] )
+		formatString: 0.0%
+		lineageTag: 26831efa-e443-5f92-90d8-c0211c5bad54
+
+	measure 'Ratio d''information' = SELECTEDVALUE ( Performance[information_ratio] )
+		formatString: 0.00
+		lineageTag: b1e7f461-16db-5f14-869a-732186e865a9
+
+	measure 'Mois sous le SARON' = SELECTEDVALUE ( Performance[months_below_risk_free] )
+		formatString: 0
+		lineageTag: 4649e366-ea42-59b8-a668-5c83ff41074d
+
+	column strategy
+		dataType: string
+		lineageTag: 0accbe85-a377-575a-b44f-2687f85b6a8f
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column months
+		dataType: int64
+		lineageTag: ac3084e3-5de6-5bd8-93e8-7d5293c14470
+		summarizeBy: none
+		sourceColumn: months
+
+	column window_start
+		dataType: string
+		lineageTag: b1a00251-6a69-5cb0-aade-3cb207e85bfd
+		summarizeBy: none
+		sourceColumn: window_start
+
+	column window_end
+		dataType: string
+		lineageTag: a10837ca-258c-5b77-b8f7-c18c2356d005
+		summarizeBy: none
+		sourceColumn: window_end
+
+	column annualized_return
+		dataType: double
+		lineageTag: 003e4884-3f2a-5656-b986-b48139508643
+		summarizeBy: none
+		sourceColumn: annualized_return
+
+	column annualized_volatility
+		dataType: double
+		lineageTag: 76dc9d4c-65a3-522e-b110-c724045eedbe
+		summarizeBy: none
+		sourceColumn: annualized_volatility
+
+	column sharpe_ratio
+		dataType: double
+		lineageTag: 561de652-b889-5856-ac0e-a39b2fa54717
+		summarizeBy: none
+		sourceColumn: sharpe_ratio
+
+	column sortino_ratio
+		dataType: double
+		lineageTag: 3a58a70c-5b30-5c79-9565-3714ee6f7775
+		summarizeBy: none
+		sourceColumn: sortino_ratio
+
+	column maximum_drawdown
+		dataType: double
+		lineageTag: b75acf72-d639-5ff5-9809-892e4c3f9da0
+		summarizeBy: none
+		sourceColumn: maximum_drawdown
+
+	column tracking_error
+		dataType: double
+		lineageTag: f3198b1d-3b25-5269-a769-511f10bf2276
+		summarizeBy: none
+		sourceColumn: tracking_error
+
+	column information_ratio
+		dataType: double
+		lineageTag: 4fb2c1db-011e-5a3d-be10-dc2ff92eb0ed
+		summarizeBy: none
+		sourceColumn: information_ratio
+
+	column months_below_risk_free
+		dataType: int64
+		lineageTag: 20fed13a-08f4-587f-b52a-a6a2e90f23b4
+		summarizeBy: none
+		sourceColumn: months_below_risk_free
+
+	column reference
+		dataType: string
+		lineageTag: e5e91670-cceb-539f-8910-d03405e0b34e
+		summarizeBy: none
+		sourceColumn: reference
+
+	partition Performance = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/06_performance/performance_metrics.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"strategy", "months", "window_start", "window_end", "annualized_return", "annualized_volatility", "sharpe_ratio", "sortino_ratio", "maximum_drawdown", "tracking_error", "information_ratio", "months_below_risk_free", "reference"}),
+				    Replaced = Table.ReplaceValue(Chosen, "", null, Replacer.ReplaceValue, {"information_ratio"}),
+				    Typed = Table.TransformColumnTypes(Replaced, {{"strategy", type text}, {"months", Int64.Type}, {"window_start", type text}, {"window_end", type text}, {"annualized_return", type number}, {"annualized_volatility", type number}, {"sharpe_ratio", type number}, {"sortino_ratio", type number}, {"maximum_drawdown", type number}, {"tracking_error", type number}, {"information_ratio", type number}, {"months_below_risk_free", Int64.Type}, {"reference", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

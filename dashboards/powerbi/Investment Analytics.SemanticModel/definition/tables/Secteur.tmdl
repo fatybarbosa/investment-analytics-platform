@@ -1,0 +1,44 @@
+table Secteur
+	lineageTag: 98e376a0-3300-5a66-a6da-17172251aa84
+
+	measure 'Poids secteur' = MAX ( Secteur[weight] )
+		formatString: 0.0%
+		lineageTag: f57f0501-9c2c-5c21-b4bc-12934970d026
+
+	column strategy
+		dataType: string
+		lineageTag: e4f64e00-c3ab-5cbf-bcff-884d9014165a
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column sector
+		dataType: string
+		lineageTag: de0bee42-4df6-5bf1-8700-56841064e18f
+		summarizeBy: none
+		sourceColumn: sector
+
+	column weight
+		dataType: double
+		lineageTag: 1ec2d15f-56a8-5771-8339-bcd341324625
+		summarizeBy: none
+		sourceColumn: weight
+
+	column names
+		dataType: int64
+		lineageTag: 31a40f42-b93a-5226-b2d6-a9cc5c6c87c3
+		summarizeBy: none
+		sourceColumn: names
+
+	partition Secteur = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/05_monitoring/allocation_by_sector.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"strategy", "sector", "weight", "names"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"strategy", type text}, {"sector", type text}, {"weight", type number}, {"names", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

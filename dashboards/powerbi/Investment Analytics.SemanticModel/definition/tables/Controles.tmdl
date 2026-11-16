@@ -1,0 +1,57 @@
+table Controles
+	lineageTag: 4b873932-6e85-5c8f-a3c2-ed5b6030224e
+
+	measure 'Nombre de contrôles' = COUNTROWS ( Controles )
+		formatString: 0
+		lineageTag: 21239e76-320e-536e-8cb5-d00a7b0dc573
+
+	column dataset_id
+		dataType: string
+		lineageTag: b53487ce-b5d0-5dd1-a947-f10a4e0f70fa
+		summarizeBy: none
+		sourceColumn: dataset_id
+
+	column control_id
+		dataType: string
+		lineageTag: 7f794523-a1a1-5715-b7c1-d396c0f27640
+		summarizeBy: none
+		sourceColumn: control_id
+
+	column control_name
+		dataType: string
+		lineageTag: 3175ccf4-8cd3-5ebc-a079-e4662c9ba04f
+		summarizeBy: none
+		sourceColumn: control_name
+
+	column status
+		dataType: string
+		lineageTag: 121757a6-6589-5121-8d15-4609ddda48d2
+		summarizeBy: none
+		sourceColumn: status
+
+	column issues
+		dataType: int64
+		lineageTag: da272627-0345-53ca-a6c8-7cdaa7d91f10
+		summarizeBy: none
+		sourceColumn: issues
+
+	column records_checked
+		dataType: int64
+		lineageTag: 229f10f0-015e-5cd6-b661-c1393ce16c1d
+		summarizeBy: none
+		sourceColumn: records_checked
+
+	partition Controles = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(ProjectRoot & "/audit/data_control_center.xlsx"), null, true),
+				    Sheet = Source{[Item = "Quality Controls", Kind = "Sheet"]}[Data],
+				    Promoted = Table.PromoteHeaders(Sheet, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"dataset_id", "control_id", "control_name", "status", "issues", "records_checked"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"dataset_id", type text}, {"control_id", type text}, {"control_name", type text}, {"status", type text}, {"issues", Int64.Type}, {"records_checked", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

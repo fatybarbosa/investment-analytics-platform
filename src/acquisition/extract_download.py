@@ -124,11 +124,15 @@ DEFAULT_USER_AGENT = (
 
 HEADERS_PARAMETER = "headers"
 MAX_DOWNLOAD_SIZE_PARAMETER = "max_download_size_bytes"
+WORKSHEET_PARAMETER = "worksheet"
+SHEETS_PARAMETER = "sheets"
 
 SUPPORTED_DOWNLOAD_PARAMETERS = frozenset(
     {
         HEADERS_PARAMETER,
         MAX_DOWNLOAD_SIZE_PARAMETER,
+        WORKSHEET_PARAMETER,
+        SHEETS_PARAMETER,
     }
 )
 
@@ -452,6 +456,14 @@ def validate_download_parameters(
     max_download_size_bytes
         Optional Dataset-specific safety limit.
 
+    worksheet
+        Name of the SpreadsheetML sheet read after the file is saved.
+        It is not sent with the request.
+
+    sheets
+        Other SpreadsheetML sheets and the table name of each one.
+        They are not sent with the request.
+
     Authentication secrets should not be stored in the registry.
     """
 
@@ -542,6 +554,18 @@ def validate_download_parameters(
             ],
             MAX_DOWNLOAD_SIZE_PARAMETER,
         )
+
+    worksheet = parameters.get(WORKSHEET_PARAMETER)
+    if worksheet is not None and optional_text(worksheet) is None:
+        raise ValueError("Download worksheet must be a non-empty name.")
+
+    sheets = parameters.get(SHEETS_PARAMETER)
+    if sheets is not None:
+        if not isinstance(sheets, dict) or not sheets:
+            raise ValueError("Download sheets must be a non-empty object.")
+        for sheet_name, table_name in sheets.items():
+            if optional_text(sheet_name) is None or optional_text(table_name) is None:
+                raise ValueError("Each downloaded sheet needs a name and a table name.")
 
 
 def build_request_headers(

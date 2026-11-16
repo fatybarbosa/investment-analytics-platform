@@ -1,0 +1,38 @@
+table CorrelationMoyenne
+	lineageTag: 022ac906-1bf3-5716-a0c0-8919d5ba5750
+
+	measure 'Corrélation moyenne' = MAX ( CorrelationMoyenne[average_correlation] )
+		formatString: 0.0%
+		lineageTag: 6e3c0d28-6cae-5bc7-a235-8efb7dd2ea4b
+
+	column names
+		dataType: int64
+		lineageTag: 1399bd68-30a7-5205-bf62-9eecc4eb3854
+		summarizeBy: none
+		sourceColumn: names
+
+	column average_correlation
+		dataType: double
+		lineageTag: 0506be3f-c70a-57f3-a4d0-eaf625d5d0ea
+		summarizeBy: none
+		sourceColumn: average_correlation
+
+	column months
+		dataType: int64
+		lineageTag: a8fced02-4150-5655-b308-f5890a6bae13
+		summarizeBy: none
+		sourceColumn: months
+
+	partition CorrelationMoyenne = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/07_risk/universe_correlation.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"names", "average_correlation", "months"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"names", Int64.Type}, {"average_correlation", type number}, {"months", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

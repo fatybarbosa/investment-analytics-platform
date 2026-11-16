@@ -1,0 +1,69 @@
+table Chemin
+	lineageTag: db46d56c-0558-5e7e-8b93-dfbf8b92893d
+
+	measure 'Performance cumulée' = MAX ( Chemin[cumulative_wealth] )
+		formatString: 0.00
+		lineageTag: e9caa850-bd39-53f2-b059-82f25cf54d25
+
+	measure 'Drawdown du mois' = MAX ( Chemin[drawdown] )
+		formatString: 0.0%
+		lineageTag: 2d6baa08-837e-51c8-a304-7c30d0ac1b73
+
+	column month
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 32feee7a-8a5d-5aea-9643-032e907779b9
+		summarizeBy: none
+		sourceColumn: month
+
+		variation Variation
+			isDefault
+			relationship: b3f92253-f043-4576-a3df-bf9f5556b372
+			defaultHierarchy: LocalDateTable_c0ddda13-7a10-49ce-99c9-717a0bf86493.'Hiérarchie de dates'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column strategy
+		dataType: string
+		lineageTag: 975752fb-4dee-50df-a545-3e1d8f5a2e82
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column portfolio_return
+		dataType: double
+		lineageTag: 206e7bd0-6422-51b4-adea-49a75b1226d5
+		summarizeBy: sum
+		sourceColumn: portfolio_return
+
+		annotation SummarizationSetBy = Automatic
+
+	column cumulative_wealth
+		dataType: double
+		lineageTag: bf9dcf56-af04-532a-9c99-2a344b169ca6
+		summarizeBy: sum
+		sourceColumn: cumulative_wealth
+
+		annotation SummarizationSetBy = Automatic
+
+	column drawdown
+		dataType: double
+		lineageTag: c11af441-dd1b-534d-ae73-7ced720568c8
+		summarizeBy: sum
+		sourceColumn: drawdown
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Chemin = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/05_monitoring/portfolio_path.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"month", "strategy", "portfolio_return", "cumulative_wealth", "drawdown"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"month", type text}, {"strategy", type text}, {"portfolio_return", type number}, {"cumulative_wealth", type number}, {"drawdown", type number}}),
+				    Dated = Table.TransformColumns(Typed, {{"month", each Date.FromText(_ & "-01"), type date}})
+				in
+				    Dated
+
+	annotation PBI_ResultType = Table
+

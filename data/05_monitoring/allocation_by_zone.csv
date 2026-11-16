@@ -1,11 +1,13 @@
 strategy,zone,weight,names
-equal_weight,Asie-Pacifique,0.36430303030302913,26
-equal_weight,Europe,0.3329696969696959,24
-equal_weight,Amériques,0.2893939393939386,23
-equal_weight,Moyen-Orient et Afrique,0.0133333333333333,1
-minimum_volatility,Europe,0.3812708741562368,13
-minimum_volatility,Asie-Pacifique,0.357592877339905,14
-minimum_volatility,Amériques,0.2611362485038564,11
-maximum_sharpe,Europe,0.3771318228690972,13
-maximum_sharpe,Amériques,0.3445432935570205,11
-maximum_sharpe,Asie-Pacifique,0.2783248835738809,11
+equal_weight,Europe,0.4482758620689648,13
+equal_weight,Asie-Pacifique,0.344827586206896,10
+equal_weight,Amériques,0.172413793103448,5
+equal_weight,Moyen-Orient et Afrique,0.0344827586206896,1
+minimum_volatility,Asie-Pacifique,0.4646713322405187,10
+minimum_volatility,Europe,0.3204254276548834,10
+minimum_volatility,Amériques,0.172298366272535,5
+minimum_volatility,Moyen-Orient et Afrique,0.0426048738320621,1
+maximum_sharpe,Europe,0.498860291383106,13
+maximum_sharpe,Asie-Pacifique,0.238494430866596,6
+maximum_sharpe,Amériques,0.2126452777502961,5
+maximum_sharpe,Moyen-Orient et Afrique,0.05,1

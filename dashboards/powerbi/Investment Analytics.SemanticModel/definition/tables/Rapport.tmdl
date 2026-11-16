@@ -1,0 +1,165 @@
+table Rapport
+	lineageTag: b9494123-ab76-5e0f-84c9-41c2af5c9d3c
+
+	measure 'Mois du rapport' = MAX ( Rapport[report_month] )
+		lineageTag: af0294c1-003f-53fe-8b82-65fbb7a36957
+
+	measure 'Fin de fenêtre' = MAX ( Rapport[window_end] )
+		lineageTag: 042e4974-d93d-5b97-9035-21315d97c86f
+
+	measure 'Lignes investies' = SELECTEDVALUE ( Rapport[invested_names] )
+		formatString: 0
+		lineageTag: ae34aa84-aedd-5293-94d6-b8fdcd06a9f7
+
+	measure 'Lignes effectives' = SELECTEDVALUE ( Rapport[effective_holdings] )
+		formatString: 0.0
+		lineageTag: 079b3e03-5b68-57d0-b125-352875146a9b
+
+	measure 'Indice de Herfindahl' = SELECTEDVALUE ( Rapport[hhi] )
+		formatString: 0.000
+		lineageTag: c4e8a1d6-3b70-5f92-a045-7d1c6e9b2a83
+
+	measure 'Multiple de concentration' = SELECTEDVALUE ( Rapport[concentration_multiple] )
+		formatString: 0.00
+		lineageTag: e1b7d4a0-8c25-5e61-9f38-4a2d0c6b7e19
+
+	measure 'Poids maximum' = SELECTEDVALUE ( Rapport[maximum_weight] )
+		formatString: 0.0%
+		lineageTag: 9c2af15a-1aa4-5dbd-af32-97c3288d4ac0
+
+	measure 'Plus grand secteur' = SELECTEDVALUE ( Rapport[largest_sector] )
+		lineageTag: 7760b0b8-5486-5d47-8446-ef9567bce5db
+
+	measure 'Poids du secteur' = SELECTEDVALUE ( Rapport[largest_sector_weight] )
+		formatString: 0.0%
+		lineageTag: 9bc7e107-fc89-5b18-981b-69c0b7c37112
+
+	measure 'Plus grande zone' = SELECTEDVALUE ( Rapport[largest_zone] )
+		lineageTag: aa343804-bb05-5cd0-8a03-9c565e1799df
+
+	measure 'Poids de la zone' = SELECTEDVALUE ( Rapport[largest_zone_weight] )
+		formatString: 0.0%
+		lineageTag: 4ad72fa2-49d7-56ce-b0a4-1b23d240ac19
+
+	measure 'Plus grande devise' = SELECTEDVALUE ( Rapport[largest_currency] )
+		lineageTag: 963102ea-8911-5092-b76f-58723a34c5b3
+
+	measure 'Poids de la devise' = SELECTEDVALUE ( Rapport[largest_currency_weight] )
+		formatString: 0.0%
+		lineageTag: 0d9e5aa7-f327-517d-8b92-227276061fd9
+
+	column strategy
+		dataType: string
+		lineageTag: bf598626-42f8-5c20-ae4e-19f186bf82ed
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column report_month
+		dataType: string
+		lineageTag: 337d3c6b-7021-5ad2-bea6-51391be5fcfc
+		summarizeBy: none
+		sourceColumn: report_month
+
+	column window_start
+		dataType: string
+		lineageTag: 48115e45-ebba-5504-865e-0a869b6f0caf
+		summarizeBy: none
+		sourceColumn: window_start
+
+	column window_end
+		dataType: string
+		lineageTag: 13e2afb6-8b21-5d3a-ad29-6c7b1c2d8afd
+		summarizeBy: none
+		sourceColumn: window_end
+
+	column names
+		dataType: int64
+		lineageTag: fdd274fa-dec4-5b65-b639-452128d89123
+		summarizeBy: none
+		sourceColumn: names
+
+	column invested_names
+		dataType: int64
+		lineageTag: 1a112731-5e51-5b6a-b056-be3b8d680ee0
+		summarizeBy: none
+		sourceColumn: invested_names
+
+	column maximum_weight
+		dataType: double
+		lineageTag: 345ce0d5-e949-55fe-b7c9-4830e083a03f
+		summarizeBy: none
+		sourceColumn: maximum_weight
+
+	column top_10_weight
+		dataType: double
+		lineageTag: 5c8c9e89-17df-5399-ae09-b519bb942e3e
+		summarizeBy: none
+		sourceColumn: top_10_weight
+
+	column hhi
+		dataType: double
+		lineageTag: f05e1fca-3c59-502d-aea4-e67cbad3cd01
+		summarizeBy: none
+		sourceColumn: hhi
+
+	column effective_holdings
+		dataType: double
+		lineageTag: 15013227-9691-597b-8ffa-c2814e0be175
+		summarizeBy: none
+		sourceColumn: effective_holdings
+
+	column concentration_multiple
+		dataType: double
+		lineageTag: 72da6aaf-8e5c-541c-a796-9573cc5e1242
+		summarizeBy: none
+		sourceColumn: concentration_multiple
+
+	column largest_sector
+		dataType: string
+		lineageTag: ba003ac0-c665-5eaf-a929-2bbb1bc66add
+		summarizeBy: none
+		sourceColumn: largest_sector
+
+	column largest_sector_weight
+		dataType: double
+		lineageTag: bbd89d22-607f-5afd-8751-a54b99debdc6
+		summarizeBy: none
+		sourceColumn: largest_sector_weight
+
+	column largest_zone
+		dataType: string
+		lineageTag: d0722cad-6131-57ef-a685-38a699f7e4aa
+		summarizeBy: none
+		sourceColumn: largest_zone
+
+	column largest_zone_weight
+		dataType: double
+		lineageTag: c7c937bc-057a-5218-82b3-130dbbb44db3
+		summarizeBy: none
+		sourceColumn: largest_zone_weight
+
+	column largest_currency
+		dataType: string
+		lineageTag: 8e595c97-4765-5f74-a958-096d9796a4f2
+		summarizeBy: none
+		sourceColumn: largest_currency
+
+	column largest_currency_weight
+		dataType: double
+		lineageTag: bfbccf9c-8daf-52d5-a903-ef252117bf9a
+		summarizeBy: none
+		sourceColumn: largest_currency_weight
+
+	partition Rapport = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/05_monitoring/monthly_report.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"strategy", "report_month", "window_start", "window_end", "names", "invested_names", "maximum_weight", "top_10_weight", "hhi", "effective_holdings", "concentration_multiple", "largest_sector", "largest_sector_weight", "largest_zone", "largest_zone_weight", "largest_currency", "largest_currency_weight"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"strategy", type text}, {"report_month", type text}, {"window_start", type text}, {"window_end", type text}, {"names", Int64.Type}, {"invested_names", Int64.Type}, {"maximum_weight", type number}, {"top_10_weight", type number}, {"hhi", type number}, {"effective_holdings", type number}, {"concentration_multiple", type number}, {"largest_sector", type text}, {"largest_sector_weight", type number}, {"largest_zone", type text}, {"largest_zone_weight", type number}, {"largest_currency", type text}, {"largest_currency_weight", type number}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

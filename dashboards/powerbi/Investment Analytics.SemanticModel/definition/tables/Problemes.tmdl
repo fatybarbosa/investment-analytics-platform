@@ -1,0 +1,57 @@
+table Problemes
+	lineageTag: fdfd9da2-5084-595d-b1ba-66c4f595b9db
+
+	measure Anomalies = COUNTROWS ( Problemes )
+		formatString: 0
+		lineageTag: bb5eb6a5-25a6-53ee-a7cf-a90538d331e4
+
+	column dataset_id
+		dataType: string
+		lineageTag: 47f526f5-e81c-50c5-85a2-a534578b97c4
+		summarizeBy: none
+		sourceColumn: dataset_id
+
+	column control_name
+		dataType: string
+		lineageTag: cd612e10-0200-5ea2-8c7c-c2b906e50ffe
+		summarizeBy: none
+		sourceColumn: control_name
+
+	column severity
+		dataType: string
+		lineageTag: ca1e08b5-d1a9-5f31-82d0-cad08555bd02
+		summarizeBy: none
+		sourceColumn: severity
+
+	column issue_count
+		dataType: int64
+		lineageTag: d2886790-16fd-5aaf-a5ac-274abec2af6c
+		summarizeBy: none
+		sourceColumn: issue_count
+
+	column issue_rate
+		dataType: double
+		lineageTag: 6f397172-29ab-5d33-9151-9905978671fb
+		summarizeBy: none
+		sourceColumn: issue_rate
+
+	column notes
+		dataType: string
+		lineageTag: aa8f0340-0ddf-5031-b6fd-7aa74e3ff55e
+		summarizeBy: none
+		sourceColumn: notes
+
+	partition Problemes = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(ProjectRoot & "/audit/data_control_center.xlsx"), null, true),
+				    Sheet = Source{[Item = "Quality Issues", Kind = "Sheet"]}[Data],
+				    Promoted = Table.PromoteHeaders(Sheet, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"dataset_id", "control_name", "severity", "issue_count", "issue_rate", "notes"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"dataset_id", type text}, {"control_name", type text}, {"severity", type text}, {"issue_count", Int64.Type}, {"issue_rate", type number}, {"notes", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

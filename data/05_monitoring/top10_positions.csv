@@ -1,31 +1,31 @@
 strategy,rank,yahoo_symbol,ticker,name,weight,sector,zone,exposure
-equal_weight,1,002129.SZ,002129,TCL ZHONGHUAN RENEWABLE ENERGY TEC,0.0181818181818181,Information Technology,Asie-Pacifique,CNY
-equal_weight,2,002202.SZ,002202,GOLDWIND SCIENCE&TECHNOLOGY LTD A,0.0181818181818181,Industrials,Asie-Pacifique,CNY
-equal_weight,3,0066.HK,66,MTR CORPORATION,0.0181818181818181,Industrials,Asie-Pacifique,HKD
-equal_weight,4,010120.KS,010120,LS ELECTRIC LTD,0.0181818181818181,Industrials,Asie-Pacifique,KRW
-equal_weight,5,0916.HK,916,CHINA LONGYUAN POWER GROUP H,0.0181818181818181,Utilities,Asie-Pacifique,HKD
-equal_weight,6,3898.HK,3898,ZHUZHOU CRRC TIMES ELECTRIC LTD H,0.0181818181818181,Industrials,Asie-Pacifique,HKD
-equal_weight,7,9020.T,9020,EAST JAPAN RAILWAY,0.0181818181818181,Industrials,Asie-Pacifique,JPY
-equal_weight,8,9022.T,9022,CENTRAL JAPAN RAILWAY,0.0181818181818181,Industrials,Asie-Pacifique,JPY
-equal_weight,9,ANA.MC,ANA,ACCIONA,0.0181818181818181,Utilities,Europe,EUR
-equal_weight,10,EDPR.LS,EDPR,EDP RENEWABLES SA,0.0181818181818181,Utilities,Europe,EUR
-minimum_volatility,1,ELI.BR,ELI,ELIA GROUP SA,0.05,Utilities,Europe,EUR
-minimum_volatility,2,PSON.L,PSON,PEARSON PLC,0.05,Consumer Discretionary,Europe,GBP
-minimum_volatility,3,8951.T,8951,NIPPON BUILDING FUND REIT,0.0499530052897328,Real Estate,Asie-Pacifique,JPY
-minimum_volatility,4,SPSN.SW,SPSN,SWISS PRIME SITE AG,0.0494238397282906,Real Estate,Europe,CHF
-minimum_volatility,5,3898.HK,3898,ZHUZHOU CRRC TIMES ELECTRIC LTD H,0.0483981997492215,Industrials,Asie-Pacifique,HKD
-minimum_volatility,6,EDPR.LS,EDPR,EDP RENEWABLES SA,0.0472914713660819,Utilities,Europe,EUR
-minimum_volatility,7,NOVN.SW,NOVN,NOVARTIS AG,0.0460836915152929,Health Care,Europe,CHF
-minimum_volatility,8,9022.T,9022,CENTRAL JAPAN RAILWAY,0.0450071027906784,Industrials,Asie-Pacifique,JPY
-minimum_volatility,9,DLR,DLR,DIGITAL REALTY TRUST REIT,0.0413162466529014,Real Estate,Amériques,USD
-minimum_volatility,10,0066.HK,66,MTR CORPORATION,0.0390756146477906,Industrials,Asie-Pacifique,HKD
-maximum_sharpe,1,DLR,DLR,DIGITAL REALTY TRUST REIT,0.05,Real Estate,Amériques,USD
-maximum_sharpe,2,ELI.BR,ELI,ELIA GROUP SA,0.05,Utilities,Europe,EUR
-maximum_sharpe,3,NVDA,NVDA,NVIDIA,0.05,Information Technology,Amériques,USD
-maximum_sharpe,4,TAL,TAL,TAL EDUCATION GROUP ADR REPTG,0.05,Consumer Discretionary,Asie-Pacifique,USD
-maximum_sharpe,5,SCA-B.ST,SCA B,SVENSKA CELLULOSA B,0.049937265482525,Materials,Europe,SEK
-maximum_sharpe,6,VWS.CO,VWS,VESTAS WIND SYSTEMS,0.0485735593751257,Industrials,Europe,DKK
-maximum_sharpe,7,DXCM,DXCM,DEXCOM INC,0.0463332715295241,Health Care,Amériques,USD
-maximum_sharpe,8,SALM.OL,SALM,SALMAR,0.0454025086165045,Consumer Staples,Europe,NOK
-maximum_sharpe,9,MOWI.OL,MOWI,MOWI,0.0448654224243773,Consumer Staples,Europe,NOK
-maximum_sharpe,10,TSN,TSN,TYSON FOODS INC CLASS A,0.0447058218822545,Consumer Staples,Amériques,USD
+equal_weight,1,002129.SZ,002129,TCL ZHONGHUAN RENEWABLE ENERGY TEC,0.0344827586206896,Information Technology,Asie-Pacifique,CNY
+equal_weight,2,0916.HK,916,CHINA LONGYUAN POWER GROUP H,0.0344827586206896,Utilities,Asie-Pacifique,HKD
+equal_weight,3,1044.HK,1044,HENGAN INTERNATIONAL GROUP,0.0344827586206896,Consumer Staples,Asie-Pacifique,HKD
+equal_weight,4,3898.HK,3898,ZHUZHOU CRRC TIMES ELECTRIC LTD H,0.0344827586206896,Industrials,Asie-Pacifique,HKD
+equal_weight,5,4507.T,4507,SHIONOGI,0.0344827586206896,Health Care,Asie-Pacifique,JPY
+equal_weight,6,4523.T,4523,EISAI,0.0344827586206896,Health Care,Asie-Pacifique,JPY
+equal_weight,7,4568.T,4568,DAIICHI SANKYO LTD,0.0344827586206896,Health Care,Asie-Pacifique,JPY
+equal_weight,8,8951.T,8951,NIPPON BUILDING FUND REIT,0.0344827586206896,Real Estate,Asie-Pacifique,JPY
+equal_weight,9,9022.T,9022,CENTRAL JAPAN RAILWAY,0.0344827586206896,Industrials,Asie-Pacifique,JPY
+equal_weight,10,ALNY,ALNY,ALNYLAM PHARMACEUTICALS,0.0344827586206896,Health Care,Amériques,USD
+minimum_volatility,1,1044.HK,1044,HENGAN INTERNATIONAL GROUP,0.05,Consumer Staples,Asie-Pacifique,HKD
+minimum_volatility,2,3898.HK,3898,ZHUZHOU CRRC TIMES ELECTRIC LTD H,0.05,Industrials,Asie-Pacifique,HKD
+minimum_volatility,3,4507.T,4507,SHIONOGI,0.05,Health Care,Asie-Pacifique,JPY
+minimum_volatility,4,4523.T,4523,EISAI,0.05,Health Care,Asie-Pacifique,JPY
+minimum_volatility,5,8951.T,8951,NIPPON BUILDING FUND REIT,0.05,Real Estate,Asie-Pacifique,JPY
+minimum_volatility,6,9022.T,9022,CENTRAL JAPAN RAILWAY,0.05,Industrials,Asie-Pacifique,JPY
+minimum_volatility,7,C38U.SI,CICT,CAPITALAND INTEGRATED COMMERCIAL T,0.05,Real Estate,Asie-Pacifique,SGD
+minimum_volatility,8,DEMANT.CO,DEMANT,DEMANT,0.05,Health Care,Europe,DKK
+minimum_volatility,9,DLR,DLR,DIGITAL REALTY TRUST REIT,0.05,Real Estate,Amériques,USD
+minimum_volatility,10,PSON.L,PSON,PEARSON PLC,0.05,Consumer Discretionary,Europe,GBP
+maximum_sharpe,1,3898.HK,3898,ZHUZHOU CRRC TIMES ELECTRIC LTD H,0.05,Industrials,Asie-Pacifique,HKD
+maximum_sharpe,2,NRP.JO,NRP,NEPI ROCKCASTLE,0.05,Real Estate,Moyen-Orient et Afrique,ZAR
+maximum_sharpe,3,PSON.L,PSON,PEARSON PLC,0.05,Consumer Discretionary,Europe,GBP
+maximum_sharpe,4,ALNY,ALNY,ALNYLAM PHARMACEUTICALS,0.0499999999999999,Health Care,Amériques,USD
+maximum_sharpe,5,BMY,BMY,BRISTOL MYERS SQUIBB,0.0499999999999999,Health Care,Amériques,USD
+maximum_sharpe,6,SALM.OL,SALM,SALMAR,0.0499999999999996,Consumer Staples,Europe,NOK
+maximum_sharpe,7,REC.MI,REC,RECORDATI INDUSTRIA CHIMICA E FARM,0.0487987791025792,Health Care,Europe,EUR
+maximum_sharpe,8,VWS.CO,VWS,VESTAS WIND SYSTEMS,0.0476418774767269,Industrials,Europe,DKK
+maximum_sharpe,9,SOBI.ST,SOBI,SWEDISH ORPHAN BIOVITRUM,0.0472539566092826,Health Care,Europe,SEK
+maximum_sharpe,10,DLR,DLR,DIGITAL REALTY TRUST REIT,0.0466493242979055,Real Estate,Amériques,USD

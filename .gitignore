@@ -82,6 +82,14 @@ Untitled.ipynb
 check_*.py
 test_*.py
 reset_*.py
+!tests/reporting/test_injected_errors.py
+!tests/reporting/test_number_check.py
+
+# ============================================================================
+# POWER BI LOCAL CACHE
+# ============================================================================
+
+dashboards/powerbi/**/.pbi/
 
 # ============================================================================
 # EXCEL LOCK FILES

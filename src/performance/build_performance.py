@@ -7,7 +7,8 @@ It does not open prices, and it does not estimate weights again.
 Four measures are repeated from phase 5: annualized return, annualized
 volatility, Sharpe and maximum drawdown. They must match
 portfolio_metrics.csv. The wealth path must match portfolio_path.csv.
-A difference stops the run. Two Sharpes are not published.
+A difference stops the run. The same ratios are also published for the
+iShares fund. Its information ratio is empty: the fund is the reference.
 
 Sortino uses only the months that fall short of SARON. The divisor
 stays T - 1, the same divisor as the Sharpe. If no month is below
@@ -23,6 +24,8 @@ Output
 ------
 data/06_performance/benchmark_monthly_return.csv
 data/06_performance/performance_metrics.csv
+data/06_performance/active_return.csv
+data/06_performance/drawdown_episode.csv
 reports/performance/dashboard.html
 """
 
@@ -45,6 +48,23 @@ from src.utils.logger import logger
 
 METRICS_OUTPUT = PERFORMANCE_DATA / "performance_metrics.csv"
 BENCHMARK_RETURNS_FILE = PERFORMANCE_DATA / "benchmark_monthly_return.csv"
+ACTIVE_RETURNS_FILE = PERFORMANCE_DATA / "active_return.csv"
+DRAWDOWN_EPISODES_FILE = PERFORMANCE_DATA / "drawdown_episode.csv"
+ACTIVE_COLUMNS = (
+    "month",
+    "strategy",
+    "portfolio_return",
+    "benchmark_return_chf",
+    "active_return",
+    "excess_return",
+)
+EPISODE_COLUMNS = (
+    "strategy",
+    "peak_month",
+    "trough_month",
+    "maximum_drawdown",
+    "recovered_month",
+)
 BENCHMARK_COLUMNS = (
     "month",
     "fund_name",
@@ -272,7 +292,119 @@ def measure_strategies(returns, published, path, benchmark):
                 "reference": fund_name,
             }
         )
+    rows.append(_measure_benchmark(benchmark, returns))
     return pd.DataFrame(rows, columns=OUTPUT_COLUMNS)
+
+
+def _measure_benchmark(benchmark, returns):
+    """Same ratios for the iShares CHF NAV return. It is the reference."""
+    reference = benchmark.set_index("month").sort_index(kind="mergesort")
+    series = reference["benchmark_return_chf"].astype(float)
+    risk_free = (
+        returns.loc[returns["strategy"].eq(STRATEGY_IDS[0])]
+        .set_index("month")
+        .sort_index(kind="mergesort")["risk_free_return"]
+        .reindex(series.index)
+    )
+    if risk_free.isna().any():
+        raise RuntimeError("The fund is missing a SARON month.")
+    excess = series - risk_free
+    excess_volatility = float(excess.std(ddof=1))
+    if excess_volatility == 0.0:
+        raise RuntimeError("The fund excess return does not vary.")
+    _wealth, drawdown = _drawdown(series)
+    sortino, below = _sortino(excess)
+    tracking, information = _active(series, series)
+    if abs(tracking) > AGREEMENT or math.isfinite(information):
+        raise RuntimeError("The fund tracking error against itself is not zero.")
+    return {
+        "strategy": "benchmark",
+        "months": int(len(series)),
+        "window_start": str(series.index.min()),
+        "window_end": str(series.index.max()),
+        "annualized_return": _annualized_return(series),
+        "annualized_volatility": float(series.std(ddof=1) * math.sqrt(MONTHS_PER_YEAR)),
+        "sharpe_ratio": float(excess.mean() / excess_volatility * math.sqrt(MONTHS_PER_YEAR)),
+        "maximum_drawdown": float(drawdown.min()),
+        "sortino_ratio": sortino,
+        "tracking_error": 0.0,
+        "information_ratio": math.nan,
+        "months_below_risk_free": below,
+        "reference": str(benchmark["fund_name"].iloc[0]),
+    }
+
+
+def build_active_returns(returns, benchmark):
+    """Month-by-month gap with the fund, and the excess over SARON."""
+    reference = benchmark.set_index("month").sort_index(kind="mergesort")
+    frames = []
+    for strategy in STRATEGY_IDS:
+        block = returns.loc[returns["strategy"].eq(strategy)].sort_values(
+            "month",
+            kind="mergesort",
+        )
+        aligned = reference.reindex(block["month"].tolist())
+        if aligned["benchmark_return_chf"].isna().any():
+            raise RuntimeError(f"{strategy} is missing a fund return.")
+        copied = block.loc[:, ["month", "strategy", "portfolio_return", "excess_return"]].copy()
+        copied["benchmark_return_chf"] = aligned["benchmark_return_chf"].to_numpy(dtype=float)
+        copied["active_return"] = copied["portfolio_return"] - copied["benchmark_return_chf"]
+        frames.append(copied)
+    reference_months = reference.index.astype(str)
+    cash = (
+        returns.loc[returns["strategy"].eq(STRATEGY_IDS[0])]
+        .set_index("month")
+        .sort_index(kind="mergesort")["risk_free_return"]
+        .reindex(reference_months)
+    )
+    if cash.isna().any():
+        raise RuntimeError("The fund is missing a SARON month in the active-return file.")
+    fund_return = reference["benchmark_return_chf"].astype(float).reindex(reference_months)
+    frames.append(
+        pd.DataFrame(
+            {
+                "month": reference_months,
+                "strategy": "benchmark",
+                "portfolio_return": fund_return.to_numpy(dtype=float),
+                "excess_return": (fund_return - cash).to_numpy(dtype=float),
+                "benchmark_return_chf": fund_return.to_numpy(dtype=float),
+                "active_return": 0.0,
+            }
+        )
+    )
+    return pd.concat(frames, ignore_index=True).loc[:, list(ACTIVE_COLUMNS)]
+
+
+def build_drawdown_episodes(path):
+    """Peak, trough and recovery of the deepest drawdown already on the path."""
+    rows = []
+    for strategy in STRATEGY_IDS:
+        block = path.loc[path["strategy"].eq(strategy)].sort_values("month", kind="mergesort")
+        wealth = block["cumulative_wealth"].to_numpy(dtype=float)
+        drawdown = block["drawdown"].to_numpy(dtype=float)
+        months = block["month"].astype(str).tolist()
+        trough = int(np.argmin(drawdown))
+        peak_level = float(wealth[: trough + 1].max())
+        peaks = [
+            index
+            for index in range(trough + 1)
+            if abs(float(wealth[index]) - peak_level) <= AGREEMENT
+        ]
+        recovered = ""
+        for index in range(trough + 1, len(wealth)):
+            if float(wealth[index]) + AGREEMENT >= peak_level:
+                recovered = months[index]
+                break
+        rows.append(
+            {
+                "strategy": strategy,
+                "peak_month": months[peaks[-1]],
+                "trough_month": months[trough],
+                "maximum_drawdown": float(drawdown[trough]),
+                "recovered_month": recovered,
+            }
+        )
+    return pd.DataFrame(rows, columns=EPISODE_COLUMNS)
 
 
 def build_performance():
@@ -291,6 +423,16 @@ def build_performance():
     metrics = measure_strategies(returns, published, path, benchmark)
     write_csv_atomically(metrics, METRICS_OUTPUT, OUTPUT_COLUMNS)
     logger.info("Performance metrics written to %s", METRICS_OUTPUT)
+    active = build_active_returns(returns, benchmark)
+    write_csv_atomically(active, ACTIVE_RETURNS_FILE, ACTIVE_COLUMNS)
+    logger.info("Active returns written to %s", ACTIVE_RETURNS_FILE)
+    episodes = build_drawdown_episodes(path)
+    for strategy in STRATEGY_IDS:
+        measured = float(metrics.loc[metrics["strategy"].eq(strategy), "maximum_drawdown"].iloc[0])
+        episode = float(episodes.loc[episodes["strategy"].eq(strategy), "maximum_drawdown"].iloc[0])
+        _same(episode, measured, f"{strategy} drawdown episode")
+    write_csv_atomically(episodes, DRAWDOWN_EPISODES_FILE, EPISODE_COLUMNS)
+    logger.info("Drawdown episodes written to %s", DRAWDOWN_EPISODES_FILE)
     from src.performance.dashboard import write_dashboard
 
     dashboard = write_dashboard()
@@ -298,6 +440,8 @@ def build_performance():
     return {
         "metrics": METRICS_OUTPUT,
         "benchmark": BENCHMARK_RETURNS_FILE,
+        "active": ACTIVE_RETURNS_FILE,
+        "episodes": DRAWDOWN_EPISODES_FILE,
         "dashboard": dashboard,
     }
 

@@ -1,0 +1,49 @@
+table Rotation
+	lineageTag: 22d5b9f3-7c41-5e82-a055-3b9d1f6c8e20
+
+	measure 'Rotation brute' = MAX ( Rotation[gross_turnover] )
+		formatString: 0.0%
+		lineageTag: 99e32a71-5b26-5d03-c814-7f2e0b5d1a63
+
+	column month
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4c8f0d25-9e37-5b51-a029-d6b3c1f7e582
+		summarizeBy: none
+		sourceColumn: month
+
+		variation Variation
+			isDefault
+			relationship: 21265d9e-a39a-4592-91c8-07df9045b9e2
+			defaultHierarchy: LocalDateTable_9fe7d8a7-9ee1-42c3-a140-04370e0832b1.'Hiérarchie de dates'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column strategy
+		dataType: string
+		lineageTag: 70b1e396-2f58-5c64-b930-8a4f2c6d0b74
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column gross_turnover
+		dataType: double
+		lineageTag: ba2d5f38-6c91-5e27-a141-9b5a3d8e1c96
+		summarizeBy: sum
+		sourceColumn: gross_turnover
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Rotation = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/05_monitoring/turnover.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"month", "strategy", "gross_turnover"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"month", type text}, {"strategy", type text}, {"gross_turnover", type number}}),
+				    Dated = Table.TransformColumns(Typed, {{"month", each Date.FromText(_ & "-01"), type date}})
+				in
+				    Dated
+
+	annotation PBI_ResultType = Table
+

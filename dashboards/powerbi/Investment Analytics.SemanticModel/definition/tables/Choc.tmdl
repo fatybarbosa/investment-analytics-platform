@@ -1,0 +1,35 @@
+table Choc
+	lineageTag: deaa4700-3139-5640-bf1b-baf51622b20b
+
+	column shock
+		dataType: string
+		isKey
+		lineageTag: ba3c38a1-347e-5149-abec-0d9184c49693
+		summarizeBy: none
+		sourceColumn: shock
+
+	column libelle
+		dataType: string
+		lineageTag: beabfb9a-6f72-557b-88a2-dc86624b0c29
+		summarizeBy: none
+		sourceColumn: libelle
+		sortByColumn: ordre
+
+	column ordre
+		dataType: int64
+		lineageTag: 4c7c2239-4cf0-5029-8ec3-9e0b49673c73
+		summarizeBy: none
+		sourceColumn: ordre
+
+	partition Choc = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/dashboards/powerbi/referentiel/choc.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"shock", type text}, {"libelle", type text}, {"ordre", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

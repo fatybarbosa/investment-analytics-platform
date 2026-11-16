@@ -1,0 +1,86 @@
+table Position
+	lineageTag: f2671c4c-6015-5e61-9122-864c21594fc5
+
+	measure 'Poids ligne' = MAX ( Position[weight] )
+		formatString: 0.0%
+		lineageTag: 3573099c-f3b0-5cf3-98d0-c1d0a1659955
+
+	column strategy
+		dataType: string
+		lineageTag: b76cdf2c-3fa9-5619-9b98-890876f86686
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column yahoo_symbol
+		dataType: string
+		lineageTag: 7c0de9e3-70e4-5037-a3bc-e7f5fc52f9e5
+		summarizeBy: none
+		sourceColumn: yahoo_symbol
+
+	column ticker
+		dataType: string
+		lineageTag: 98d759b6-41c0-5cf4-b692-12dcf2bfe012
+		summarizeBy: none
+		sourceColumn: ticker
+
+	column name
+		dataType: string
+		lineageTag: aaa160fd-efeb-5aba-9e0e-fee1f2175936
+		summarizeBy: none
+		sourceColumn: name
+
+	column listing_currency
+		dataType: string
+		lineageTag: 5804147f-3dd4-5c22-b34f-99b0089a7eeb
+		summarizeBy: none
+		sourceColumn: listing_currency
+
+	column weight
+		dataType: double
+		lineageTag: 7593b5b1-863f-5e38-b358-3d6b3b84ee8c
+		summarizeBy: none
+		sourceColumn: weight
+
+	column sector
+		dataType: string
+		lineageTag: 55de7260-1478-518c-89f2-147da8f57bcb
+		summarizeBy: none
+		sourceColumn: sector
+
+	column country
+		dataType: string
+		lineageTag: 084a39fb-bb4d-56d0-8cd0-17e3024f7b13
+		summarizeBy: none
+		sourceColumn: country
+
+	column zone
+		dataType: string
+		lineageTag: 972d8cc0-a2c2-572a-9548-a5c181af671f
+		summarizeBy: none
+		sourceColumn: zone
+
+	column asset_class
+		dataType: string
+		lineageTag: de12dcd5-bbae-5fd8-85c4-dc553d25a5d5
+		summarizeBy: none
+		sourceColumn: asset_class
+
+	column exposure
+		dataType: string
+		lineageTag: cf84d876-2395-5a20-94f2-a5fbdfc50e47
+		summarizeBy: none
+		sourceColumn: exposure
+
+	partition Position = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/05_monitoring/allocation_by_holding.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"strategy", "yahoo_symbol", "ticker", "name", "listing_currency", "weight", "sector", "country", "zone", "asset_class", "exposure"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"strategy", type text}, {"yahoo_symbol", type text}, {"ticker", type text}, {"name", type text}, {"listing_currency", type text}, {"weight", type number}, {"sector", type text}, {"country", type text}, {"zone", type text}, {"asset_class", type text}, {"exposure", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

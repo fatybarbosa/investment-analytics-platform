@@ -1,0 +1,128 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "issues",
+  "position": {
+    "x": 430,
+    "y": 460,
+    "z": 3000,
+    "height": 230,
+    "width": 830,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Problemes"
+                    }
+                  },
+                  "Property": "dataset_id"
+                }
+              },
+              "queryRef": "Problemes.dataset_id",
+              "nativeQueryRef": "Jeu",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Problemes"
+                    }
+                  },
+                  "Property": "control_name"
+                }
+              },
+              "queryRef": "Problemes.control_name",
+              "nativeQueryRef": "Contrôle",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Problemes"
+                    }
+                  },
+                  "Property": "severity"
+                }
+              },
+              "queryRef": "Problemes.severity",
+              "nativeQueryRef": "Gravité",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Problemes"
+                    }
+                  },
+                  "Property": "issue_count"
+                }
+              },
+              "queryRef": "Problemes.issue_count",
+              "nativeQueryRef": "Cas",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Problemes"
+                    }
+                  },
+                  "Property": "notes"
+                }
+              },
+              "queryRef": "Problemes.notes",
+              "nativeQueryRef": "Note",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Anomalies du dernier export'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

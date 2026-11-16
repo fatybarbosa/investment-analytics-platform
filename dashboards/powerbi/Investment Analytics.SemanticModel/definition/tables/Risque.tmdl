@@ -1,0 +1,70 @@
+table Risque
+	lineageTag: 151e024a-d608-5bba-b64d-e9d5b322c819
+
+	measure Volatilité = SELECTEDVALUE ( Risque[annualized_volatility] )
+		formatString: 0.0%
+		lineageTag: 57a06280-0188-51ec-b248-dad23ccdaebd
+
+	measure VaR = SELECTEDVALUE ( Risque[var_95] )
+		formatString: 0.0%
+		lineageTag: b5b1638d-47d8-5a59-9c6b-31887cac0f03
+
+	measure 'Expected shortfall' = SELECTEDVALUE ( Risque[expected_shortfall_95] )
+		formatString: 0.0%
+		lineageTag: 0ae1edb4-8282-52ff-b76a-26438079d5c6
+
+	column strategy
+		dataType: string
+		lineageTag: d9b95ed3-3d9a-5877-a4ec-ab4884fe51aa
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column months
+		dataType: int64
+		lineageTag: f285d950-7087-5728-a029-9c9911e5a801
+		summarizeBy: none
+		sourceColumn: months
+
+	column window_start
+		dataType: string
+		lineageTag: a8c302b4-e663-53b1-b6d2-6ca88fd9baeb
+		summarizeBy: none
+		sourceColumn: window_start
+
+	column window_end
+		dataType: string
+		lineageTag: d9e76a29-b267-5aa8-b522-5979bb9cc443
+		summarizeBy: none
+		sourceColumn: window_end
+
+	column annualized_volatility
+		dataType: double
+		lineageTag: 3ba2c72f-0d89-5c6c-a38b-d7c162db628d
+		summarizeBy: none
+		sourceColumn: annualized_volatility
+
+	column var_95
+		dataType: double
+		lineageTag: f759f966-c0e3-58e4-85d0-2a78d44ba262
+		summarizeBy: none
+		sourceColumn: var_95
+
+	column expected_shortfall_95
+		dataType: double
+		lineageTag: 38c1fb61-e510-5578-9ed9-8553c7cc05f4
+		summarizeBy: none
+		sourceColumn: expected_shortfall_95
+
+	partition Risque = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/07_risk/risk_by_strategy.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"strategy", "months", "window_start", "window_end", "annualized_volatility", "var_95", "expected_shortfall_95"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"strategy", type text}, {"months", Int64.Type}, {"window_start", type text}, {"window_end", type text}, {"annualized_volatility", type number}, {"var_95", type number}, {"expected_shortfall_95", type number}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,93 @@
+table CheminStress
+	lineageTag: 9ef38f41-ed31-51f9-a8ef-91336e12d056
+
+	measure 'Écart de richesse' =
+			VAR Niveau =
+			    MAX ( CheminStress[cumulative_wealth] )
+			VAR Base =
+			    CALCULATE (
+			        MAX ( CheminStress[cumulative_wealth] ),
+			        CheminStress[shock] = "aucun",
+			        REMOVEFILTERS ( Choc )
+			    )
+			RETURN
+			    Niveau - Base
+		formatString: 0.00
+		lineageTag: c120969b-0d45-5aea-96ba-6c1ad1df11a2
+
+	measure 'Richesse du choc' = MAX ( CheminStress[cumulative_wealth] )
+		formatString: 0.00
+		lineageTag: 6a1c0d44-7b2e-5a11-9c33-1d4e8f0a2b17
+
+	column month
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4a85ebe0-0065-5fed-a793-cc9b0fe74907
+		summarizeBy: none
+		sourceColumn: month
+
+		variation Variation
+			isDefault
+			relationship: a4facdc3-87e8-4f41-8d3a-42ed286363d7
+			defaultHierarchy: LocalDateTable_93401ff6-3d84-45c5-a840-e4745e78cc4f.'Hiérarchie de dates'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column strategy
+		dataType: string
+		lineageTag: a616269c-7c1d-5905-9df0-9157af1f39e2
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column shock
+		dataType: string
+		lineageTag: d498b30c-043b-5fde-8724-efdaf427b9d3
+		summarizeBy: none
+		sourceColumn: shock
+
+	column portfolio_return
+		dataType: double
+		lineageTag: 7e3bb3ed-74f5-55f4-baee-f195f9161ec8
+		summarizeBy: sum
+		sourceColumn: portfolio_return
+
+		annotation SummarizationSetBy = Automatic
+
+	column risk_free_return
+		dataType: double
+		lineageTag: 52645df5-a380-5409-a6df-687bb4de6e97
+		summarizeBy: sum
+		sourceColumn: risk_free_return
+
+		annotation SummarizationSetBy = Automatic
+
+	column cumulative_wealth
+		dataType: double
+		lineageTag: 9c3d918c-b233-54a3-a221-aafb41becf79
+		summarizeBy: sum
+		sourceColumn: cumulative_wealth
+
+		annotation SummarizationSetBy = Automatic
+
+	column drawdown
+		dataType: double
+		lineageTag: e461fb76-ed90-592f-b987-be02c149dd04
+		summarizeBy: sum
+		sourceColumn: drawdown
+
+		annotation SummarizationSetBy = Automatic
+
+	partition CheminStress = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/08_stress/stress_paths.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"month", "strategy", "shock", "portfolio_return", "risk_free_return", "cumulative_wealth", "drawdown"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"month", type text}, {"strategy", type text}, {"shock", type text}, {"portfolio_return", type number}, {"risk_free_return", type number}, {"cumulative_wealth", type number}, {"drawdown", type number}}),
+				    Dated = Table.TransformColumns(Typed, {{"month", each Date.FromText(_ & "-01"), type date}})
+				in
+				    Dated
+
+	annotation PBI_ResultType = Table
+

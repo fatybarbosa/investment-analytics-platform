@@ -1,0 +1,44 @@
+table Odd
+	lineageTag: ba198c14-d596-5e4d-aaee-f3a199fd0234
+
+	measure Titres = COUNTROWS ( Odd )
+		formatString: 0
+		lineageTag: a06676a2-153a-5b07-8d68-fdaa83462ca2
+
+	column Ticker
+		dataType: string
+		lineageTag: 1f690edf-3bcd-5a55-8461-f84a5186a8b1
+		summarizeBy: none
+		sourceColumn: Ticker
+
+	column Exchange
+		dataType: string
+		lineageTag: e729faff-e5b3-51f5-b9a0-20f9ea56d5c9
+		summarizeBy: none
+		sourceColumn: Exchange
+
+	column Company
+		dataType: string
+		lineageTag: 5dbc16af-872b-5835-a137-65861841af56
+		summarizeBy: none
+		sourceColumn: Company
+
+	column Status
+		dataType: string
+		lineageTag: fbb01b86-6d20-5459-b784-b6de2a738c44
+		summarizeBy: none
+		sourceColumn: Status
+
+	partition Odd = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/01_raw/odd/odd_assessment.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"Ticker", "Exchange", "Company", "Status"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"Ticker", type text}, {"Exchange", type text}, {"Company", type text}, {"Status", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

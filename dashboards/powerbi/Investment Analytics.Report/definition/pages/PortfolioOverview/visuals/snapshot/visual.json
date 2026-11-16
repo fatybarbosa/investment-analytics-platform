@@ -1,0 +1,203 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "snapshot",
+  "position": {
+    "x": 16,
+    "y": 52,
+    "z": 3000,
+    "height": 130,
+    "width": 1000,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Strategie"
+                    }
+                  },
+                  "Property": "livre"
+                }
+              },
+              "queryRef": "Strategie.livre",
+              "nativeQueryRef": "Livre",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rapport"
+                    }
+                  },
+                  "Property": "Lignes investies"
+                }
+              },
+              "queryRef": "Rapport.Lignes investies",
+              "nativeQueryRef": "Nombre de titres",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rapport"
+                    }
+                  },
+                  "Property": "Lignes effectives"
+                }
+              },
+              "queryRef": "Rapport.Lignes effectives",
+              "nativeQueryRef": "Lignes effectives",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rapport"
+                    }
+                  },
+                  "Property": "Poids maximum"
+                }
+              },
+              "queryRef": "Rapport.Poids maximum",
+              "nativeQueryRef": "Poids maximum",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rapport"
+                    }
+                  },
+                  "Property": "Plus grand secteur"
+                }
+              },
+              "queryRef": "Rapport.Plus grand secteur",
+              "nativeQueryRef": "Secteur",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rapport"
+                    }
+                  },
+                  "Property": "Poids du secteur"
+                }
+              },
+              "queryRef": "Rapport.Poids du secteur",
+              "nativeQueryRef": "Poids secteur",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rapport"
+                    }
+                  },
+                  "Property": "Plus grande zone"
+                }
+              },
+              "queryRef": "Rapport.Plus grande zone",
+              "nativeQueryRef": "Zone",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rapport"
+                    }
+                  },
+                  "Property": "Poids de la zone"
+                }
+              },
+              "queryRef": "Rapport.Poids de la zone",
+              "nativeQueryRef": "Poids zone",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rapport"
+                    }
+                  },
+                  "Property": "Plus grande devise"
+                }
+              },
+              "queryRef": "Rapport.Plus grande devise",
+              "nativeQueryRef": "Devise",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Rapport"
+                    }
+                  },
+                  "Property": "Poids de la devise"
+                }
+              },
+              "queryRef": "Rapport.Poids de la devise",
+              "nativeQueryRef": "Poids devise",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dernier mois publié'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

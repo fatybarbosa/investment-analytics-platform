@@ -1,0 +1,129 @@
+table Limites
+	lineageTag: 9bba3145-d5c5-5f81-bb23-991404b45a8c
+
+	measure 'Mois hors bande' = MAX ( Limites[positions_outside_band] )
+		formatString: 0
+		lineageTag: b9bfecd1-3c27-5354-88f3-b539cea34c60
+
+	measure 'Lignes investies dans le temps' = MAX ( Limites[invested_names] )
+		formatString: 0
+		lineageTag: 4c8e1a22-6d55-5b70-8a19-0f3c7e2d4a61
+
+	measure 'Plus grand secteur dans le temps' = MAX ( Limites[largest_sector_weight] )
+		formatString: 0.0%
+		lineageTag: 91ab34c0-2e68-5d44-b712-5a9f0c3e7d28
+
+	column month
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ddf09afa-0ba4-51c7-9d99-253332baea4e
+		summarizeBy: none
+		sourceColumn: month
+
+		variation Variation
+			isDefault
+			relationship: e81e2039-41b8-445c-be29-7f597a0f3495
+			defaultHierarchy: LocalDateTable_0c13a1ac-b81e-4bf4-8a0e-68d30a9d001d.'Hiérarchie de dates'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column strategy
+		dataType: string
+		lineageTag: ab766469-646b-5801-baf2-9484d86c35a6
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column largest_issuer_weight
+		dataType: double
+		lineageTag: 613f8ba6-3cbc-5c82-a37c-6a1028147a29
+		summarizeBy: sum
+		sourceColumn: largest_issuer_weight
+
+		annotation SummarizationSetBy = Automatic
+
+	column largest_sector_weight
+		dataType: double
+		lineageTag: e2e78656-a074-52cd-8f4f-6eaaed96394f
+		summarizeBy: sum
+		sourceColumn: largest_sector_weight
+
+		annotation SummarizationSetBy = Automatic
+
+	column largest_zone_weight
+		dataType: double
+		lineageTag: 4fa0f33f-5fb7-5e48-87fa-11b134be8c24
+		summarizeBy: sum
+		sourceColumn: largest_zone_weight
+
+		annotation SummarizationSetBy = Automatic
+
+	column largest_currency_weight
+		dataType: double
+		lineageTag: a9817209-2cf2-5e3d-a28e-5578258d3146
+		summarizeBy: sum
+		sourceColumn: largest_currency_weight
+
+		annotation SummarizationSetBy = Automatic
+
+	column issuer_over_cap
+		dataType: int64
+		lineageTag: 32eb2c11-a4f6-5554-adac-5c71350c61c3
+		summarizeBy: sum
+		sourceColumn: issuer_over_cap
+
+		annotation SummarizationSetBy = Automatic
+
+	column sector_over_cap
+		dataType: int64
+		lineageTag: 31d867ea-cdcc-5f26-bd4e-b65abf44950a
+		summarizeBy: sum
+		sourceColumn: sector_over_cap
+
+		annotation SummarizationSetBy = Automatic
+
+	column zone_over_cap
+		dataType: int64
+		lineageTag: 86432e07-0c63-5911-a8b5-6161e7aa6463
+		summarizeBy: sum
+		sourceColumn: zone_over_cap
+
+		annotation SummarizationSetBy = Automatic
+
+	column currency_over_cap
+		dataType: int64
+		lineageTag: dc556a6a-7ebf-5d16-8f29-b82b23c9eae4
+		summarizeBy: sum
+		sourceColumn: currency_over_cap
+
+		annotation SummarizationSetBy = Automatic
+
+	column invested_names
+		dataType: int64
+		lineageTag: 441c63cb-0f5c-59c0-8660-3af1ab96d9dc
+		summarizeBy: sum
+		sourceColumn: invested_names
+
+		annotation SummarizationSetBy = Automatic
+
+	column positions_outside_band
+		dataType: int64
+		lineageTag: 7fae1a26-9c01-50c9-ba03-13defafed5a7
+		summarizeBy: sum
+		sourceColumn: positions_outside_band
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Limites = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/05_monitoring/limit_watch.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"month", "strategy", "largest_issuer_weight", "largest_sector_weight", "largest_zone_weight", "largest_currency_weight", "issuer_over_cap", "sector_over_cap", "zone_over_cap", "currency_over_cap", "invested_names", "positions_outside_band"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"month", type text}, {"strategy", type text}, {"largest_issuer_weight", type number}, {"largest_sector_weight", type number}, {"largest_zone_weight", type number}, {"largest_currency_weight", type number}, {"issuer_over_cap", Int64.Type}, {"sector_over_cap", Int64.Type}, {"zone_over_cap", Int64.Type}, {"currency_over_cap", Int64.Type}, {"invested_names", Int64.Type}, {"positions_outside_band", Int64.Type}}),
+				    Dated = Table.TransformColumns(Typed, {{"month", each Date.FromText(_ & "-01"), type date}})
+				in
+				    Dated
+
+	annotation PBI_ResultType = Table
+

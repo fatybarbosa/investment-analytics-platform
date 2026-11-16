@@ -1,0 +1,5 @@
+﻿strategy,livre,ordre
+equal_weight,Équipondéré,1
+minimum_volatility,Volatilité minimale,2
+maximum_sharpe,Sharpe maximal,3
+benchmark,Fonds iShares,4

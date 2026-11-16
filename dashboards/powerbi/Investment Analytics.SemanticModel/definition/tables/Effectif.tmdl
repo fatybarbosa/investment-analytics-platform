@@ -1,0 +1,49 @@
+table Effectif
+	lineageTag: 11c4a8e2-6b30-5d71-9f44-2a8c0e5b7d19
+
+	measure 'Titres effectifs' = MAX ( Effectif[effective_holdings] )
+		formatString: 0.0
+		lineageTag: 88d21f60-4a15-5c92-b703-6e1d9a4c0f52
+
+	column month
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3b7e9c14-8d26-5a40-91f8-c5a2b0e6d471
+		summarizeBy: none
+		sourceColumn: month
+
+		variation Variation
+			isDefault
+			relationship: 594e4630-5038-4a6a-ab52-4754065a8fcb
+			defaultHierarchy: LocalDateTable_3f76485a-55a1-4e04-9a2a-5dd8d71b48f7.'Hiérarchie de dates'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column strategy
+		dataType: string
+		lineageTag: 6f0a2d85-1c49-5b73-a816-9d4e7f1b2c60
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column effective_holdings
+		dataType: double
+		lineageTag: a91c4e27-5b80-5d16-8f33-2c7a0b9e4d15
+		summarizeBy: sum
+		sourceColumn: effective_holdings
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Effectif = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/05_monitoring/concentration_history.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"month", "strategy", "effective_holdings"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"month", type text}, {"strategy", type text}, {"effective_holdings", type number}}),
+				    Dated = Table.TransformColumns(Typed, {{"month", each Date.FromText(_ & "-01"), type date}})
+				in
+				    Dated
+
+	annotation PBI_ResultType = Table
+

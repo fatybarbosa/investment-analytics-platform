@@ -1,0 +1,64 @@
+table Matrice
+	lineageTag: 7c2e9a14-6b48-5d31-a0f7-4e8c1b5d9a26
+
+	measure Corrélation = MAX ( Matrice[correlation] )
+		formatString: 0.0%
+		lineageTag: 9a1f3c70-2e84-5b16-c493-7d0a5e8f1b34
+
+	column symbol_a
+		dataType: string
+		lineageTag: 1d4b8e92-7c05-5a63-b218-6f9c0d3a4e71
+		summarizeBy: none
+		sourceColumn: symbol_a
+		sortByColumn: ordre_a
+
+	column symbol_b
+		dataType: string
+		lineageTag: 5e8a2c14-9d37-5f80-a146-2b7c4e0d8f53
+		summarizeBy: none
+		sourceColumn: symbol_b
+		sortByColumn: ordre_b
+
+	column correlation
+		dataType: double
+		lineageTag: 3f6c1a85-4b29-5e70-8d12-9a0e5c7b3d46
+		summarizeBy: none
+		sourceColumn: correlation
+
+	column ordre_a
+		dataType: int64
+		isHidden
+		lineageTag: 8b0d4f27-1a63-5c95-e704-6d2a9b1c0e58
+		summarizeBy: none
+		sourceColumn: ordre_a
+
+	column ordre_b
+		dataType: int64
+		isHidden
+		lineageTag: 2c7e5a19-6f84-5d30-b861-0a4c8e2d7b15
+		summarizeBy: none
+		sourceColumn: ordre_b
+
+	partition Matrice = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/07_risk/correlation_matrix.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    FirstName = Table.ColumnNames(Promoted){0},
+				    OtherNames = List.Skip(Table.ColumnNames(Promoted), 1),
+				    Typed = Table.TransformColumnTypes(Promoted, List.Transform(OtherNames, each {_, type number})),
+				    Unpivoted = Table.Unpivot(Typed, OtherNames, "symbol_b", "correlation"),
+				    Renamed = Table.RenameColumns(Unpivoted, {{FirstName, "symbol_a"}}),
+				    Off = Table.SelectRows(Renamed, each [symbol_a] <> [symbol_b]),
+				    ByName = Table.Group(Off, {"symbol_a"}, {{"lien_max", each List.Max(Table.Column(_, "correlation")), type number}}),
+				    Ordered = Table.Sort(ByName, {{"lien_max", Order.Descending}, {"symbol_a", Order.Ascending}}),
+				    Indexed = Table.AddIndexColumn(Ordered, "ordre", 1, 1),
+				    WithA = Table.NestedJoin(Renamed, {"symbol_a"}, Indexed, {"symbol_a"}, "ra", JoinKind.LeftOuter),
+				    ExpandA = Table.ExpandTableColumn(WithA, "ra", {"ordre"}, {"ordre_a"}),
+				    WithB = Table.NestedJoin(ExpandA, {"symbol_b"}, Indexed, {"symbol_a"}, "rb", JoinKind.LeftOuter),
+				    ExpandB = Table.ExpandTableColumn(WithB, "rb", {"ordre"}, {"ordre_b"})
+				in
+				    ExpandB
+
+	annotation PBI_ResultType = Table

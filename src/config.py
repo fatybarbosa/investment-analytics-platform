@@ -34,12 +34,16 @@ REPORTING_CURRENCY = "CHF"
 START_DATE = None
 END_DATE = None
 
-# Jours de bourse par année. Réservé à une série quotidienne.
-# Les portefeuilles mensuels annualisent avec MONTHS_PER_YEAR.
-
-ANNUALIZATION_FACTOR = 252
+# Annualisation des séries mensuelles. Il n'y a pas de série quotidienne publiée.
 
 MONTHS_PER_YEAR = 12
+
+# Phase 9. These are shock parameters, not IPS limits.
+MARKET_SHOCK_RETURN = -0.20
+RATE_SHOCK_ANNUAL_POINTS = 2.0
+RECESSION_SHOCK_RETURN = -0.03
+RECESSION_SHOCK_MONTHS = 6
+VOLATILITY_SHOCK_MULTIPLIER = 1.5
 
 # ============================================================================
 # PROJECT ROOT
@@ -97,6 +101,8 @@ EXCLUDED_UNIVERSE = UNIVERSE_DIR / "excluded"
 PORTFOLIO_DATA = DATA_DIR / "04_portfolios"
 MONITORING_DATA = DATA_DIR / "05_monitoring"
 PERFORMANCE_DATA = DATA_DIR / "06_performance"
+RISK_DATA = DATA_DIR / "07_risk"
+STRESS_DATA = DATA_DIR / "08_stress"
 
 # ============================================================================
 # DATABASE
@@ -135,23 +141,21 @@ STRESS_TESTING = (
 REPORTING = SRC_DIR / "reporting"
 
 # ============================================================================
-# DASHBOARDS
-# ============================================================================
-
-DASHBOARDS_DIR = PROJECT_ROOT / "dashboards"
-
-POWERBI = DASHBOARDS_DIR / "powerbi"
-
-# ============================================================================
 # REPORTS
 # ============================================================================
 
 REPORTS_DIR = PROJECT_ROOT / "reports"
 
+DASHBOARDS_DIR = PROJECT_ROOT / "dashboards"
+
+POWERBI = DASHBOARDS_DIR / "powerbi"
+
 PORTFOLIO_REPORTS = REPORTS_DIR / "portfolio"
 MONITORING_REPORTS = REPORTS_DIR / "monitoring"
 PERFORMANCE_REPORTS = REPORTS_DIR / "performance"
 RISK_REPORTS = REPORTS_DIR / "risk"
+STRESS_REPORTS = REPORTS_DIR / "stress"
+EXCEL_REPORTS = REPORTS_DIR / "excel"
 
 MANAGEMENT_REPORTS = (
     REPORTS_DIR / "management"
@@ -160,6 +164,9 @@ MANAGEMENT_REPORTS = (
 EXECUTIVE_REPORTS = (
     REPORTS_DIR / "executive"
 )
+
+# Phase 11b. Two customized monthly reports from the same files.
+CLIENT_REPORTS = REPORTS_DIR / "clients"
 
 # ============================================================================
 # AUDIT & GOVERNANCE
@@ -226,13 +233,33 @@ MARKET_HISTORY_YEARS = 10
 # Five years is the risk horizon. The month being scored is excluded.
 ESTIMATION_MONTHS = 60
 # CLIENT001 IPS limits for a long-only equity mandate.
-# Issuer 5%, sector 20%, region 50%, listing currency 40%.
+# Issuer 5%, sector 40%, region 50%, listing currency 40%.
+# The sector ceiling is 40% so the Eligible names with a complete CHF
+# history can be held together. At equal weight that list puts more
+# than 20% in two sectors and stays under 40%. Issuer, region,
+# currency, and the 25–40 name band are unchanged.
 # The optimized books keep 25 to 40 names. Gross turnover is at most
 # 50% a year, applied as 12.5% at each quarterly rebalance.
 ISSUER_WEIGHT_CAP = 0.05
-SECTOR_WEIGHT_CAP = 0.20
+SECTOR_WEIGHT_CAP = 0.40
 ZONE_WEIGHT_CAP = 0.50
 CURRENCY_WEIGHT_CAP = 0.40
 MIN_POSITIONS = 25
 MAX_POSITIONS = 40
 QUARTERLY_TURNOVER_CAP = 0.125
+# A weight at or below this floor is optimizer dust, not a line.
+# Monitoring uses the same floor when it counts invested names.
+POSITION_WEIGHT_FLOOR = 1e-8
+
+# Phase 11 reporting references. They are read by the automated comments.
+# They do not choose a weight and they are not used by the optimizer.
+# IPS: ex ante tracking error target against the investable proxy.
+TRACKING_ERROR_TARGET = 0.08
+# Client profile: a temporary loss is accepted beyond this level.
+# The profile says this level does not, by itself, trigger a sale.
+TEMPORARY_LOSS_REFERENCE = 0.30
+# Reporting watch level, as a share of a written cap. This is a reading
+# threshold of the report. It is not a limit of the mandate.
+REPORTING_WATCH_RATIO = 0.95
+# The executive report must fit in this number of pages.
+EXECUTIVE_REPORT_MAX_PAGES = 3

@@ -1,0 +1,15 @@
+requests
+pandas
+numpy
+scipy
+openpyxl
+yfinance
+python-dotenv
+plotly
+pytest
+# Phase 11: executive report, deck and figures
+reportlab
+python-pptx
+matplotlib
+pymupdf
+pillow

@@ -1,0 +1,191 @@
+table RendementActif
+	lineageTag: e37ae3aa-68be-55fa-b22d-9ce97daa3467
+
+	measure 'Rendement actif' = MAX ( RendementActif[active_return] )
+		formatString: 0.0%
+		lineageTag: a729ec22-eedd-5f29-aafe-7e9df772f074
+
+	measure 'Multiple contre le SARON' =
+			VAR MoisCourant = SELECTEDVALUE ( RendementActif[month] )
+			VAR LivreCourant = SELECTEDVALUE ( RendementActif[strategy] )
+			VAR Historique =
+			    FILTER (
+			        ALL ( RendementActif ),
+			        RendementActif[strategy] = LivreCourant
+			            && RendementActif[month] <= MoisCourant
+			    )
+			RETURN
+			    DIVIDE (
+			        PRODUCTX ( Historique, 1 + RendementActif[portfolio_return] ),
+			        PRODUCTX ( Historique, 1 + RendementActif[portfolio_return] - RendementActif[excess_return] )
+			    )
+		formatString: 0.00
+		lineageTag: 2f6b8c10-9a44-5e21-8d70-c1b4a6e39015
+
+	measure 'Multiple contre le fonds' =
+			VAR MoisCourant = SELECTEDVALUE ( RendementActif[month] )
+			VAR LivreCourant = SELECTEDVALUE ( RendementActif[strategy] )
+			VAR Historique =
+			    FILTER (
+			        ALL ( RendementActif ),
+			        RendementActif[strategy] = LivreCourant
+			            && RendementActif[month] <= MoisCourant
+			    )
+			RETURN
+			    DIVIDE (
+			        PRODUCTX ( Historique, 1 + RendementActif[portfolio_return] ),
+			        PRODUCTX ( Historique, 1 + RendementActif[benchmark_return_chf] )
+			    )
+		formatString: 0.00
+		lineageTag: 7e15d902-4c88-5a63-b241-9f0d6c2a1e74
+
+	measure 'Rendement glissant 12 mois' =
+			VAR MoisCourant = SELECTEDVALUE ( RendementActif[month] )
+			VAR LivreCourant = SELECTEDVALUE ( RendementActif[strategy] )
+			VAR Fenetre =
+			    TOPN (
+			        12,
+			        FILTER ( ALL ( RendementActif[month] ), RendementActif[month] <= MoisCourant ),
+			        RendementActif[month],
+			        DESC
+			    )
+			VAR Historique =
+			    FILTER (
+			        ALL ( RendementActif ),
+			        RendementActif[strategy] = LivreCourant
+			            && RendementActif[month] IN Fenetre
+			    )
+			RETURN
+			    IF (
+			        COUNTROWS ( Fenetre ) < 12,
+			        BLANK (),
+			        PRODUCTX ( Historique, 1 + RendementActif[portfolio_return] ) - 1
+			    )
+		formatString: 0.0%
+		lineageTag: b83a4e77-1d09-5f56-a802-6c5e9b1d4a30
+
+	measure 'Rendement chaîné calculé' =
+			VAR Livre = SELECTEDVALUE ( Strategie[strategy] )
+			VAR Lignes =
+			    FILTER ( ALL ( RendementActif ), RendementActif[strategy] = Livre )
+			RETURN
+			    IF (
+			        ISBLANK ( Livre ) || COUNTROWS ( Lignes ) = 0,
+			        BLANK (),
+			        PRODUCTX ( Lignes, 1 + RendementActif[portfolio_return] ) - 1
+			    )
+		formatString: 0.0%
+		lineageTag: 84c0c078-f9ca-4c95-9242-2c591f0a73a2
+
+	measure 'Drawdown maximal calculé' =
+			VAR Livre = SELECTEDVALUE ( Strategie[strategy] )
+			VAR RendementsDuLivre =
+			    SELECTCOLUMNS (
+			        FILTER ( ALL ( RendementActif ), RendementActif[strategy] = Livre ),
+			        "@mois", RendementActif[month],
+			        "@rendement", RendementActif[portfolio_return]
+			    )
+			VAR RendementsDuFonds =
+			    SELECTCOLUMNS (
+			        SUMMARIZE ( ALL ( RendementActif ), RendementActif[month], RendementActif[benchmark_return_chf] ),
+			        "@mois", RendementActif[month],
+			        "@rendement", RendementActif[benchmark_return_chf]
+			    )
+			VAR Rendements =
+			    UNION (
+			        FILTER ( RendementsDuLivre, Livre <> "benchmark" ),
+			        FILTER ( RendementsDuFonds, Livre = "benchmark" )
+			    )
+			VAR MoisDistincts =
+			    COUNTROWS ( SUMMARIZE ( ALL ( RendementActif ), RendementActif[month] ) )
+			VAR Richesse =
+			    ADDCOLUMNS (
+			        Rendements,
+			        "@richesse",
+			            VAR MoisCourant = [@mois]
+			            RETURN
+			                PRODUCTX ( FILTER ( Rendements, [@mois] <= MoisCourant ), 1 + [@rendement] )
+			    )
+			VAR Chute =
+			    ADDCOLUMNS (
+			        Richesse,
+			        "@drawdown",
+			            VAR MoisCourant = [@mois]
+			            RETURN
+			                [@richesse] / MAXX ( FILTER ( Richesse, [@mois] <= MoisCourant ), [@richesse] ) - 1
+			    )
+			RETURN
+			    IF (
+			        ISBLANK ( Livre ) || COUNTROWS ( Rendements ) <> MoisDistincts,
+			        BLANK (),
+			        MINX ( Chute, [@drawdown] )
+			    )
+		formatString: 0.0%
+		lineageTag: 12ac0850-0de4-4991-85a5-fb3040691c62
+
+	column month
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 441d5586-e699-554d-8b6f-8012d71787c9
+		summarizeBy: none
+		sourceColumn: month
+
+		variation Variation
+			isDefault
+			relationship: 2bb36974-5651-45cf-b8ba-e0a531a3c322
+			defaultHierarchy: LocalDateTable_c88a85b8-78b6-418d-87f5-cc078329acd2.'Hiérarchie de dates'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column strategy
+		dataType: string
+		lineageTag: 4201869b-3608-59b6-8e6f-eb88ebbca8bf
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column portfolio_return
+		dataType: double
+		lineageTag: a10a0a2b-7ce2-5588-b19f-ef3b8869e9c8
+		summarizeBy: sum
+		sourceColumn: portfolio_return
+
+		annotation SummarizationSetBy = Automatic
+
+	column benchmark_return_chf
+		dataType: double
+		lineageTag: e673055d-f929-55ed-9370-57d08b4c9dda
+		summarizeBy: sum
+		sourceColumn: benchmark_return_chf
+
+		annotation SummarizationSetBy = Automatic
+
+	column active_return
+		dataType: double
+		lineageTag: 55e887a7-cb55-56ad-81bb-3e3583ff7955
+		summarizeBy: sum
+		sourceColumn: active_return
+
+		annotation SummarizationSetBy = Automatic
+
+	column excess_return
+		dataType: double
+		lineageTag: 5f908052-f005-5e42-9f65-f14115ffc31f
+		summarizeBy: sum
+		sourceColumn: excess_return
+
+		annotation SummarizationSetBy = Automatic
+
+	partition RendementActif = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/06_performance/active_return.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"month", "strategy", "portfolio_return", "benchmark_return_chf", "active_return", "excess_return"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"month", type text}, {"strategy", type text}, {"portfolio_return", type number}, {"benchmark_return_chf", type number}, {"active_return", type number}, {"excess_return", type number}}),
+				    Dated = Table.TransformColumns(Typed, {{"month", each Date.FromText(_ & "-01"), type date}})
+				in
+				    Dated
+
+	annotation PBI_ResultType = Table
+

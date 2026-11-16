@@ -1,0 +1,44 @@
+table ZoneGeo
+	lineageTag: fbb4988e-7725-5e75-af02-b3aa3b41613e
+
+	measure 'Poids zone' = MAX ( ZoneGeo[weight] )
+		formatString: 0.0%
+		lineageTag: dd7efeae-8f15-569e-8a71-086c01f14edb
+
+	column strategy
+		dataType: string
+		lineageTag: 1d1bbdc4-a7bf-5046-bde8-a2ee56ad84c8
+		summarizeBy: none
+		sourceColumn: strategy
+
+	column zone
+		dataType: string
+		lineageTag: bfe8975e-dcd8-5f14-8e6a-d06816076dd2
+		summarizeBy: none
+		sourceColumn: zone
+
+	column weight
+		dataType: double
+		lineageTag: 4386b2ff-cd11-5b2d-96e6-e8c2a9c3425b
+		summarizeBy: none
+		sourceColumn: weight
+
+	column names
+		dataType: int64
+		lineageTag: 3088f7c3-5fff-5458-999e-d51727013d9c
+		summarizeBy: none
+		sourceColumn: names
+
+	partition ZoneGeo = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/05_monitoring/allocation_by_zone.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Chosen = Table.SelectColumns(Promoted, {"strategy", "zone", "weight", "names"}),
+				    Typed = Table.TransformColumnTypes(Chosen, {{"strategy", type text}, {"zone", type text}, {"weight", type number}, {"names", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,42 @@
+table Paires
+	lineageTag: 4110a897-4979-510c-a195-fa4c0f4b1a5c
+
+	measure Corrélation = MAX ( Paires[correlation] )
+		formatString: 0.0%
+		lineageTag: 463acef6-8add-5363-9a5e-39a748374672
+
+	column symbol_a
+		dataType: string
+		lineageTag: 2b9b08fd-3809-5a9b-aa2c-50d551a737ab
+		summarizeBy: none
+		sourceColumn: symbol_a
+
+	column symbol_b
+		dataType: string
+		lineageTag: c80cfe40-26c8-58df-88a7-71293ec09a38
+		summarizeBy: none
+		sourceColumn: symbol_b
+
+	column correlation
+		dataType: double
+		lineageTag: 4b8cba0e-43c5-5522-9e00-114e7c8fe9bf
+		summarizeBy: none
+		sourceColumn: correlation
+
+	partition Paires = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectRoot & "/data/07_risk/correlation_matrix.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    FirstName = Table.ColumnNames(Promoted){0},
+				    OtherNames = List.Skip(Table.ColumnNames(Promoted), 1),
+				    Typed = Table.TransformColumnTypes(Promoted, List.Transform(OtherNames, each {_, type number})),
+				    Unpivoted = Table.Unpivot(Typed, OtherNames, "symbol_b", "correlation"),
+				    Renamed = Table.RenameColumns(Unpivoted, {{FirstName, "symbol_a"}}),
+				    Kept = Table.SelectRows(Renamed, each [symbol_a] < [symbol_b] and [correlation] >= SeuilPaires)
+				in
+				    Kept
+
+	annotation PBI_ResultType = Table
+
