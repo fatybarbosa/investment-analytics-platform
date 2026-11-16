@@ -24,10 +24,10 @@ reports/executive/rapport_executif.pdf
 reports/executive/controle_des_nombres.csv
 reports/executive/figures/*.png
 reports/management/presentation_management.pptx
-reports/clients/rapport_mensuel_caisse_de_pension.pdf
-reports/clients/rapport_mensuel_gerant.pdf
-reports/clients/monthly_report_pension_fund.pdf
-reports/clients/monthly_report_manager.pdf
+reports/clients/rapport_mensuel_allocation.pdf
+reports/clients/rapport_mensuel_lignes.pdf
+reports/clients/monthly_report_allocation.pdf
+reports/clients/monthly_report_lines.pdf
 reports/executive/cas_d_investigation.md
 """
 

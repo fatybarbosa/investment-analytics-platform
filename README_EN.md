@@ -6,7 +6,7 @@ English summary. The project documents, reports and comments are written in Fren
 
 ## What it is
 
-A reporting chain for a fictional discretionary equity mandate in Swiss francs, CLIENT001. From the client profile and the investment policy, it builds three hypothetical portfolios on public prices, monitors them against the written limits, measures performance and risk, applies four written shocks, and delivers the result as HTML pages, an Excel annex, a Power BI model, an executive PDF, a management deck, two customized client reports and automated comments.
+A reporting chain for a fictional discretionary equity mandate in Swiss francs, CLIENT001. From the client profile and the investment policy, it builds three hypothetical portfolios on public prices, monitors them against the written limits, measures performance and risk, applies four written shocks, and delivers the result as HTML pages, an Excel annex, a Power BI model, an executive PDF, a management deck, two readings of the same mandate and automated comments.
 
 The three books are hypothetical portfolios built retrospectively on public data. They were never held. Prices, exchange rates and the SARON rate are real public data: iShares for the fund's holdings and published return, Yahoo Finance for prices, the Swiss National Bank for exchange rates and SARON. The eligibility register is written by hand from the companies' public reports.
 
@@ -17,7 +17,7 @@ There is no custody data: no real positions, no transactions, no fees, no cash f
 | Need | Where it is answered |
 |---|---|
 | Client requirement before the code | `documentation/00_mandat/` and `documentation/BESOIN_DE_REPORTING.md`: requirement, data, calculation, control, deliverable |
-| Two clients, same data | `reports/clients/`: a pension-fund view and a manager view, each in French and in English |
+| Two readings of CLIENT001 | `reports/clients/`: allocation and limits, then lines and contributions, each in French and in English |
 | Data quality | Six controls on every loaded table, recorded with their cause; `reports/executive/cas_d_investigation.md` for four investigated defects |
 | Reconciliation | `reports/excel/`: Excel recomputes every indicator from the monthly returns without reading the Python result; Power BI values are read from the Desktop engine by DAX query; a gap above the tolerance stays open as an EXCEPTION with its cause |
 | Automation | One command, `python -m src.pipeline.refresh`, that stops on a failed control; `documentation/AUTOMATISATION_AVANT_APRES.md` for the manual process it replaces |
@@ -25,7 +25,7 @@ There is no custody data: no real positions, no transactions, no fees, no cash f
 | SQL | A local SQLite database rebuilt by the pipeline and the control queries in `sql/` |
 | Python | `src/`, from acquisition to the reports |
 | Reporting output | `reports/executive/rapport_executif.pdf`, `reports/management/presentation_management.pptx`, `reports/clients/` |
-| Automated comments | Rule-based sentences, not a language model; every number is checked against its file and the pipeline fails otherwise |
+| Automated comments | Sentences filled by written rules; every number is checked against its file and the pipeline fails otherwise |
 
 ## Rules the project keeps
 
