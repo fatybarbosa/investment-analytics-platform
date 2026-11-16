@@ -8,7 +8,7 @@ CLIENT001 est un cas d'école. Aucun compte n'est ouvert. Les trois livres sont 
 
 Les textes constatent et alertent par rapport aux limites écrites du mandat. Ils ne formulent pas de recommandation d'investissement.
 
-English summary: [README_EN.md](README_EN.md). Les deux lectures du mandat CLIENT001 existent aussi en anglais, dans `reports/clients/`.
+English summary: [README_EN.md](README_EN.md). Le rapport du client CLIENT001 et le rapport du gérant existent aussi en anglais, dans `reports/clients/`.
 
 ## Ce qu'un lecteur ouvre d'abord
 

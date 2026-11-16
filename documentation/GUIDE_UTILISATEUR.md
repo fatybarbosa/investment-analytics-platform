@@ -39,7 +39,7 @@ Le test d'injection travaille sur une copie. Il ne modifie pas les fichiers de p
 | Rapports clients, français et anglais | `reports/clients/` |
 | Présentation | `reports/management/presentation_management.pptx` |
 | Commentaires | `reports/executive/commentaires_automatises.md` |
-| Lectures du mandat CLIENT001 | `reports/clients/` |
+| Rapport client et rapport gérant | `reports/clients/` |
 | Cas d'investigation | `reports/executive/cas_d_investigation.md` |
 
 Les pages Power BI sont : Portfolio Overview, Suivi, Performance Analytics, Risk Analytics, Stress Testing, Data Quality. Le filtre des pages d'allocation, de suivi et de chocs ne propose pas le fonds. Les pages de performance et de risque le proposent, parce qu'elles lisent une série de rendement.

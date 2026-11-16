@@ -1,13 +1,14 @@
 """
 Phase 11b. Two customized monthly reports from the same published files.
 
-CLIENT001 is the only client. The two reports are two readings of that
-mandate, from the same files.
+CLIENT001 is the only client. One report is written for that client.
+The other is written for the manager who follows the same books.
+Both read the same files.
 
-Allocation reading : sector, region, currency, written limits,
-performance against the fund, risk. Nothing at security level.
+Client report : sector, region, currency, written limits, performance
+against the fund, risk. Nothing at security level.
 
-Lines reading : the ten largest lines, the names that contributed most
+Manager report : the ten largest lines, the names that contributed most
 and least over the window, the weight movements of the last rebalance,
 currency exposure. Nothing on limits or stress.
 
@@ -17,10 +18,10 @@ no order was placed, there is no transaction record.
 
 Outputs
 -------
-reports/clients/rapport_mensuel_allocation.pdf
-reports/clients/rapport_mensuel_lignes.pdf
-reports/clients/monthly_report_allocation.pdf
-reports/clients/monthly_report_lines.pdf
+reports/clients/rapport_client.pdf
+reports/clients/rapport_gerant.pdf
+reports/clients/monthly_report_client.pdf
+reports/clients/monthly_report_manager.pdf
 """
 
 from __future__ import annotations
@@ -48,10 +49,10 @@ from src.reporting.executive_report import LABEL, Report, SMALL, plain, read_rep
 from src.reporting.number_check import AUTO_LABEL, Draft, Statement, fact, resolve
 
 
-PENSION_FILE = CLIENT_REPORTS / "rapport_mensuel_allocation.pdf"
-MANAGER_FILE = CLIENT_REPORTS / "rapport_mensuel_lignes.pdf"
-PENSION_FILE_EN = CLIENT_REPORTS / "monthly_report_allocation.pdf"
-MANAGER_FILE_EN = CLIENT_REPORTS / "monthly_report_lines.pdf"
+PENSION_FILE = CLIENT_REPORTS / "rapport_client.pdf"
+MANAGER_FILE = CLIENT_REPORTS / "rapport_gerant.pdf"
+PENSION_FILE_EN = CLIENT_REPORTS / "monthly_report_client.pdf"
+MANAGER_FILE_EN = CLIENT_REPORTS / "monthly_report_manager.pdf"
 CLIENT_REPORT_MAX_PAGES = 4
 
 SECTORS = "data/05_monitoring/allocation_by_sector.csv"
@@ -64,28 +65,28 @@ TOP_LINES = 5
 NOT_HELD = "–"
 
 PENSION_NEEDS = (
-    "Lecture allocation du mandat CLIENT001 : la répartition par secteur, zone et devise, la situation face à chaque limite "
+    "Rapport remis au client CLIENT001 : la répartition par secteur, zone et devise, la situation face à chaque limite "
     "écrite, la performance contre le fonds de référence en CHF, et les mesures de risque. "
-    "Cette lecture ne détaille pas les lignes."
+    "Le client ne reçoit pas le détail des lignes."
 )
 MANAGER_NEEDS = (
-    "Lecture lignes du mandat CLIENT001 : les dix premières lignes de chaque livre, les titres qui ont le plus contribué "
+    "Rapport remis au gérant des livres de CLIENT001 : les dix premières lignes de chaque livre, les titres qui ont le plus contribué "
     "et le plus pesé sur la période, les mouvements de poids du dernier rééquilibrage, et l'exposition par devise. "
-    "Cette lecture ne reprend ni les limites du mandat, ni les tests de résistance."
+    "Le gérant ne retrouve ici ni les limites du mandat, ni les tests de résistance."
 )
 MOVEMENT_NOTE = (
     "Les mouvements de poids sont ceux d'un livre hypothétique, recalculé chaque trimestre. "
     "Aucun ordre n'a été passé : ce ne sont pas des transactions, et il n'y a pas de relevé de dépositaire."
 )
 PENSION_NEEDS_EN = (
-    "Allocation reading of the CLIENT001 mandate: allocation by sector, region and currency, the position against each "
+    "Report for the client CLIENT001: allocation by sector, region and currency, the position against each "
     "written limit, performance against the reference fund in CHF, and the risk measures. "
-    "This reading does not go into security-level detail."
+    "The client does not receive security-level detail."
 )
 MANAGER_NEEDS_EN = (
-    "Holdings reading of the CLIENT001 mandate: the ten largest lines of each book, the names that contributed most "
+    "Report for the manager of the CLIENT001 books: the ten largest lines of each book, the names that contributed most "
     "and least over the window, the weight movements of the last rebalance, and currency exposure. "
-    "This reading does not repeat the mandate limits or the stress tests."
+    "The manager does not find the mandate limits or the stress tests here."
 )
 MOVEMENT_NOTE_EN = (
     "The weight movements are those of a hypothetical book, recalculated each quarter. "
@@ -294,7 +295,7 @@ def _label_paragraph(generated):
 
 
 def build_allocation_report(sections, figures, generated):
-    rep = _start("Rapport mensuel CLIENT001 — allocation, limites et risque", generated, PENSION_NEEDS)
+    rep = _start("Rapport client — CLIENT001", generated, PENSION_NEEDS)
 
     rep.heading("Limites du mandat et situation au mois de rapport")
     rep.table(content.limits_table(), widths=[36 * mm, 24 * mm, 22 * mm, 34 * mm, 34 * mm, 24 * mm])
@@ -325,7 +326,7 @@ def build_allocation_report(sections, figures, generated):
 
 
 def build_manager_report(sections, figures, generated):
-    rep = _start("Rapport mensuel CLIENT001 — lignes, contributions et mouvements", generated, MANAGER_NEEDS)
+    rep = _start("Rapport gérant — livres de CLIENT001", generated, MANAGER_NEEDS)
 
     rep.heading("Dix premières lignes au mois de rapport")
     for book in BOOKS:
@@ -359,8 +360,8 @@ def build_manager_report(sections, figures, generated):
 
 
 def build_allocation_report_en(sections, figures, generated):
-    """English allocation reading. Same files and the same facts as the French one."""
-    rep = _start("Monthly report CLIENT001 — allocation, limits and risk", generated, PENSION_NEEDS_EN, lang="en")
+    """English client report. Same files and the same facts as the French one."""
+    rep = _start("Client report — CLIENT001", generated, PENSION_NEEDS_EN, lang="en")
 
     rep.heading("Mandate limits at the report month")
     rep.table(
@@ -403,8 +404,8 @@ def build_allocation_report_en(sections, figures, generated):
 
 
 def build_manager_report_en(sections, figures, generated):
-    """English lines reading. Same files and the same facts as the French one."""
-    rep = _start("Monthly report CLIENT001 — lines, contributions and movements", generated, MANAGER_NEEDS_EN, lang="en")
+    """English manager report. Same files and the same facts as the French one."""
+    rep = _start("Manager report — CLIENT001 books", generated, MANAGER_NEEDS_EN, lang="en")
 
     rep.heading("Ten largest lines at the report month")
     for book in BOOKS:
