@@ -46,7 +46,7 @@ Lignes : 214.
 
 ### `data/01_raw/market/market_prices.csv`
 
-Lignes : 650716.
+Lignes : 650807.
 
 | Colonne |
 |---|
@@ -268,6 +268,22 @@ Lignes : 34.
 | `weight` |
 | `names` |
 
+### `data/05_monitoring/holding_contribution.csv`
+
+Lignes : 10440.
+
+| Colonne |
+|---|
+| `month` |
+| `strategy` |
+| `yahoo_symbol` |
+| `name` |
+| `sector` |
+| `weight` |
+| `asset_return` |
+| `month_contribution` |
+| `cumulative_contribution` |
+
 ### `data/05_monitoring/limit_watch.csv`
 
 Lignes : 360.
@@ -367,6 +383,20 @@ Lignes : 120.
 | `over_quarterly_cap` |
 | `trailing_annual_turnover` |
 | `over_annual_cap` |
+
+### `data/05_monitoring/weight_changes.csv`
+
+Lignes : 1321.
+
+| Colonne |
+|---|
+| `month` |
+| `strategy` |
+| `yahoo_symbol` |
+| `name` |
+| `weight_before` |
+| `weight_after` |
+| `weight_change` |
 
 ## Performance
 
@@ -537,11 +567,11 @@ Lignes : 15.
 
 ## Base SQLite
 
-Fichier local `database/sdg_investment.db`. Tables : 16.
+Fichier local `database/sdg_investment.db`. Tables : 19.
 
 ### `acquisition_log`
 
-Lignes : 117.
+Lignes : 122.
 
 | Colonne |
 |---|
@@ -659,7 +689,7 @@ Lignes : 7578.
 
 ### `market_prices`
 
-Lignes : 650716.
+Lignes : 650807.
 
 | Colonne |
 |---|
@@ -697,6 +727,48 @@ Lignes : 120.
 | `controversy` |
 | `status` |
 | `positive` |
+
+### `published_contributions`
+
+Lignes : 10440.
+
+| Colonne |
+|---|
+| `month` |
+| `strategy` |
+| `yahoo_symbol` |
+| `name` |
+| `sector` |
+| `weight` |
+| `asset_return` |
+| `month_contribution` |
+| `cumulative_contribution` |
+
+### `published_returns`
+
+Lignes : 360.
+
+| Colonne |
+|---|
+| `month` |
+| `strategy` |
+| `portfolio_return` |
+| `risk_free_return` |
+| `excess_return` |
+
+### `published_weights`
+
+Lignes : 10440.
+
+| Colonne |
+|---|
+| `strategy` |
+| `month` |
+| `yahoo_symbol` |
+| `ticker` |
+| `name` |
+| `listing_currency` |
+| `weight` |
 
 ### `quality_control_result`
 
@@ -819,3 +891,9 @@ Les fichiers de `sql/` s'exécutent sur la base locale. Ils posent une question 
 - `sql/03_registre_des_jeux.sql`
 - `sql/04_saron_recent.sql`
 - `sql/05_positions_du_fonds.sql`
+- `sql/06_couverture_change.sql`
+- `sql/07_seances_a_ecarter.sql`
+- `sql/08_fonds_contre_registre_odd.sql`
+- `sql/09_fonds_sans_referentiel.sql`
+- `sql/10_poids_des_livres.sql`
+- `sql/11_contributeurs_par_titre.sql`
