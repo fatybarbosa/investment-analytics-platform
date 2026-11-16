@@ -1,8 +1,8 @@
 table Matrice
 	lineageTag: 7c2e9a14-6b48-5d31-a0f7-4e8c1b5d9a26
 
-	measure Corrélation = MAX ( Matrice[correlation] )
-		formatString: 0.0%
+	measure 'Corrélation croisée' = MAX ( Matrice[correlation] )
+		formatString: 0%
 		lineageTag: 9a1f3c70-2e84-5b16-c493-7d0a5e8f1b34
 
 	column symbol_a
@@ -62,3 +62,4 @@ table Matrice
 				    ExpandB
 
 	annotation PBI_ResultType = Table
+

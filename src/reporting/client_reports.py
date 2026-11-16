@@ -5,8 +5,9 @@ CLIENT001 is the only client. One report is written for that client.
 The other is written for the manager who follows the same books.
 Both read the same files.
 
-Client report : sector, region, currency, written limits, performance
-against the fund, risk. Nothing at security level.
+Client report : sector, region, currency and the written limits.
+Performance, risk and stress stay in the executive report.
+Nothing at security level.
 
 Manager report : the ten largest lines, the names that contributed most
 and least over the window, the weight movements of the last rebalance,
@@ -18,8 +19,8 @@ no order was placed, there is no transaction record.
 
 Outputs
 -------
-reports/clients/rapport_client.pdf
-reports/clients/rapport_gerant.pdf
+reports/client/rapport_client.pdf
+reports/client/rapport_gerant.pdf
 """
 
 from __future__ import annotations
@@ -31,7 +32,6 @@ from src.config import CLIENT_REPORTS, PROJECT_ROOT
 from src.reporting import report_content as content
 from src.reporting.commentary import (
     BOOKS,
-    FUND,
     LABELS,
     MONTHS,
     PORTFOLIO_LABEL,
@@ -40,11 +40,9 @@ from src.reporting.commentary import (
     WINDOW_END,
     WINDOW_START,
     config,
-    perf,
-    report,
 )
 from src.reporting.executive_report import LABEL, Report, SMALL, plain, read_report
-from src.reporting.number_check import AUTO_LABEL, Draft, Statement, fact, resolve
+from src.reporting.number_check import AUTO_LABEL, Draft, Statement, fact
 
 
 PENSION_FILE = CLIENT_REPORTS / "rapport_client.pdf"
@@ -61,9 +59,9 @@ TOP_LINES = 5
 NOT_HELD = "–"
 
 PENSION_NEEDS = (
-    "Rapport remis au client CLIENT001 : la répartition par secteur, zone et devise, la situation face à chaque limite "
-    "écrite, la performance contre le fonds de référence en CHF, et les mesures de risque. "
-    "Le client ne reçoit pas le détail des lignes."
+    "Rapport remis à CLIENT001 : la répartition par secteur, zone et devise, et la situation face à chaque limite écrite. "
+    "La performance, le risque et les tests de résistance sont dans le rapport exécutif. "
+    "CLIENT001 ne reçoit pas le détail des lignes."
 )
 MANAGER_NEEDS = (
     "Rapport remis au gérant des livres de CLIENT001 : les dix premières lignes de chaque livre, les titres qui ont le plus contribué "
@@ -74,36 +72,13 @@ MOVEMENT_NOTE = (
     "Les mouvements de poids sont ceux d'un livre hypothétique, recalculé chaque trimestre. "
     "Aucun ordre n'a été passé : ce ne sont pas des transactions, et il n'y a pas de relevé de dépositaire."
 )
-PENSION_NEEDS_EN = (
-    "Report for the client CLIENT001: allocation by sector, region and currency, the position against each "
-    "written limit, performance against the reference fund in CHF, and the risk measures. "
-    "The client does not receive security-level detail."
-)
-MANAGER_NEEDS_EN = (
-    "Report for the manager of the CLIENT001 books: the ten largest lines of each book, the names that contributed most "
-    "and least over the window, the weight movements of the last rebalance, and currency exposure. "
-    "The manager does not find the mandate limits or the stress tests here."
-)
-MOVEMENT_NOTE_EN = (
-    "The weight movements are those of a hypothetical book, recalculated each quarter. "
-    "No order was placed: these are not transactions, and there is no custody statement."
-)
-SCOPE_EN = (
-    "Hypothetical portfolios built retrospectively on public data. They were never held. "
-    "Prices, exchange rates and the SARON rate are real public data. The three books share the same "
-    "list of names and are compared with the iShares MSCI Global Sustainable Development Goals fund, "
-    "whose published return is converted into CHF. The books' return does not include dividends; the fund's does. "
-    "There is no custody data. "
-)
 
 
 def _frame(source):
     return pd.read_csv(PROJECT_ROOT / source)
 
 
-def _scope(client_needs, lang="fr"):
-    if lang == "en":
-        return plain("scope", SCOPE_EN + client_needs)
+def _scope(client_needs):
     return plain("périmètre", (
         f"{PORTFOLIO_LABEL}. {REAL_DATA_NOTE} Les trois livres partagent la même liste de titres et sont comparés "
         "au fonds iShares MSCI Global Sustainable Development Goals, dont le rendement publié est converti en CHF. "
@@ -112,13 +87,8 @@ def _scope(client_needs, lang="fr"):
     ))
 
 
-def _window_sentence(lang="fr"):
+def _window_sentence():
     d = Draft()
-    if lang == "en":
-        return d.done("window", (
-            f"Report month: {d.text(WINDOW_END)}. Measurement window: {d.count(MONTHS)} months, "
-            f"from {d.text(WINDOW_START)} to {d.text(WINDOW_END)}."
-        ))
     return d.done("fenêtre", (
         f"Mois de rapport : {d.text(WINDOW_END)}. Fenêtre de mesure : {d.count(MONTHS)} mois, "
         f"de {d.text(WINDOW_START)} à {d.text(WINDOW_END)}."
@@ -183,48 +153,30 @@ def contributors_table(book, header=None):
     return content._table(f"contributeurs {book}", header, rows, d)
 
 
-def movements(book, lang="fr"):
+def movements(book):
     """Weight movements of the last rebalance, or the sentence that says there were none."""
     frame = _frame(WEIGHT_CHANGES)
     lines = frame.loc[frame["strategy"].astype(str).eq(book)]
     d = Draft()
     if lines.empty:
-        if lang == "en":
-            text = (
-                f"{LABELS[book]}: no weight movement over the window. The largest gross turnover "
-                f"observed is {d.pct(fact(TURNOVER, 'gross_turnover', {'strategy': book}, op='max', scale='ratio'), 1)}."
-            )
-        else:
-            text = (
-                f"{LABELS[book]} : aucun mouvement de poids sur la fenêtre. La rotation brute la plus forte "
-                f"observée est de {d.pct(fact(TURNOVER, 'gross_turnover', {'strategy': book}, op='max', scale='ratio'), 1)}."
-            )
+        text = (
+            f"{LABELS[book]} : aucun mouvement de poids sur la fenêtre. La rotation brute la plus forte "
+            f"observée est de {d.pct(fact(TURNOVER, 'gross_turnover', {'strategy': book}, op='max', scale='ratio'), 1)}."
+        )
         return None, d.done("mouvements", text)
     last = str(lines["month"].astype(str).max())
     month_lines = lines.loc[lines["month"].astype(str).eq(last)]
     ordered = month_lines.reindex(month_lines["weight_change"].abs().sort_values(ascending=False).index)
     chosen = ordered.head(2 * TOP_LINES)
-    if lang == "en":
-        text = (
-            f"{LABELS[book]}: last rebalance in {d.text(fact(TURNOVER, 'month', {'strategy': book}, op='last', scale='text'))}, "
-            f"{d.count(fact(WEIGHT_CHANGES, 'yahoo_symbol', {'strategy': book, 'month': last}, op='count'))} lines moved, "
-            f"gross turnover {d.pct(fact(TURNOVER, 'gross_turnover', {'strategy': book, 'month': last}, scale='ratio'), 1)} "
-            f"against a quarterly cap of {d.pct(config('QUARTERLY_TURNOVER_CAP'), 1)}. The largest movements:"
-        )
-    else:
-        text = (
-            f"{LABELS[book]} : dernier rééquilibrage en {d.text(fact(TURNOVER, 'month', {'strategy': book}, op='last', scale='text'))}, "
-            f"{d.count(fact(WEIGHT_CHANGES, 'yahoo_symbol', {'strategy': book, 'month': last}, op='count'))} lignes ont bougé, "
-            f"rotation brute {d.pct(fact(TURNOVER, 'gross_turnover', {'strategy': book, 'month': last}, scale='ratio'), 1)} "
-            f"pour un plafond trimestriel de {d.pct(config('QUARTERLY_TURNOVER_CAP'), 1)}. Les plus grands mouvements :"
-        )
+    text = (
+        f"{LABELS[book]} : dernier rééquilibrage en {d.text(fact(TURNOVER, 'month', {'strategy': book}, op='last', scale='text'))}, "
+        f"{d.count(fact(WEIGHT_CHANGES, 'yahoo_symbol', {'strategy': book, 'month': last}, op='count'))} lignes ont bougé, "
+        f"rotation brute {d.pct(fact(TURNOVER, 'gross_turnover', {'strategy': book, 'month': last}, scale='ratio'), 1)} "
+        f"pour un plafond trimestriel de {d.pct(config('QUARTERLY_TURNOVER_CAP'), 1)}. Les plus grands mouvements :"
+    )
     sentence = d.done("mouvements", text)
     t = Draft()
-    header = (
-        ["Name", "Weight before", "Weight after", "Change"]
-        if lang == "en"
-        else ["Titre", "Poids avant", "Poids après", "Variation"]
-    )
+    header = ["Titre", "Poids avant", "Poids après", "Variation"]
     rows = []
     for record in chosen.itertuples(index=False):
         where = {"strategy": book, "month": last, "yahoo_symbol": str(record.yahoo_symbol)}
@@ -238,50 +190,17 @@ def movements(book, lang="fr"):
     return table, sentence
 
 
-def performance_sentence(lang="fr"):
-    d = Draft()
-    best = max(BOOKS, key=lambda book: float(resolve(perf(book, "annualized_return"))))
-    fund_return = float(resolve(perf(FUND, "annualized_return")))
-    ahead = [LABELS[book] for book in BOOKS if float(resolve(perf(book, "annualized_return"))) > fund_return]
-    if lang == "en":
-        verdict = (
-            "No book beats the fund over the window."
-            if not ahead
-            else f"Above the fund over the window: {', '.join(ahead)}."
-        )
-        text = (
-            f"Among the three books, {LABELS[best]} has the highest annualised return, "
-            f"{d.pct(perf(best, 'annualized_return'))} against {d.pct(perf(FUND, 'annualized_return'))} for the fund. {verdict}"
-        )
-    else:
-        verdict = (
-            "Aucun livre ne dépasse le fonds sur la fenêtre."
-            if not ahead
-            else f"Dépassent le fonds sur la fenêtre : {', '.join(ahead)}."
-        )
-        text = (
-            f"Le livre {LABELS[best]} a le rendement annualisé le plus élevé des trois, "
-            f"{d.pct(perf(best, 'annualized_return'))} contre {d.pct(perf(FUND, 'annualized_return'))} pour le fonds. {verdict}"
-        )
-    return d.done("performance", text)
-
-
 # --------------------------------------------------------------------------
 # Reports
 # --------------------------------------------------------------------------
 
-def _start(title, generated, needs, lang="fr"):
+def _start(title, generated, needs):
     rep = Report(generated)
     rep.title(title)
     rep.story.append(_label_paragraph(generated))
-    rep.para(_scope(needs, lang))
-    rep.para(_window_sentence(lang))
+    rep.para(_scope(needs))
+    rep.para(_window_sentence())
     return rep
-
-
-def _retitle(built, header):
-    _header, rows, statement = built
-    return header, rows, statement
 
 
 def _label_paragraph(generated):
@@ -290,8 +209,8 @@ def _label_paragraph(generated):
     return Paragraph(f"{AUTO_LABEL} Produit par le pipeline le {generated}.", LABEL)
 
 
-def build_allocation_report(sections, figures, generated):
-    rep = _start("Rapport client — CLIENT001", generated, PENSION_NEEDS)
+def build_allocation_report(sections, _figures, generated):
+    rep = _start("Rapport de CLIENT001", generated, PENSION_NEEDS)
 
     rep.heading("Limites du mandat et situation au mois de rapport")
     rep.table(content.limits_table(), widths=[36 * mm, 24 * mm, 22 * mm, 34 * mm, 34 * mm, 24 * mm])
@@ -303,18 +222,11 @@ def build_allocation_report(sections, figures, generated):
     rep.table(allocation_table(ZONES, "zone", "Zone"), widths=[52 * mm, 36 * mm, 36 * mm, 36 * mm])
     rep.table(allocation_table(EXPOSURE, "exposure", "Devise de cotation"), widths=[52 * mm, 36 * mm, 36 * mm, 36 * mm])
 
-    rep.heading("Performance contre le fonds, en CHF")
-    rep.table(content.performance_table(), widths=[34 * mm, 22 * mm, 19 * mm, 15 * mm, 15 * mm, 24 * mm, 21 * mm, 24 * mm])
-    rep.para(performance_sentence())
-    tracking = [s for s in sections["alertes"] if "Écart de suivi" in s.text]
-    rep.bullets(tracking)
-    rep.figure(figures["wealth"], "Richesse cumulée pour une unité investie. Le fonds est en pointillé.")
-
-    rep.heading("Risque")
-    rep.table(content.risk_table(), widths=[36 * mm, 29 * mm, 25 * mm, 33 * mm, 21 * mm, 30 * mm])
-    drawdown = [s for s in sections["risques"] if s.text.startswith("Drawdown maximal")]
-    rep.bullets(drawdown + [s for s in sections["alertes"] if s.text.startswith("Drawdown maximal au-delà")])
-    rep.para(plain("note", "Les tests de résistance, le détail des lignes et la qualité des données sont dans le rapport exécutif, sur demande."), SMALL)
+    rep.para(plain(
+        "renvoi",
+        "La performance contre le fonds, le risque et les tests de résistance sont dans le rapport exécutif. "
+        "Ils ne sont pas repris ici.",
+    ), SMALL)
 
     CLIENT_REPORTS.mkdir(parents=True, exist_ok=True)
     rep.save(PENSION_FILE)

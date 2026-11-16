@@ -17,14 +17,14 @@ There is no custody data: no real positions, no transactions, no fees, no cash f
 | Need | Where it is answered |
 |---|---|
 | Client requirement before the code | `documentation/00_mandat/` and `documentation/BESOIN_DE_REPORTING.md`: requirement, data, calculation, control, deliverable |
-| Client report and manager report | `reports/clients/`, in French: CLIENT001 receives allocation, limits, performance and risk; the manager receives lines, contributors and weight movements |
+| CLIENT001 report and manager report | `reports/client/`, in French: CLIENT001 receives allocation and mandate limits; the manager receives lines, contributors and weight movements. Performance and risk stay in the executive report |
 | Data quality | Six controls on every loaded table, recorded with their cause; `reports/executive/cas_d_investigation.md` for four investigated defects |
 | Reconciliation | `reports/excel/`: Excel recomputes every indicator from the monthly returns without reading the Python result; Power BI values are read from the Desktop engine by DAX query; a gap above the tolerance stays open as an EXCEPTION with its cause |
 | Automation | One command, `python -m src.pipeline.refresh`, that stops on a failed control; `documentation/AUTOMATISATION_AVANT_APRES.md` for the manual process it replaces |
 | Excel | Power Query, structured tables, `XLOOKUP`, `INDEX`/`MATCH`, `SUMIFS`, pivot tables with slicers, sum and rebuild controls |
 | SQL | A local SQLite database rebuilt by the pipeline and the control queries in `sql/` |
 | Python | `src/`, from acquisition to the reports |
-| Reporting output | `reports/executive/rapport_executif.pdf`, `reports/management/presentation_management.pptx`, `reports/clients/` |
+| Reporting output | `reports/executive/rapport_executif.pdf`, `reports/management/presentation_management.pptx`, `reports/client/` |
 | Automated comments | Sentences filled by written rules; every number is checked against its file and the pipeline fails otherwise |
 
 ## Rules the project keeps

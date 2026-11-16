@@ -67,12 +67,12 @@ table Contribution
 				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
 				    Chosen = Table.SelectColumns(Promoted, {"month", "strategy", "sector", "cumulative_contribution"}),
 				    Typed = Table.TransformColumnTypes(Chosen, {{"month", type text}, {"strategy", type text}, {"sector", type text}, {"cumulative_contribution", type number}}),
-				    Dated = Table.TransformColumns(Typed, {{"month", each Date.FromText(_ & "-01"), type date}}),
+				    Dated = Table.TransformColumns(Typed, {{"month", each Date.FromText(_ & "-01", [Format = "yyyy-MM-dd", Culture = "en-US"]), type date}}),
 				    Livres = Csv.Document(File.Contents(ProjectRoot & "/dashboards/powerbi/referentiel/strategie.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
 				    LivresPromus = Table.PromoteHeaders(Livres, [PromoteAllScalars = true]),
 				    LivresChoisis = Table.SelectColumns(LivresPromus, {"strategy", "livre", "ordre"}),
 				    Joint = Table.NestedJoin(Dated, {"strategy"}, LivresChoisis, {"strategy"}, "ref", JoinKind.Inner),
-				    Nomme = Table.ExpandTableColumn(Joint, "ref", {"livre", "ordre"}, {"livre", "ordre"})
+				    Nomme = Table.TransformColumnTypes(Table.ExpandTableColumn(Joint, "ref", {"livre", "ordre"}, {"livre", "ordre"}), {{"livre", type text}, {"ordre", type text}})
 				in
 				    Nomme
 

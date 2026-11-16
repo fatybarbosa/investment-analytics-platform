@@ -15,14 +15,6 @@ table Rapport
 		formatString: 0.0
 		lineageTag: 079b3e03-5b68-57d0-b125-352875146a9b
 
-	measure 'Indice de Herfindahl' = SELECTEDVALUE ( Rapport[hhi] )
-		formatString: 0.000
-		lineageTag: c4e8a1d6-3b70-5f92-a045-7d1c6e9b2a83
-
-	measure 'Multiple de concentration' = SELECTEDVALUE ( Rapport[concentration_multiple] )
-		formatString: 0.00
-		lineageTag: e1b7d4a0-8c25-5e61-9f38-4a2d0c6b7e19
-
 	measure 'Poids maximum' = SELECTEDVALUE ( Rapport[maximum_weight] )
 		formatString: 0.0%
 		lineageTag: 9c2af15a-1aa4-5dbd-af32-97c3288d4ac0
@@ -47,6 +39,14 @@ table Rapport
 	measure 'Poids de la devise' = SELECTEDVALUE ( Rapport[largest_currency_weight] )
 		formatString: 0.0%
 		lineageTag: 0d9e5aa7-f327-517d-8b92-227276061fd9
+
+	measure 'Indice de Herfindahl' = SELECTEDVALUE ( Rapport[hhi] )
+		formatString: 0.000
+		lineageTag: c4e8a1d6-3b70-5f92-a045-7d1c6e9b2a83
+
+	measure 'Multiple de concentration' = SELECTEDVALUE ( Rapport[concentration_multiple] )
+		formatString: 0.00
+		lineageTag: e1b7d4a0-8c25-5e61-9f38-4a2d0c6b7e19
 
 	column strategy
 		dataType: string

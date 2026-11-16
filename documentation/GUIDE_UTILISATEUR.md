@@ -35,11 +35,11 @@ Le test d'injection travaille sur une copie. Il ne modifie pas les fichiers de p
 | Annexe Excel | `reports/excel/annexe_reporting.xlsx`, après Actualiser tout |
 | Explications de l'annexe | `reports/excel/EXPLICATIONS.md` |
 | Power BI | `dashboards/powerbi/Investment Analytics.pbip`, puis Actualiser |
-| Rapport | `reports/executive/rapport_executif.pdf` |
-| Rapport client et rapport gérant | `reports/clients/` |
+| Rapport exécutif | `reports/executive/rapport_executif.pdf` |
+| Rapport de CLIENT001 | `reports/client/rapport_client.pdf` |
+| Rapport du gérant | `reports/client/rapport_gerant.pdf` |
 | Présentation | `reports/management/presentation_management.pptx` |
 | Commentaires | `reports/executive/commentaires_automatises.md` |
-| Rapport client et rapport gérant | `reports/clients/` |
 | Cas d'investigation | `reports/executive/cas_d_investigation.md` |
 
 Les pages Power BI sont : Portfolio Overview, Suivi, Performance Analytics, Risk Analytics, Stress Testing, Data Quality. Le filtre des pages d'allocation, de suivi et de chocs ne propose pas le fonds. Les pages de performance et de risque le proposent, parce qu'elles lisent une série de rendement.
@@ -71,10 +71,6 @@ python -m src.reporting.data_dictionary
 ```
 
 Le fichier écrit est `documentation/DICTIONNAIRE_DONNEES.md`. Les nombres de lignes viennent du comptage du fichier, pas d'une saisie.
-
-## Captures Power BI
-
-Les images de `documentation/captures/` sont exportées depuis Power BI Desktop, après Actualiser, une page à la fois. Le pipeline ne les produit pas. Le dossier contient la note de dépôt tant que les images n'y ont pas été ajoutées.
 
 ## Règles de restitution
 

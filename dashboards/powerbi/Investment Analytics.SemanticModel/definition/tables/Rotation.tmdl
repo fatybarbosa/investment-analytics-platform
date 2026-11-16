@@ -41,7 +41,7 @@ table Rotation
 				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
 				    Chosen = Table.SelectColumns(Promoted, {"month", "strategy", "gross_turnover"}),
 				    Typed = Table.TransformColumnTypes(Chosen, {{"month", type text}, {"strategy", type text}, {"gross_turnover", type number}}),
-				    Dated = Table.TransformColumns(Typed, {{"month", each Date.FromText(_ & "-01"), type date}})
+				    Dated = Table.TransformColumns(Typed, {{"month", each Date.FromText(_ & "-01", [Format = "yyyy-MM-dd", Culture = "en-US"]), type date}})
 				in
 				    Dated
 

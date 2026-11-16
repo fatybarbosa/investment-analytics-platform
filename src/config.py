@@ -165,8 +165,8 @@ EXECUTIVE_REPORTS = (
     REPORTS_DIR / "executive"
 )
 
-# Phase 11b. Two customized monthly reports from the same files.
-CLIENT_REPORTS = REPORTS_DIR / "clients"
+# Phase 11b. One report for CLIENT001, one for the manager of the same books.
+CLIENT_REPORTS = REPORTS_DIR / "client"
 
 # ============================================================================
 # AUDIT & GOVERNANCE

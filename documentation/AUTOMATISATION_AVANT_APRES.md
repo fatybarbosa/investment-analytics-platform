@@ -23,7 +23,7 @@ Registre des sources
   → conversion en CHF, univers éligible
   → livres, suivi, performance, risque, chocs
   → annexe Excel : recalcul indépendant, réconciliation Python / Excel / Power BI
-  → rapport, présentation, rapports clients, commentaires, cas d'investigation
+  → rapport exécutif, rapport de CLIENT001, rapport du gérant, présentation, commentaires, cas d'investigation
   → relecture de chaque nombre dans son fichier
   → dictionnaire de données et requêtes SQL exécutées
 ```
@@ -55,7 +55,7 @@ Elle ne s'arrête pas pour un avertissement qualité : l'écart est enregistré,
 - La relecture humaine des livrables avant diffusion. Chaque texte porte la mention qui le rappelle.
 - La décision sur un écart. Le pipeline l'écrit, il ne le tranche pas.
 - La lecture des rapports de société pour le registre ODD. Elle reste manuelle, et sa source est nommée ligne par ligne.
-- Les captures Power BI, exportées depuis Desktop.
+- L'ouverture de Power BI Desktop et l'actualisation du modèle. Le pipeline n'enregistre pas le rapport.
 
 ## Le même raisonnement dans Excel
 

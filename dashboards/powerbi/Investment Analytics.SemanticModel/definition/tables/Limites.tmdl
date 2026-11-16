@@ -121,7 +121,7 @@ table Limites
 				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
 				    Chosen = Table.SelectColumns(Promoted, {"month", "strategy", "largest_issuer_weight", "largest_sector_weight", "largest_zone_weight", "largest_currency_weight", "issuer_over_cap", "sector_over_cap", "zone_over_cap", "currency_over_cap", "invested_names", "positions_outside_band"}),
 				    Typed = Table.TransformColumnTypes(Chosen, {{"month", type text}, {"strategy", type text}, {"largest_issuer_weight", type number}, {"largest_sector_weight", type number}, {"largest_zone_weight", type number}, {"largest_currency_weight", type number}, {"issuer_over_cap", Int64.Type}, {"sector_over_cap", Int64.Type}, {"zone_over_cap", Int64.Type}, {"currency_over_cap", Int64.Type}, {"invested_names", Int64.Type}, {"positions_outside_band", Int64.Type}}),
-				    Dated = Table.TransformColumns(Typed, {{"month", each Date.FromText(_ & "-01"), type date}})
+				    Dated = Table.TransformColumns(Typed, {{"month", each Date.FromText(_ & "-01", [Format = "yyyy-MM-dd", Culture = "en-US"]), type date}})
 				in
 				    Dated
 

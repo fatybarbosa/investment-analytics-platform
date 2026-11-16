@@ -23,7 +23,7 @@ English summary: [README_EN.md](README_EN.md). Les rapports sont en français.
 | Du besoin d'un client au livrable | [documentation/BESOIN_DE_REPORTING.md](documentation/BESOIN_DE_REPORTING.md) |
 | Le processus manuel que la commande remplace | [documentation/AUTOMATISATION_AVANT_APRES.md](documentation/AUTOMATISATION_AVANT_APRES.md) |
 | Le rapport pour un comité | [reports/executive/rapport_executif.pdf](reports/executive/rapport_executif.pdf) |
-| Deux rapports clients sur les mêmes données | [reports/clients/](reports/clients/) |
+| Rapport de CLIENT001, et rapport du gérant | [reports/client/](reports/client/) |
 | Quatre défauts de données, instruits | [reports/executive/cas_d_investigation.md](reports/executive/cas_d_investigation.md) |
 | La présentation | [reports/management/presentation_management.pptx](reports/management/presentation_management.pptx) |
 | L'annexe qui rapproche Python, Excel et Power BI | [reports/excel/EXPLICATIONS.md](reports/excel/EXPLICATIONS.md) |

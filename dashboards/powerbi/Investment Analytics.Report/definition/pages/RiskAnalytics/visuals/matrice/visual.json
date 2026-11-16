@@ -61,11 +61,11 @@
                       "Entity": "Matrice"
                     }
                   },
-                  "Property": "Corrélation"
+                  "Property": "Corrélation croisée"
                 }
               },
-              "queryRef": "Matrice.Corrélation",
-              "nativeQueryRef": "Corrélation",
+              "queryRef": "Matrice.Corrélation croisée",
+              "nativeQueryRef": "Corrélation croisée",
               "active": true
             }
           ]
@@ -91,6 +91,84 @@
       }
     },
     "objects": {
+      "values": [
+        {
+          "properties": {
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "FillRule": {
+                      "Input": {
+                        "SelectRef": {
+                          "ExpressionName": "Matrice.Corrélation croisée"
+                        }
+                      },
+                      "FillRule": {
+                        "linearGradient3": {
+                          "min": {
+                            "color": {
+                              "Literal": {
+                                "Value": "'#B2182B'"
+                              }
+                            },
+                            "value": {
+                              "Literal": {
+                                "Value": "-1D"
+                              }
+                            }
+                          },
+                          "mid": {
+                            "color": {
+                              "Literal": {
+                                "Value": "'#F7F7F7'"
+                              }
+                            },
+                            "value": {
+                              "Literal": {
+                                "Value": "0D"
+                              }
+                            }
+                          },
+                          "max": {
+                            "color": {
+                              "Literal": {
+                                "Value": "'#2166AC'"
+                              }
+                            },
+                            "value": {
+                              "Literal": {
+                                "Value": "1D"
+                              }
+                            }
+                          },
+                          "nullColoringStrategy": {
+                            "strategy": {
+                              "Literal": {
+                                "Value": "'asZero'"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Matrice.Corrélation croisée"
+          }
+        }
+      ],
       "grid": [
         {
           "properties": {

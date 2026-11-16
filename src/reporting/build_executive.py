@@ -24,8 +24,8 @@ reports/executive/rapport_executif.pdf
 reports/executive/controle_des_nombres.csv
 reports/executive/figures/*.png
 reports/management/presentation_management.pptx
-reports/clients/rapport_client.pdf
-reports/clients/rapport_gerant.pdf
+reports/client/rapport_client.pdf
+reports/client/rapport_gerant.pdf
 reports/executive/cas_d_investigation.md
 """
 

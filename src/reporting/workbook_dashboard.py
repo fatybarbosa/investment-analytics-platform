@@ -11,32 +11,19 @@ from openpyxl.chart.series_factory import SeriesFactory as Series
 from openpyxl.chart.shapes import GraphicalProperties
 from openpyxl.chart.text import RichText
 from openpyxl.drawing.line import LineProperties
-from openpyxl.drawing.text import CharacterProperties, Paragraph, ParagraphProperties
+from openpyxl.drawing.text import (
+    CharacterProperties,
+    Paragraph,
+    ParagraphProperties,
+    RichTextProperties,
+)
 from openpyxl.styles import Alignment, Font
 from openpyxl.utils import get_column_letter
 
 
-MONTH_LABELS = (
-    "jan.",
-    "fév.",
-    "mars",
-    "avr.",
-    "mai",
-    "juin",
-    "juil.",
-    "août",
-    "sept.",
-    "oct.",
-    "nov.",
-    "déc.",
-)
-
-
-def axis_label(month, endpoint):
-    """Year, or month and year at the ends. No hyphen, so Excel does not show -11."""
+def axis_label(month, _endpoint):
+    """Year at each January. A month name at the ends wraps and crosses the next year."""
     year, month_number = str(month).split("-")
-    if endpoint:
-        return f"{MONTH_LABELS[int(month_number) - 1]} {year}"
     if month_number == "01":
         return year
     return ""
@@ -250,7 +237,10 @@ def add_dashboard(workbook, inputs, recalcul):
 
     def light_text(size):
         props = CharacterProperties(sz=size, solidFill="F4F6F8")
-        return RichText(p=[Paragraph(pPr=ParagraphProperties(defRPr=props), endParaRPr=props)])
+        return RichText(
+            bodyPr=RichTextProperties(rot=0),
+            p=[Paragraph(pPr=ParagraphProperties(defRPr=props), endParaRPr=props)],
+        )
 
     def hide_grid(axis):
         axis.majorGridlines = ChartLines(spPr=GraphicalProperties(ln=LineProperties(noFill=True)))
@@ -306,8 +296,6 @@ def add_dashboard(workbook, inputs, recalcul):
         chart.y_axis.delete = False
         chart.x_axis.tickLblPos = "nextTo"
         chart.y_axis.tickLblPos = "nextTo"
-        if label_skip and not horizontal:
-            chart.x_axis.tickLblPos = "low"
         chart.x_axis.majorTickMark = "out"
         chart.y_axis.majorTickMark = "out"
         chart.x_axis.title = None
@@ -322,8 +310,11 @@ def add_dashboard(workbook, inputs, recalcul):
             chart.y_axis.scaling.orientation = "maxMin"
         else:
             chart.y_axis.numFmt = number_format
-            if zoom:
-                chart.y_axis.crosses = "min"
+            # The date axis stays at the bottom. autoZero draws it through the plot
+            # as soon as a series goes below zero.
+            chart.y_axis.crosses = "min"
+            chart.x_axis.crosses = "min"
+            chart.x_axis.tickLblPos = "low"
         if isinstance(chart, BarChart):
             chart.varyColors = False
             chart.gapWidth = 20

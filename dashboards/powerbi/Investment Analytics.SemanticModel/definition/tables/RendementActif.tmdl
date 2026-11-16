@@ -183,7 +183,7 @@ table RendementActif
 				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
 				    Chosen = Table.SelectColumns(Promoted, {"month", "strategy", "portfolio_return", "benchmark_return_chf", "active_return", "excess_return"}),
 				    Typed = Table.TransformColumnTypes(Chosen, {{"month", type text}, {"strategy", type text}, {"portfolio_return", type number}, {"benchmark_return_chf", type number}, {"active_return", type number}, {"excess_return", type number}}),
-				    Dated = Table.TransformColumns(Typed, {{"month", each Date.FromText(_ & "-01"), type date}})
+				    Dated = Table.TransformColumns(Typed, {{"month", each Date.FromText(_ & "-01", [Format = "yyyy-MM-dd", Culture = "en-US"]), type date}})
 				in
 				    Dated
 
