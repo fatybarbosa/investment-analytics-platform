@@ -20,8 +20,6 @@ Outputs
 -------
 reports/clients/rapport_client.pdf
 reports/clients/rapport_gerant.pdf
-reports/clients/monthly_report_client.pdf
-reports/clients/monthly_report_manager.pdf
 """
 
 from __future__ import annotations
@@ -51,8 +49,6 @@ from src.reporting.number_check import AUTO_LABEL, Draft, Statement, fact, resol
 
 PENSION_FILE = CLIENT_REPORTS / "rapport_client.pdf"
 MANAGER_FILE = CLIENT_REPORTS / "rapport_gerant.pdf"
-PENSION_FILE_EN = CLIENT_REPORTS / "monthly_report_client.pdf"
-MANAGER_FILE_EN = CLIENT_REPORTS / "monthly_report_manager.pdf"
 CLIENT_REPORT_MAX_PAGES = 4
 
 SECTORS = "data/05_monitoring/allocation_by_sector.csv"
@@ -359,98 +355,11 @@ def build_manager_report(sections, figures, generated):
     return MANAGER_FILE, rep.statements, tuple(sorted(set(rep.footers))) + (generated, "CLIENT001")
 
 
-def build_allocation_report_en(sections, figures, generated):
-    """English client report. Same files and the same facts as the French one."""
-    rep = _start("Client report — CLIENT001", generated, PENSION_NEEDS_EN, lang="en")
-
-    rep.heading("Mandate limits at the report month")
-    rep.table(
-        _retitle(
-            content.limits_table(cap_label="Mandate cap", span_word="to"),
-            ["Book", "Invested lines", "Largest weight", "Largest sector", "Largest region", "Largest currency"],
-        ),
-        widths=[36 * mm, 24 * mm, 22 * mm, 34 * mm, 34 * mm, 24 * mm],
-    )
-
-    rep.heading("Allocation")
-    rep.table(allocation_table(SECTORS, "sector", "Sector"), widths=[52 * mm, 36 * mm, 36 * mm, 36 * mm])
-    rep.table(allocation_table(ZONES, "zone", "Region"), widths=[52 * mm, 36 * mm, 36 * mm, 36 * mm])
-    rep.table(allocation_table(EXPOSURE, "exposure", "Listing currency"), widths=[52 * mm, 36 * mm, 36 * mm, 36 * mm])
-
-    rep.heading("Performance against the fund, in CHF")
-    rep.table(
-        _retitle(
-            content.performance_table(),
-            ["Series", "Annualised return", "Volatility", "Sharpe", "Sortino", "Maximum drawdown", "Tracking error", "Information ratio"],
-        ),
-        widths=[34 * mm, 22 * mm, 19 * mm, 15 * mm, 15 * mm, 24 * mm, 21 * mm, 24 * mm],
-    )
-    rep.para(performance_sentence("en"))
-    rep.figure(figures["wealth"], "Cumulative wealth of one unit invested. The fund is the dotted line.")
-
-    rep.heading("Risk")
-    rep.table(
-        _retitle(
-            content.risk_table(),
-            ["Series", "Annualised volatility", "Monthly VaR", "Monthly expected shortfall", "Worst month", "Return of the worst month"],
-        ),
-        widths=[36 * mm, 29 * mm, 25 * mm, 33 * mm, 21 * mm, 30 * mm],
-    )
-    rep.para(plain("note", "Stress tests, security-level detail and data quality are in the executive report, on request."), SMALL)
-
-    CLIENT_REPORTS.mkdir(parents=True, exist_ok=True)
-    rep.save(PENSION_FILE_EN)
-    return PENSION_FILE_EN, rep.statements, tuple(sorted(set(rep.footers))) + (generated, "CLIENT001")
-
-
-def build_manager_report_en(sections, figures, generated):
-    """English manager report. Same files and the same facts as the French one."""
-    rep = _start("Manager report — CLIENT001 books", generated, MANAGER_NEEDS_EN, lang="en")
-
-    rep.heading("Ten largest lines at the report month")
-    for book in BOOKS:
-        rep.para(plain("book", f"{LABELS[book]}."), SMALL)
-        rep.table(
-            top10_table(book, ["Rank", "Name", "Sector", "Currency", "Weight"]),
-            widths=[12 * mm, 70 * mm, 40 * mm, 18 * mm, 20 * mm],
-        )
-
-    rep.heading("Contributors and detractors over the window")
-    rep.para(plain("contribution", (
-        "A name's contribution in a month is its weight multiplied by its return in CHF. "
-        "The names of a month rebuild the book's return, and the cumulative column adds the months without compounding. "
-        "The five largest and the five smallest of each book:"
-    )), SMALL)
-    for book in BOOKS:
-        rep.para(plain("book", f"{LABELS[book]}."), SMALL)
-        rep.table(
-            contributors_table(book, ["Name", "Sector", "Weight at the report month", "Cumulative contribution"]),
-            widths=[72 * mm, 40 * mm, 34 * mm, 34 * mm],
-        )
-
-    rep.heading("Weight movements of the last rebalance")
-    rep.para(plain("movements", MOVEMENT_NOTE_EN), SMALL)
-    for book in BOOKS:
-        table, sentence = movements(book, lang="en")
-        rep.para(sentence)
-        if table is not None:
-            rep.table(table, widths=[80 * mm, 30 * mm, 30 * mm, 30 * mm])
-
-    rep.heading("Exposure by listing currency")
-    rep.table(allocation_table(EXPOSURE, "exposure", "Listing currency"), widths=[52 * mm, 36 * mm, 36 * mm, 36 * mm])
-
-    CLIENT_REPORTS.mkdir(parents=True, exist_ok=True)
-    rep.save(MANAGER_FILE_EN)
-    return MANAGER_FILE_EN, rep.statements, tuple(sorted(set(rep.footers))) + (generated, "CLIENT001")
-
-
 def build_client_reports(sections, figures, generated):
-    """French and English reports. Return one (file, statements, structural) per report."""
+    """The client report and the manager report, in French."""
     return [
         build_allocation_report(sections, figures, generated),
         build_manager_report(sections, figures, generated),
-        build_allocation_report_en(sections, figures, generated),
-        build_manager_report_en(sections, figures, generated),
     ]
 
 

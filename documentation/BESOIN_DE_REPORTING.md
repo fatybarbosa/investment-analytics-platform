@@ -15,7 +15,6 @@ Le client du mandat est CLIENT001. Le gérant suit les mêmes livres. Les deux r
 | Ce que la page montre | Allocation, limites du mandat, performance contre le fonds, risque | Lignes, contributeurs et détracteurs, mouvements de poids, devises |
 | Ce que la page laisse de côté | Le détail des lignes | Les limites, les tests de résistance |
 | Livrable | `reports/clients/rapport_client.pdf` | `reports/clients/rapport_gerant.pdf` |
-| Même livrable en anglais | `reports/clients/monthly_report_client.pdf` | `reports/clients/monthly_report_manager.pdf` |
 
 ## Attente, donnée, calcul, contrôle, livrable
 

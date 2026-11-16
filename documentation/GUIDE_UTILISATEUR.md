@@ -36,7 +36,7 @@ Le test d'injection travaille sur une copie. Il ne modifie pas les fichiers de p
 | Explications de l'annexe | `reports/excel/EXPLICATIONS.md` |
 | Power BI | `dashboards/powerbi/Investment Analytics.pbip`, puis Actualiser |
 | Rapport | `reports/executive/rapport_executif.pdf` |
-| Rapports clients, français et anglais | `reports/clients/` |
+| Rapport client et rapport gérant | `reports/clients/` |
 | Présentation | `reports/management/presentation_management.pptx` |
 | Commentaires | `reports/executive/commentaires_automatises.md` |
 | Rapport client et rapport gérant | `reports/clients/` |
@@ -44,13 +44,19 @@ Le test d'injection travaille sur une copie. Il ne modifie pas les fichiers de p
 
 Les pages Power BI sont : Portfolio Overview, Suivi, Performance Analytics, Risk Analytics, Stress Testing, Data Quality. Le filtre des pages d'allocation, de suivi et de chocs ne propose pas le fonds. Les pages de performance et de risque le proposent, parce qu'elles lisent une série de rendement.
 
-La colonne Power BI de l'annexe reste en attente tant qu'une valeur n'a pas été lue dans Desktop :
+## Ouvrir Power BI, puis exporter les mesures
+
+1. Ouvrir Power BI Desktop.
+2. Fichier, Ouvrir, puis `dashboards/powerbi/Investment Analytics.pbip`.
+3. Actualiser. Les données ne sont pas dans le fichier : elles sont relues dans les CSV du projet.
+4. Laisser Desktop ouvert.
+5. Dans le dossier du projet, lancer :
 
 ```bash
 python -m src.reporting.power_bi_export
 ```
 
-Power BI Desktop doit être ouvert et le modèle actualisé. La commande ne calcule pas les mesures elle-même. Elle interroge le moteur. Si Desktop est fermé, elle s'arrête et n'écrit rien.
+La commande interroge le moteur de Desktop. Elle ne calcule pas les mesures elle-même, et elle n'enregistre pas le rapport. Si Desktop est fermé, elle s'arrête et n'écrit rien. Le résultat est `reports/excel/power_bi_export.csv`. L'annexe Excel s'en sert à la génération suivante pour la colonne Power BI.
 
 ## SQL
 

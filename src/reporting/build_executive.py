@@ -26,8 +26,6 @@ reports/executive/figures/*.png
 reports/management/presentation_management.pptx
 reports/clients/rapport_client.pdf
 reports/clients/rapport_gerant.pdf
-reports/clients/monthly_report_client.pdf
-reports/clients/monthly_report_manager.pdf
 reports/executive/cas_d_investigation.md
 """
 

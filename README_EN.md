@@ -17,7 +17,7 @@ There is no custody data: no real positions, no transactions, no fees, no cash f
 | Need | Where it is answered |
 |---|---|
 | Client requirement before the code | `documentation/00_mandat/` and `documentation/BESOIN_DE_REPORTING.md`: requirement, data, calculation, control, deliverable |
-| Client report and manager report | `reports/clients/`: CLIENT001 receives allocation, limits, performance and risk; the manager receives lines, contributors and weight movements. Each exists in French and in English |
+| Client report and manager report | `reports/clients/`, in French: CLIENT001 receives allocation, limits, performance and risk; the manager receives lines, contributors and weight movements |
 | Data quality | Six controls on every loaded table, recorded with their cause; `reports/executive/cas_d_investigation.md` for four investigated defects |
 | Reconciliation | `reports/excel/`: Excel recomputes every indicator from the monthly returns without reading the Python result; Power BI values are read from the Desktop engine by DAX query; a gap above the tolerance stays open as an EXCEPTION with its cause |
 | Automation | One command, `python -m src.pipeline.refresh`, that stops on a failed control; `documentation/AUTOMATISATION_AVANT_APRES.md` for the manual process it replaces |
