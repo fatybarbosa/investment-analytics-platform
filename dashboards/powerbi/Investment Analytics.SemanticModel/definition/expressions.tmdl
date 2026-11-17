@@ -1,4 +1,4 @@
-expression ProjectRoot = "C:/Users/MameBARBOSAMONTEIRO/projet01" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression ProjectRoot = "C:/path/to/projet01" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 7a931170-b72c-5027-bdeb-f17e4177fc78
 
 	annotation PBI_ResultType = Text

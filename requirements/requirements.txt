@@ -1,15 +1,15 @@
-requests
-pandas
-numpy
-scipy
-openpyxl
-yfinance
-python-dotenv
-plotly
-pytest
-# Phase 11: executive report, deck and figures
-reportlab
-python-pptx
-matplotlib
-pymupdf
-pillow
+# Runtime dependencies, pinned to the versions the published results were produced with.
+# Python 3.12. The Excel annex and the executive deliverables also need Excel (Windows, COM).
+requests==2.34.2
+pandas==3.0.5
+numpy==2.5.2
+scipy==1.18.1
+openpyxl==3.1.5
+yfinance==1.7.0
+python-dotenv==1.2.3
+plotly==7.1.0
+reportlab==5.1.0
+python-pptx==1.0.2
+matplotlib==3.11.2
+pymupdf==2.1
+pillow==13.0.0

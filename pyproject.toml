@@ -1,0 +1,15 @@
+[project]
+name = "investment-analytics-platform"
+version = "2.0"
+description = "Portfolio construction, monitoring and risk analytics on public data, with controlled reporting."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "office: needs Excel installed (COM). Skipped elsewhere.",
+    "needs_inputs: needs the raw price file and the local database, which are not versioned.",
+    "notebook: runs a validation notebook. Slow.",
+]

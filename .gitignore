@@ -78,12 +78,10 @@ Untitled.ipynb
 # LOCAL QUALITY TESTS
 # ============================================================================
 
-check_*.py
-test_*.py
-reset_*.py
-!tests/reporting/test_injected_errors.py
-!tests/reporting/test_number_check.py
-!tests/monitoring/test_contributions.py
+# Scratch scripts at the root only. The tests under tests/ are versioned.
+/check_*.py
+/test_*.py
+/reset_*.py
 
 # ============================================================================
 # POWER BI LOCAL CACHE
