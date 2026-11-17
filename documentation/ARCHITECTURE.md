@@ -57,4 +57,4 @@ Le fonds iShares est la référence de rendement. Ce n'est pas un quatrième liv
 
 ## Ce qui reste hors du calcul
 
-Pas de fichier de conservation. Pas de frais. Pas de dividende dans le rendement des livres. Les quatre chocs sont illustratifs : ce ne sont pas des scénarios datés. Les rapports de société qui fondent l'éligibilité restent sur le disque de travail et ne sont pas versionnés.
+Pas de fichier de conservation. Pas de frais. Les livres sont mesurés en rendement total brut : dividendes réinvestis, avant frais et avant impôt à la source. Les quatre chocs sont illustratifs : ce ne sont pas des scénarios datés. Les rapports de société qui fondent l'éligibilité restent sur le disque de travail et ne sont pas versionnés.

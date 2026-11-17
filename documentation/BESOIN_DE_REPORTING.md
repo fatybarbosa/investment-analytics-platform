@@ -23,7 +23,7 @@ Le client du mandat est CLIENT001. Le gérant suit les mêmes livres. Les deux r
 | Que détient le livre, à quel poids ? | `portfolio_weights.csv`, feuille de positions iShares pour le secteur et le pays | Poids du trimestre, projetés sous les plafonds | Les poids somment à un ; aucun poids sous le plancher n'est compté comme ligne | Rapport gérant, Vue d'ensemble Excel, page Portfolio Overview |
 | Dans quelle devise, quel secteur, quelle zone ? | `allocation_by_sector`, `allocation_by_zone`, `exposure` | Somme des poids par groupe | Chaque groupe rejoint un plafond écrit ; un pays hors liste va dans « Non classé » et reste plafonné | Rapport de CLIENT001, Power BI, Excel |
 | Les limites sont-elles respectées ? | `limit_watch.csv`, plafonds de `src/config.py` | Comparaison du plus grand poids de chaque famille au plafond, chaque mois | Un dépassement est compté et conservé ; le seuil de vigilance du rapport n'est pas une limite du mandat | Rapport de CLIENT001, commentaires, page Monitoring |
-| Qu'est-ce qui a changé depuis le dernier rapport ? | `weight_changes.csv`, `turnover.csv` | Poids avant et après chaque rééquilibrage trimestriel | Les variations absolues reconstituent la rotation brute publiée | Rapport gérant |
+| Qu'est-ce qui a changé depuis le dernier rapport ? | `weight_changes.csv`, `turnover.csv` | Poids avant (dérive comprise) et après chaque rééquilibrage trimestriel | Les variations absolues reconstituent la rotation brute publiée | Rapport gérant |
 | Quelle performance, contre quoi ? | `portfolio_monthly_returns`, `benchmark_monthly_return`, `performance_metrics` | Rendement chaîné, annualisé, Sharpe, Sortino, écart de suivi, ratio d'information contre le fonds iShares en CHF | Excel recalcule à partir des seuls rendements ; Power BI relit la cellule ; écart laissé en EXCEPTION s'il dépasse la tolérance | Rapport exécutif, annexe Excel |
 | Quels titres ont contribué, lesquels ont pesé ? | `holding_contribution.csv` | Poids multiplié par rendement en CHF, par titre et par mois | Les titres d'un mois reconstituent le rendement du livre ; les titres d'un secteur reconstituent la ligne du secteur | Rapport gérant |
 | Où sont les concentrations et les expositions ? | `concentration.csv`, `top10_positions.csv`, matrice de corrélation | Poids des dix premières lignes, indice de concentration, nombre effectif de lignes, corrélation moyenne | Mêmes valeurs dans le rapport mensuel et dans le suivi des limites | Rapport exécutif, page Risk Analytics |
@@ -39,7 +39,7 @@ Le client du mandat est CLIENT001. Le gérant suit les mêmes livres. Les deux r
 | Positions réellement détenues | Absentes. Les livres sont hypothétiques. |
 | Transactions entre deux dates | Absentes. Les mouvements publiés sont des changements de poids, pas des ordres. |
 | Rapprochement de la valeur du portefeuille contre le dépositaire | Impossible sans relevé. Le rapprochement existant porte sur les formules : Python, Excel, Power BI. |
-| Frais, impôts, dividendes encaissés | Absents du rendement des livres. Le fonds de comparaison publie un rendement total. |
+| Frais et impôts | Absents. Les livres sont mesurés en rendement total brut (dividendes réinvestis par le cours ajusté). Le fonds est net de ses frais. |
 | Identifiants ISIN | Absents. L'identité d'un titre est le ticker et la place de cotation. |
 
 ## Comment une demande entre dans le projet

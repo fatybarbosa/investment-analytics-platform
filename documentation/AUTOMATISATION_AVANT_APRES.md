@@ -25,7 +25,7 @@ Registre des sources
   → annexe Excel : recalcul indépendant, réconciliation Python / Excel / Power BI
   → rapport exécutif, rapport de CLIENT001, rapport du gérant, présentation, commentaires, cas d'investigation
   → relecture de chaque nombre dans son fichier
-  → dictionnaire de données et requêtes SQL exécutées
+  → dictionnaire de données et requêtes SQL exécutées, dont les contrôles sur les tables des livres
 ```
 
 La commande s'arrête quand :
@@ -35,7 +35,9 @@ La commande s'arrête quand :
 - un indicateur de la phase 7, 8 ou 9 ne rejoint pas la phase 5 ;
 - une ligne de réconciliation reste ouverte sans cause ;
 - un nombre d'un texte ne se retrouve dans aucun fichier ;
-- une requête SQL publiée ne s'exécute pas.
+- une requête SQL publiée ne s'exécute pas, ou un contrôle SQL renvoie une ligne.
+
+`--skip-office` laisse de côté l'annexe Excel et les rapports, qui demandent Excel sous Windows. Le reste de la chaîne tourne sans Office. La commande le dit dans le journal : l'annexe et les rapports décrivent alors le dernier passage complet. L'empreinte des entrées brutes est écrite à chaque passage dans `data/input_manifest.json`.
 
 Elle ne s'arrête pas pour un avertissement qualité : l'écart est enregistré, visible sur la page Data Quality et dans les cas d'investigation, et le texte le signale.
 

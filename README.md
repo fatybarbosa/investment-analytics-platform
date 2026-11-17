@@ -4,7 +4,7 @@ Plateforme d'analyse d'un mandat discrétionnaire fictif, en francs suisses. Ell
 
 **Autrice :** Faty Barbosa
 
-CLIENT001 est un cas d'école. Aucun compte n'est ouvert. Les trois livres sont des portefeuilles hypothétiques construits rétrospectivement : ils n'ont pas été détenus. Les cours, les changes, le SARON et le rendement publié du fonds iShares sont des données réelles et publiques. Il n'y a pas de relevé de dépositaire, pas de frais, pas de flux. Le rendement des livres est un rendement de cours. Le rendement du fonds est le rendement total publié par iShares, converti en francs.
+CLIENT001 est un cas d'école. Aucun compte n'est ouvert. Les trois livres sont des portefeuilles hypothétiques construits rétrospectivement : ils n'ont pas été détenus. Les cours, les changes, le SARON et le rendement publié du fonds iShares sont des données réelles et publiques. Il n'y a pas de relevé de dépositaire, pas de frais, pas de flux. Le rendement des livres est un rendement total brut : dividendes réinvestis par le cours ajusté, avant frais et avant impôt à la source. Le rendement du fonds est celui de sa valeur liquidative publiée par iShares, net de ses frais, converti en francs.
 
 Les textes constatent et alertent par rapport aux limites écrites du mandat. Ils ne formulent pas de recommandation d'investissement.
 
@@ -17,7 +17,7 @@ English summary: [README_EN.md](README_EN.md). Les rapports sont en français.
 | Comment c'est construit | [documentation/ARCHITECTURE.md](documentation/ARCHITECTURE.md) |
 | Comment le relancer | [documentation/GUIDE_UTILISATEUR.md](documentation/GUIDE_UTILISATEUR.md) |
 | Quelles colonnes existent | [documentation/DICTIONNAIRE_DONNEES.md](documentation/DICTIONNAIRE_DONNEES.md) |
-| Quelles requêtes SQL posent un contrôle | [sql/](sql/) |
+| Quelles requêtes SQL interrogent la base et les livres | [sql/](sql/) |
 | Le mandat et les limites | [documentation/00_mandat/](documentation/00_mandat/) |
 | Le récit de chaque phase | [documentation/](documentation/) |
 | Du besoin d'un client au livrable | [documentation/BESOIN_DE_REPORTING.md](documentation/BESOIN_DE_REPORTING.md) |
@@ -39,7 +39,9 @@ python -m src.pipeline.refresh
 python -m pytest tests
 ```
 
-Les tests lisent les fichiers publiés du dépôt, dont le centre de contrôle qualité `audit/data_control_center.xlsx`. Ils passent sur un clone frais sans lancer le pipeline. Excel doit être installé : un test recalcule un classeur par COM.
+Sans Excel ni Windows, `python -m src.pipeline.refresh --skip-office` reconstruit tout sauf l'annexe Excel et les rapports, qui lisent l'annexe. Les prix bruts (Yahoo Finance) ne sont pas versionnés : `data/input_manifest.json` garde l'empreinte des entrées du dernier passage, pour qu'un écart entre deux passages puisse être rattaché à un changement des données.
+
+Les tests lisent les fichiers publiés du dépôt, dont le centre de contrôle qualité `audit/data_control_center.xlsx`. Ils passent sur un clone frais sans lancer le pipeline. Les tests qui demandent Excel (COM) ou les prix bruts sont marqués `office` et `needs_inputs` : ils sont ignorés quand la machine ne les a pas. `.github/workflows/tests.yml` lance le reste sur Linux.
 
 Fermer `reports/excel/annexe_reporting.xlsx` avant le rafraîchissement. Un classeur ouvert verrouille le fichier.
 

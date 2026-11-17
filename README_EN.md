@@ -22,7 +22,7 @@ There is no custody data: no real positions, no transactions, no fees, no cash f
 | Reconciliation | `reports/excel/`: Excel recomputes every indicator from the monthly returns without reading the Python result; Power BI values are read from the Desktop engine by DAX query; a gap above the tolerance stays open as an EXCEPTION with its cause |
 | Automation | One command, `python -m src.pipeline.refresh`, that stops on a failed control; `documentation/AUTOMATISATION_AVANT_APRES.md` for the manual process it replaces |
 | Excel | Power Query, structured tables, `XLOOKUP`, `INDEX`/`MATCH`, `SUMIFS`, pivot tables with slicers, sum and rebuild controls |
-| SQL | A local SQLite database rebuilt by the pipeline and the control queries in `sql/` |
+| SQL | A local SQLite database rebuilt by the pipeline and sixteen queries in `sql/`: controls, joins, window functions, and a recursive query that chains the wealth a third way |
 | Python | `src/`, from acquisition to the reports |
 | Reporting output | `reports/executive/rapport_executif.pdf`, `reports/management/presentation_management.pptx`, `reports/client/` |
 | Automated comments | Sentences filled by written rules; every number is checked against its file and the pipeline fails otherwise |
@@ -37,7 +37,9 @@ There is no custody data: no real positions, no transactions, no fees, no cash f
 
 ## Limits
 
-- Hypothetical books, no custody data, no fees, no dividends in the books' return (the comparison fund publishes a total return).
+- The written sector limit of the IPS (20%) cannot be met by a fully invested long-only book on this list. The books are built with a 40% working cap that the client has not approved, and the reports show the breach of the written limit as an open exception.
+- Between two quarterly decisions the weights drift with the market. A weight can pass a cap by drift alone (passive breach), and the turnover is measured against the drifted book. Where a cap and the turnover budget conflict at a trade date, the cap wins and the turnover is reported above its limit.
+- Hypothetical books, no custody data, no fees, the books are measured as gross total returns (dividends reinvested through the adjusted close, before fees and withholding tax) while the comparison fund is net of its fees.
 - The security list comes from the fund's current holdings: companies that left the fund are not in the history.
 - Listed equities only. No private assets, bonds or derivatives.
 - Identity of a security is ticker and exchange; no ISIN.
@@ -51,5 +53,7 @@ Windows, Python 3.12, Excel installed for the annex recalculation, Power BI Desk
 python -m src.pipeline.refresh
 python -m pytest tests
 ```
+
+Without Excel or Windows, `python -m src.pipeline.refresh --skip-office` rebuilds everything except the Excel annex and the reports that read it. The raw Yahoo Finance prices are not versioned; `data/input_manifest.json` keeps the SHA-256 of the raw inputs of the last run, so a different result can be traced to different inputs. CI (`.github/workflows/tests.yml`) runs the tests that need neither Excel nor the raw prices.
 
 The tests read the published files of the repository, including the quality control center `audit/data_control_center.xlsx`. They pass on a fresh clone without running the pipeline. Excel must be installed: one test recalculates a workbook through COM.

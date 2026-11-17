@@ -4,9 +4,9 @@ Lu avec le [README](../README.md). Les textes produits par le pipeline portent l
 
 ## Préparer la machine
 
-- Windows, Python 3.12.
-- Dépendances : `pip install -r requirements/requirements.txt`.
-- Excel, pour le recalcul de l'annexe par COM.
+- Python 3.12. Windows pour l'annexe Excel et les rapports.
+- Dépendances : `pip install -r requirements/requirements.txt`, et `requirements/requirements-dev.txt` pour les tests.
+- Excel, pour le recalcul de l'annexe par COM. Sans Excel : `python -m src.pipeline.refresh --skip-office`.
 - Power BI Desktop, pour lire les mesures. Le script n'enregistre pas le rapport.
 
 Fermer `reports/excel/annexe_reporting.xlsx` avant de lancer le pipeline. Un classeur ouvert verrouille le fichier et la commande s'arrête.
@@ -25,7 +25,7 @@ Contrôles automatisés :
 python -m pytest tests
 ```
 
-Le test d'injection travaille sur une copie. Il ne modifie pas les fichiers de production.
+Le test d'injection travaille sur une copie. Il ne modifie pas les fichiers de production. Les tests marqués `office` (Excel par COM) et `needs_inputs` (prix bruts et base locale, non versionnés) sont ignorés quand la machine ne les a pas. Les notebooks de validation des phases s'exécutent sous pytest quand les entrées sont là : `python -m pytest -m notebook`. Une machine sans ces entrées lance `python -m pytest -m "not office and not needs_inputs"`.
 
 ## Lire les restitutions
 
@@ -48,7 +48,7 @@ Les pages Power BI sont : Portfolio Overview, Suivi, Performance Analytics, Risk
 
 1. Ouvrir Power BI Desktop.
 2. Fichier, Ouvrir, puis `dashboards/powerbi/Investment Analytics.pbip`.
-3. Actualiser. Les données ne sont pas dans le fichier : elles sont relues dans les CSV du projet.
+3. Régler le paramètre `ProjectRoot` sur le dossier du clone (Transformer les données, Gérer les paramètres), puis Actualiser. Les données ne sont pas dans le fichier : elles sont relues dans les CSV du projet. Le dépôt garde une valeur neutre pour ce paramètre.
 4. Laisser Desktop ouvert.
 5. Dans le dossier du projet, lancer :
 
@@ -62,7 +62,11 @@ La commande interroge le moteur de Desktop. Elle ne calcule pas les mesures elle
 
 La base `database/sdg_investment.db` n'est pas dans le dépôt. Le rafraîchissement la reconstruit. Les requêtes de `sql/` s'exécutent alors. `python -m src.reporting.data_dictionary` les exécute et réécrit le dictionnaire. Une requête qui échoue arrête la commande.
 
-Pour les lire dans un client SQLite, ouvrir la base locale et exécuter le fichier. Les requêtes interrogent le contrôle qualité, le registre, le SARON publié, la feuille de positions du fonds, et les trois livres une fois leurs fichiers chargés dans la base. Elles ne recalculent pas le Sharpe ni la VaR.
+Pour les lire dans un client SQLite, ouvrir la base locale et exécuter le fichier. Les requêtes interrogent le contrôle qualité, le registre, le SARON publié, la feuille de positions du fonds, et les trois livres une fois leurs fichiers chargés dans la base. Elles ne recalculent pas le Sharpe ni la VaR. Une requête chaîne la richesse en SQL et la compare à celle de la phase 6.
+
+## Entrées non versionnées
+
+Les prix bruts de Yahoo Finance (`data/01_raw/market/market_prices.csv`), les cours en francs de `data/02_processed/` et la base SQLite ne sont pas dans le dépôt. Une nouvelle acquisition peut donner d'autres chiffres, parce que les sources révisent leurs séries. `data/input_manifest.json` garde le SHA-256 et la taille des entrées brutes du dernier passage : un hash différent explique un résultat différent.
 
 ## Dictionnaire
 

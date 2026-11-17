@@ -46,7 +46,7 @@ Lignes : 214.
 
 ### `data/01_raw/market/market_prices.csv`
 
-Lignes : 650807.
+Lignes : 650954.
 
 | Colonne |
 |---|
@@ -306,6 +306,22 @@ Lignes : 360.
 | `currency_over_cap` |
 | `invested_names` |
 | `positions_outside_band` |
+| `rebalance_month` |
+| `sector_over_ips_cap` |
+
+### `data/05_monitoring/mandate_feasibility.csv`
+
+Lignes : 9.
+
+| Colonne |
+|---|
+| `sector` |
+| `names` |
+| `issuer_cap` |
+| `sector_cap_ips` |
+| `capacity_ips` |
+| `sector_cap_working` |
+| `capacity_working` |
 
 ### `data/05_monitoring/monthly_report.csv`
 
@@ -386,7 +402,7 @@ Lignes : 120.
 
 ### `data/05_monitoring/weight_changes.csv`
 
-Lignes : 1321.
+Lignes : 3225.
 
 | Colonne |
 |---|
@@ -567,11 +583,11 @@ Lignes : 15.
 
 ## Base SQLite
 
-Fichier local `database/sdg_investment.db`. Tables : 19.
+Fichier local `database/sdg_investment.db`. Tables : 29.
 
 ### `acquisition_log`
 
-Lignes : 130.
+Lignes : 147.
 
 | Colonne |
 |---|
@@ -642,6 +658,150 @@ Lignes : 127.
 | `month_end_date` |
 | `monthly_total_nav_return` |
 
+### `book_contributions`
+
+Lignes : 10440.
+
+| Colonne |
+|---|
+| `month` |
+| `strategy` |
+| `yahoo_symbol` |
+| `name` |
+| `sector` |
+| `weight` |
+| `asset_return` |
+| `month_contribution` |
+| `cumulative_contribution` |
+
+### `book_holdings`
+
+Lignes : 87.
+
+| Colonne |
+|---|
+| `strategy` |
+| `yahoo_symbol` |
+| `ticker` |
+| `name` |
+| `listing_currency` |
+| `weight` |
+| `sector` |
+| `country` |
+| `zone` |
+| `asset_class` |
+| `exposure` |
+
+### `book_limits`
+
+Lignes : 360.
+
+| Colonne |
+|---|
+| `month` |
+| `strategy` |
+| `largest_issuer` |
+| `largest_issuer_weight` |
+| `largest_sector` |
+| `largest_sector_weight` |
+| `largest_zone` |
+| `largest_zone_weight` |
+| `largest_currency` |
+| `largest_currency_weight` |
+| `issuer_over_cap` |
+| `sector_over_cap` |
+| `zone_over_cap` |
+| `currency_over_cap` |
+| `invested_names` |
+| `positions_outside_band` |
+| `rebalance_month` |
+| `sector_over_ips_cap` |
+
+### `book_metrics`
+
+Lignes : 3.
+
+| Colonne |
+|---|
+| `strategy` |
+| `names` |
+| `months` |
+| `window_start` |
+| `window_end` |
+| `annualized_return` |
+| `annualized_volatility` |
+| `sharpe_ratio` |
+| `maximum_drawdown` |
+| `maximum_weight` |
+| `effective_holdings` |
+| `risk_free_series` |
+| `risk_free_currency` |
+
+### `book_path`
+
+Lignes : 480.
+
+| Colonne |
+|---|
+| `month` |
+| `strategy` |
+| `portfolio_return` |
+| `cumulative_wealth` |
+| `drawdown` |
+
+### `book_returns`
+
+Lignes : 360.
+
+| Colonne |
+|---|
+| `month` |
+| `strategy` |
+| `portfolio_return` |
+| `risk_free_return` |
+| `excess_return` |
+
+### `book_turnover`
+
+Lignes : 120.
+
+| Colonne |
+|---|
+| `month` |
+| `strategy` |
+| `gross_turnover` |
+| `over_quarterly_cap` |
+| `trailing_annual_turnover` |
+| `over_annual_cap` |
+
+### `book_weight_changes`
+
+Lignes : 3225.
+
+| Colonne |
+|---|
+| `month` |
+| `strategy` |
+| `yahoo_symbol` |
+| `name` |
+| `weight_before` |
+| `weight_after` |
+| `weight_change` |
+
+### `book_weights`
+
+Lignes : 10440.
+
+| Colonne |
+|---|
+| `strategy` |
+| `month` |
+| `yahoo_symbol` |
+| `ticker` |
+| `name` |
+| `listing_currency` |
+| `weight` |
+
 ### `dataset_registry`
 
 Lignes : 7.
@@ -668,6 +828,20 @@ Lignes : 7.
 | `created_at` |
 | `updated_at` |
 
+### `fund_returns`
+
+Lignes : 120.
+
+| Colonne |
+|---|
+| `month` |
+| `fund_name` |
+| `fund_currency` |
+| `nav_total_return` |
+| `chf_per_unit` |
+| `prior_chf_per_unit` |
+| `benchmark_return_chf` |
+
 ### `fx_rates`
 
 Lignes : 7578.
@@ -689,7 +863,7 @@ Lignes : 7578.
 
 ### `market_prices`
 
-Lignes : 650807.
+Lignes : 650954.
 
 | Colonne |
 |---|
@@ -772,7 +946,7 @@ Lignes : 10440.
 
 ### `quality_control_result`
 
-Lignes : 684.
+Lignes : 846.
 
 | Colonne |
 |---|
@@ -791,7 +965,7 @@ Lignes : 684.
 
 ### `quality_metric_result`
 
-Lignes : 612.
+Lignes : 756.
 
 | Colonne |
 |---|
@@ -811,7 +985,7 @@ Lignes : 612.
 
 ### `quality_run`
 
-Lignes : 20.
+Lignes : 23.
 
 | Colonne |
 |---|
@@ -896,4 +1070,11 @@ Les fichiers de `sql/` s'exécutent sur la base locale. Ils posent une question 
 - `sql/08_fonds_contre_registre_odd.sql`
 - `sql/09_fonds_sans_referentiel.sql`
 - `sql/10_poids_des_livres.sql`
+- `sql/10_poids_par_secteur.sql`
+- `sql/11_contributeurs_detracteurs.sql`
 - `sql/11_contributeurs_par_titre.sql`
+- `sql/12_controle_somme_des_poids.sql`
+- `sql/13_richesse_chainee.sql`
+- `sql/14_mouvements_du_dernier_reequilibrage.sql`
+- `sql/15_controle_rotation.sql`
+- `sql/16_depassements_de_plafond.sql`
