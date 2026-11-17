@@ -85,7 +85,7 @@ class Report:
         for statement in statements:
             self.keep(statement)
             lead = "<b>Alerte.</b> " if statement.kind == "alerte" else ""
-            self.story.append(Paragraph(lead + _escape(statement.text), BULLET, bulletText="•"))
+            self.story.append(KeepTogether([Paragraph(lead + _escape(statement.text), BULLET, bulletText="•")]))
 
     def table(self, built, widths=None):
         header, rows, statement = built
@@ -186,9 +186,13 @@ def build_report(sections, figures, generated):
     report.para(plain("périmètre", (
         "Périmètre. Mandat fictif CLIENT001, actions internationales cotées, devise de référence CHF. Trois livres, "
         "équipondéré, volatilité minimale et Sharpe maximal, construits sur la même liste de titres et comparés au fonds "
-        "iShares MSCI Global Sustainable Development Goals, dont le rendement publié est converti en CHF. "
+        "iShares MSCI Global Sustainable Development Goals, dont le rendement publié est converti en CHF."
+    )))
+    report.para(plain("périmètre", (
         "Données. Sources publiques seulement : feuille de positions et rendement publiés par iShares, cours de clôture Yahoo Finance, "
-        "change et SARON de la Banque nationale suisse, registre d'éligibilité ODD saisi à partir des rapports des sociétés. "
+        "change et SARON de la Banque nationale suisse, registre d'éligibilité ODD saisi à partir des rapports des sociétés."
+    )))
+    report.para(plain("périmètre", (
         "Limites. " + SCOPE_NOTE + " Les poids sont décidés chaque trimestre sur les mois déjà observés, puis dérivent avec le marché jusqu'à la décision suivante. "
         + UNIVERSE_NOTE
     )))

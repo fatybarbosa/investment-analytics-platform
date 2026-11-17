@@ -1,6 +1,6 @@
 {
   "mention": "Généré automatiquement, à relire avant diffusion.",
-  "genere_le": "2026-11-17 08:56 UTC",
+  "genere_le": "2026-11-17 14:29 UTC",
   "perimetre": "Portefeuilles hypothétiques construits rétrospectivement sur des données publiques : ils n'ont jamais été détenus. Les cours, les cours de change et le SARON sont des données réelles et publiques. Pas de données de conservation et pas de frais. Les livres sont mesurés en rendement total brut : dividendes réinvestis par le cours ajusté, avant frais et avant impôt à la source. Le fonds est mesuré par le rendement de sa valeur liquidative, net de ses frais : la comparaison avantage donc les livres.",
   "avertissement": "Ces points sont des constats et des alertes liés aux limites écrites du mandat. Ce ne sont pas des recommandations d'investissement personnalisées.",
   "sections": {
@@ -18,7 +18,7 @@
       },
       {
         "type": "constat",
-        "texte": "Rendement annualisé en CHF : Équipondéré 7,51 %, Volatilité minimale 6,24 %, Sharpe maximal 6,09 %, contre 6,08 % pour le fonds iShares, rendement de la valeur liquidative converti en CHF. Le livre Équipondéré dépasse le fonds sur la fenêtre. Les livres sont mesurés en rendement total brut : dividendes réinvestis par le cours ajusté, avant frais et avant impôt à la source. Le fonds est mesuré par le rendement de sa valeur liquidative, net de ses frais : la comparaison avantage donc les livres.",
+        "texte": "Rendement annualisé en CHF : Équipondéré 7,51 %, Volatilité minimale 6,24 %, Sharpe maximal 6,09 %, contre 6,08 % pour le fonds iShares, rendement de la valeur liquidative converti en CHF. Les trois livres dépassent le fonds sur la fenêtre, le livre Équipondéré le plus nettement. Les livres sont mesurés en rendement total brut : dividendes réinvestis par le cours ajusté, avant frais et avant impôt à la source. Le fonds est mesuré par le rendement de sa valeur liquidative, net de ses frais : la comparaison avantage donc les livres.",
         "sources": [
           "data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight",
           "data/06_performance/performance_metrics.csv | cell annualized_return | strategy=minimum_volatility",
@@ -178,7 +178,7 @@
     "alertes": [
       {
         "type": "constat",
-        "texte": "Aux dates de décision, aucun livre ne dépasse un plafond de construction. Mois-livres au-dessus d'une limite, comptés sur les 123 mois-livres de décision (début de trimestre) : émetteur 0, secteur, plafond de travail 0, zone 0, devise 0, bande de lignes 0. Plafonds : émetteur 5 %, zone 50 %, devise 40 %, secteur 40 % (plafond de travail, voir ci-dessous), 25 à 40 lignes pour les livres optimisés.",
+        "texte": "Aux dates de décision, aucun livre ne dépasse un plafond de construction. Mois-livres au-dessus d'une limite, comptés sur les 123 mois-livres de décision (début de trimestre) : émetteur 0, secteur (plafond de travail) 0, zone 0, devise 0, bande de lignes 0. Plafonds : émetteur 5 %, zone 50 %, devise 40 %, secteur 40 % (plafond de travail, voir ci-dessous), 25 à 40 lignes pour les livres optimisés.",
         "sources": [
           "data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=1",
           "data/05_monitoring/limit_watch.csv | sum sector_over_cap | rebalance_month=1",
@@ -196,7 +196,7 @@
       },
       {
         "type": "alerte",
-        "texte": "Entre deux décisions, les poids dérivent avec le marché et un livre ne se corrige qu'au rééquilibrage suivant. Dépassements passifs, en mois-livres sur 237 : émetteur 161, secteur, plafond de travail 30, zone 5, devise 0. Le plus gros poids d'un titre atteint 6,97 % pour un plafond de 5 %. Le mandat ne dit pas si un dépassement passif est toléré jusqu'au prochain rééquilibrage : la décision est à prendre.",
+        "texte": "Entre deux décisions, les poids dérivent avec le marché et un livre ne se corrige qu'au rééquilibrage suivant. Dépassements passifs, en mois-livres sur 237 : émetteur 161, secteur (plafond de travail) 30, zone 5, devise 0. Le plus gros poids d'un titre atteint 6,97 % pour un plafond de 5 %. Le mandat ne dit pas si un dépassement passif est toléré jusqu'au prochain rééquilibrage : la décision est à prendre.",
         "sources": [
           "data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=0",
           "data/05_monitoring/limit_watch.csv | sum sector_over_cap | rebalance_month=0",

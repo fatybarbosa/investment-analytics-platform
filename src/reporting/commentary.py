@@ -185,16 +185,21 @@ def _highlights():
 
     best = _best(BOOKS, lambda book: perf(book, "annualized_return"))
     fund_return = float(resolve(perf(FUND, "annualized_return")))
-    best_return = float(resolve(perf(best, "annualized_return")))
     d = Draft()
     listed = ", ".join(
         f"{LABELS[book]} {d.pct(perf(book, 'annualized_return'))}" for book in BOOKS
     )
-    verdict = (
-        "Aucun livre ne dépasse le fonds sur la fenêtre."
-        if best_return < fund_return
-        else f"Le livre {LABELS[best]} dépasse le fonds sur la fenêtre."
-    )
+    above = [book for book in BOOKS if float(resolve(perf(book, "annualized_return"))) > fund_return]
+    if not above:
+        verdict = "Aucun livre ne dépasse le fonds sur la fenêtre."
+    elif len(above) == len(BOOKS):
+        verdict = f"Les trois livres dépassent le fonds sur la fenêtre, le livre {LABELS[best]} le plus nettement."
+    else:
+        verdict = (
+            f"{'Le livre' if len(above) == 1 else 'Les livres'} "
+            + ", ".join(LABELS[book] for book in above)
+            + f" dépasse{'nt' if len(above) > 1 else ''} le fonds sur la fenêtre."
+        )
     out.append(d.done("faits", (
         f"Rendement annualisé en CHF : {listed}, contre {d.pct(perf(FUND, 'annualized_return'))} "
         f"pour le fonds iShares, rendement de la valeur liquidative converti en CHF. {verdict} "
@@ -363,7 +368,7 @@ def _alerts():
     out = []
     names = {
         "issuer_over_cap": "émetteur",
-        "sector_over_cap": "secteur, plafond de travail",
+        "sector_over_cap": "secteur (plafond de travail)",
         "zone_over_cap": "zone",
         "currency_over_cap": "devise",
         "positions_outside_band": "bande de lignes",
