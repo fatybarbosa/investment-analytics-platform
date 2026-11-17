@@ -10,7 +10,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 from src.config import RISK_REPORTS
-from src.portfolio_construction.build_portfolios import STRATEGY_IDS
 from src.portfolio_monitoring.dashboard import FUND_LABEL, STRATEGY_COLORS, STRATEGY_LABELS
 from src.risk.build_risk import METRICS_OUTPUT, SUMMARY_FILE, TAIL_FILE, VAR_LEVEL
 
@@ -133,7 +132,6 @@ def build_figures():
 
 def render_dashboard_html():
     frames = load_frames()
-    metrics = frames["metrics"]
     summary = frames["summary"].iloc[0]
     start = str(pd.read_csv(METRICS_OUTPUT)["window_start"].iloc[0])
     end = str(pd.read_csv(METRICS_OUTPUT)["window_end"].iloc[0])

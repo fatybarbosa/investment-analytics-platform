@@ -1,0 +1,30 @@
+{
+  "inputs": {
+    "data/01_raw/benchmark/benchmark_holdings.xls": {
+      "bytes": 1394388,
+      "lines": 53700,
+      "sha256": "00967b0ac77a021393772732fc3d4c5bc877c50e2b1eae069b17db803f849aa2"
+    },
+    "data/01_raw/fx/fx_rates.csv": {
+      "bytes": 1263762,
+      "lines": 7579,
+      "sha256": "2beb422e8b1ca604379fe7266d7fed12c4d45a0c8d200f10e6f27f2209b71f05"
+    },
+    "data/01_raw/macro/saron.csv": {
+      "bytes": 23609,
+      "lines": 215,
+      "sha256": "ae42386e5e5aab02f448a3f03c4aff069fd15914db0a42846de151fe6f51487d"
+    },
+    "data/01_raw/market/market_prices.csv": {
+      "bytes": 100076640,
+      "lines": 650955,
+      "sha256": "1338f990f673f20b3872cda2629ab4549238cd041ccbeb9e123b4ba1fa8a3236"
+    },
+    "data/01_raw/odd/odd_assessment.csv": {
+      "bytes": 227509,
+      "lines": 121,
+      "sha256": "6c607418ff2603182572b7d76ecf8300b82969cafa75aa7483435bc8eee46f2a"
+    }
+  },
+  "note": "Fingerprint of the raw inputs of the last run. The raw price file is not versioned: a run from a fresh download can give other numbers, and a changed sha256 says why."
+}

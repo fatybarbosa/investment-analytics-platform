@@ -7,17 +7,17 @@ equal_weight,Consumer Discretionary,0.0344827586206896,1
 equal_weight,Information Technology,0.0344827586206896,1
 equal_weight,Materials,0.0344827586206896,1
 equal_weight,Utilities,0.0344827586206896,1
-minimum_volatility,Health Care,0.397121844873531,9
-minimum_volatility,Real Estate,0.308460699847166,9
-minimum_volatility,Industrials,0.10997487452469981,3
+minimum_volatility,Health Care,0.3980068439864461,9
+minimum_volatility,Real Estate,0.310764931216413,9
+minimum_volatility,Industrials,0.1089343147577429,3
 minimum_volatility,Consumer Discretionary,0.05,1
-minimum_volatility,Consumer Staples,0.05,1
-minimum_volatility,Information Technology,0.0477265075434457,1
-minimum_volatility,Utilities,0.0317656286898581,1
-minimum_volatility,Materials,0.0049504445212986,1
-maximum_sharpe,Health Care,0.3978846228822473,9
-maximum_sharpe,Real Estate,0.31612413417019497,10
-maximum_sharpe,Industrials,0.1432699357051371,3
-maximum_sharpe,Consumer Discretionary,0.05,1
-maximum_sharpe,Consumer Staples,0.0499999999999996,1
-maximum_sharpe,Materials,0.0427213072424191,1
+minimum_volatility,Consumer Staples,0.0486188573507294,1
+minimum_volatility,Information Technology,0.0425422367429621,1
+minimum_volatility,Utilities,0.030199315239387,1
+minimum_volatility,Materials,0.0109335007063185,1
+maximum_sharpe,Health Care,0.39716513656638597,9
+maximum_sharpe,Real Estate,0.35917559583016523,10
+maximum_sharpe,Industrials,0.1253719085301234,3
+maximum_sharpe,Consumer Discretionary,0.0498509484211028,1
+maximum_sharpe,Consumer Staples,0.0498509484211028,1
+maximum_sharpe,Materials,0.0185854622311189,1

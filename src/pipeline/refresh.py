@@ -19,8 +19,14 @@ Order
 10. Rebuild the quality control center from the loaded tables.
 11. Rebuild the Excel annex and stop if a reconciliation stays open.
     The Power BI column receives only values of power_bi_export.csv.
-12. Write the automated comments, the executive report and the deck,
-    and stop if one of their numbers is not in a pipeline file.
+12. Write the automated comments, the executive report, the two client
+    reports and the investigation cases, and stop if one of their numbers
+    is not in a pipeline file.
+
+`--skip-office` leaves out steps 11 and 12. They need Excel (COM) and read the
+annex, so they run on Windows with Office only. The other steps run anywhere.
+A run with that flag leaves the annex and the reports as the last full run
+wrote them, and says so in the log.
 13. Rewrite the data dictionary from the files and run the SQL files.
 """
 
@@ -53,8 +59,7 @@ from src.preparation.quote_currency import complete_quote_currencies
 from src.preparation.securities_candidates import build_security_candidates
 from src.preparation.securities_master import build_security_master
 from src.quality.data_control_center import build_data_control_center
-from src.reporting.build_executive import build_executive
-from src.reporting.build_workbook import build_workbook
+from src.governance.input_manifest import write_input_manifest
 from src.utils.logger import logger
 
 
@@ -153,7 +158,6 @@ def topological_datasets(datasets):
 
 
 def dataset_is_due(row, last_success, now, refreshed_ids, force):
-    dataset_id = str(row[DATASET_KEY])
     frequency = row[FREQUENCY_KEY]
     if force:
         return True
@@ -242,9 +246,11 @@ def acquire_due_datasets(force=False):
     return published, failed
 
 
-def refresh(force=False):
+def refresh(force=False, skip_office=False):
     """Acquire due raw files, then rebuild every published dataset."""
     published, failed = acquire_due_datasets(force=force)
+    manifest = write_input_manifest()
+    logger.info("Input manifest: %s", manifest)
     database = load_database()
     logger.info("Database refreshed: %s", database)
     quote_file = complete_quote_currencies()
@@ -263,26 +269,37 @@ def refresh(force=False):
     logger.info("Stress file: %s", stress["results"])
     report = build_data_control_center()
     logger.info("Quality report: %s", report)
-    annex = build_workbook()
-    logger.info("Excel annex: %s", annex["workbook"])
-    executive = build_executive()
+    annex = None
+    executive = None
+    if skip_office:
+        logger.warning(
+            "Office steps skipped (--skip-office): the Excel annex and the executive deliverables "
+            "describe the last full run, not this one."
+        )
+    else:
+        from src.reporting.build_executive import build_executive
+        from src.reporting.build_workbook import build_workbook
+
+        annex = build_workbook()
+        logger.info("Excel annex: %s", annex["workbook"])
+        executive = build_executive()
+        logger.info(
+            "Executive deliverables: %s (%s pages), %s (%s slides), %s numbers checked",
+            executive["report"],
+            executive["pages"],
+            executive["deck"],
+            executive["slides"],
+            executive["numbers_checked"],
+        )
     from src.reporting.data_dictionary import write_dictionary
 
     dictionary = write_dictionary()
     logger.info("Data dictionary: %s", dictionary["dictionary"])
-    logger.info(
-        "Executive deliverables: %s (%s pages), %s (%s slides), %s numbers checked",
-        executive["report"],
-        executive["pages"],
-        executive["deck"],
-        executive["slides"],
-        executive["numbers_checked"],
-    )
     return {
         "acquired": published,
         "failures": failed,
         "report": report,
-        "annex": str(annex["workbook"]),
+        "annex": None if annex is None else str(annex["workbook"]),
         "executive": executive,
     }
 
@@ -296,16 +313,24 @@ def main():
         action="store_true",
         help="Acquire every active dataset, ignoring frequency.",
     )
+    parser.add_argument(
+        "--skip-office",
+        action="store_true",
+        help="Leave out the Excel annex and the executive deliverables, which need Excel on Windows.",
+    )
     args = parser.parse_args()
-    result = refresh(force=args.force)
+    result = refresh(force=args.force, skip_office=args.skip_office)
     print(result["report"])
     executive = result["executive"]
-    print(executive["report"], f"({executive['pages']} pages)")
-    print(executive["deck"], f"({executive['slides']} slides)")
-    for client_file, client_pages in executive["clients"]:
-        print(client_file, f"({client_pages} pages)")
-    print(executive["cases"])
-    print(executive["comments"], f"({executive['numbers_checked']} numbers checked, {executive['alerts']} alerts)")
+    if executive is None:
+        print("Office steps skipped: the annex and the reports were not rebuilt.")
+    else:
+        print(executive["report"], f"({executive['pages']} pages)")
+        print(executive["deck"], f"({executive['slides']} slides)")
+        for client_file, client_pages in executive["clients"]:
+            print(client_file, f"({client_pages} pages)")
+        print(executive["cases"])
+        print(executive["comments"], f"({executive['numbers_checked']} numbers checked, {executive['alerts']} alerts)")
     if result["failures"]:
         for dataset_id, message in sorted(result["failures"].items()):
             print(f"FAILED {dataset_id}: {message}")

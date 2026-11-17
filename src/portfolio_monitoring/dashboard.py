@@ -5,7 +5,6 @@ The figures read data/05_monitoring. They do not recompute weights.
 write_dashboard publishes the same figures as reports/monitoring/dashboard.html.
 """
 
-from pathlib import Path
 
 import pandas as pd
 import plotly.express as px

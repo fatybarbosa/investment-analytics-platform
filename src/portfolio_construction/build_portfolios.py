@@ -7,10 +7,16 @@ only when its ODD status is Eligible and its CHF month-end history
 is complete. SARON is the risk-free rate. No price, rate, or
 expected return is invented.
 
-The weight of a quarter is fixed from the previous ESTIMATION_MONTHS
-returns only, then held for the three months of that quarter.
-Issuer, sector, zone and listing-currency caps come from the IPS.
-The covariance is the Ledoit-Wolf (2004) shrinkage estimator.
+The decision of a quarter is fixed from the previous ESTIMATION_MONTHS
+returns only. The book then trades once, at the start of the quarter, and
+drifts with the market for the three months: no trade is made inside a
+quarter. The returns are total returns, with dividends folded in through
+the adjusted close. The turnover budget is measured against the drifted
+book, not against the previous decision.
+Issuer, sector, zone and listing-currency caps are applied at each decision.
+Between two decisions a weight can pass a cap by drift alone. Monitoring
+reports that as a passive breach. The covariance is the Ledoit-Wolf (2004)
+shrinkage estimator.
 
 Outputs
 -------
@@ -22,7 +28,6 @@ data/04_portfolios/portfolio_membership.csv
 """
 
 import math
-from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -137,9 +142,15 @@ def write_csv_atomically(dataframe, output_path, columns):
     temporary.replace(output_path)
 
 
+# Returns are total returns: the adjusted close folds the dividends in, and
+# the price is converted at the SNB rate of the month. The plain close stays
+# in the file for audit. It is not used to measure a return.
+RETURN_LEVEL = "adj_close_chf"
+
+
 def month_end_levels(prices):
-    """Keep the last positive CHF close of each symbol and month."""
-    levels = prices.loc[:, ["symbol", "timestamp", "close_chf"]].copy()
+    """Keep the last usable CHF level of each symbol and month."""
+    levels = prices.loc[:, ["symbol", "timestamp", "close_chf", RETURN_LEVEL]].copy()
     levels["timestamp"] = pd.to_datetime(levels["timestamp"])
     levels["month"] = levels["timestamp"].dt.to_period("M")
     levels = levels.sort_values(["symbol", "timestamp"])
@@ -195,14 +206,14 @@ def shared_membership(universe, levels, price_months):
     for record in universe.itertuples(index=False):
         symbol = str(record.yahoo_symbol)
         history = observed.loc[observed["symbol"].astype(str).eq(symbol)]
-        positive_months = history.loc[history["close_chf"] > 0, "month"].nunique()
+        positive_months = history.loc[history[RETURN_LEVEL] > 0, "month"].nunique()
         if record.chf_status != "included":
             decision = "excluded"
             reason = record.exclusion_reason or "excluded"
         elif symbol not in symbols_with_prices:
             decision = "excluded"
             reason = "no_price_history"
-        elif (history["close_chf"] <= 0).any():
+        elif (history[RETURN_LEVEL] <= 0).any():
             decision = "excluded"
             reason = "non_positive_close"
         elif positive_months < required:
@@ -232,14 +243,14 @@ def shared_membership(universe, levels, price_months):
 
 
 def shared_monthly_returns(levels, membership, return_months, price_months):
-    """Monthly simple CHF returns for the names that share the full window."""
+    """Monthly simple CHF total returns for the names that share the full window."""
     included = membership.loc[membership["decision"].eq("included"), "yahoo_symbol"]
     if included.nunique() != len(included):
         raise RuntimeError("A symbol is repeated in the shared universe.")
-    wide = levels.pivot(index="month", columns="symbol", values="close_chf")
+    wide = levels.pivot(index="month", columns="symbol", values=RETURN_LEVEL)
     wide = wide.reindex(index=price_months, columns=list(included))
     if wide.isna().any().any() or (wide <= 0).any().any():
-        raise RuntimeError("The shared window contains a missing or non-positive close.")
+        raise RuntimeError("The shared window contains a missing or non-positive adjusted close.")
     returns = wide.pct_change().iloc[1:].copy()
     returns.index = returns.index.astype(str)
     expected = pd.Index(return_months.astype(str))
@@ -565,7 +576,10 @@ def _respect_turnover(weights, previous, locked_out, sectors, zones, currencies)
         return target
     if float(np.abs(target - previous).sum()) <= QUARTERLY_TURNOVER_CAP - 2e-8:
         return target
-    best = np.asarray(previous, dtype=float).copy()
+    # The caps are hard at the trade date, the turnover budget is a target. If the
+    # book the market left cannot be reached inside the budget, the closest book that
+    # respects the caps is kept, and monitoring reports the turnover above its cap.
+    best = project_mandate(np.asarray(previous, dtype=float).copy(), sectors, zones, currencies, locked_out)
     low, high = 0.0, 1.0
     for _ in range(24):
         mid = (low + high) / 2
@@ -718,6 +732,34 @@ def maximum_sharpe(asset_returns, risk_free, sectors, zones, currencies, previou
     return pd.Series(held, index=columns, dtype=float)
 
 
+def drift_weights(weights, returns):
+    """Weights at the end of a month, before any trade.
+
+    Each line grows with its own return, and the book is rescaled to one.
+    A line at zero stays at zero. Nothing is sold or bought.
+    """
+    grown = weights.astype(float) * (1.0 + returns.reindex(weights.index).astype(float))
+    total = float(grown.sum())
+    if not np.isfinite(total) or total <= 0:
+        raise RuntimeError("The book has no positive value after the month.")
+    return grown / total
+
+
+def pre_trade_weights(held, asset_returns):
+    """Weights each month would have if no trade had been made since the month before.
+
+    `held` is the weight carried into each month, after any rebalance. The row
+    of a month is the previous row, moved by the previous month's returns.
+    The first month has no predecessor and is left empty.
+    """
+    returns = asset_returns.reindex(index=held.index, columns=held.columns)
+    if returns.isna().any().any():
+        raise RuntimeError("A return is missing to move the weights from one month to the next.")
+    grown = held.mul(1.0 + returns)
+    moved = grown.div(grown.sum(axis=1), axis=0)
+    return moved.shift(1)
+
+
 def portfolio_return(asset_returns, weights):
     """Monthly return from a single weight vector or from one vector per month."""
     if isinstance(weights, pd.DataFrame):
@@ -858,7 +900,12 @@ def group_labels(columns, membership):
 
 
 def mandate_weights(asset_returns, risk_free, scored_months, membership):
-    """Quarterly weights from the preceding sample, held for the three months."""
+    """Quarterly decisions from the preceding sample. The weights then drift for three months.
+
+    Each published row is the weight a month starts with. At a quarter start it is the
+    decided book. Inside the quarter it is the previous month's book moved by the
+    market, so the returns are those of a book that trades only once a quarter.
+    """
     history = list(asset_returns.index.astype(str))
     scored = [str(month) for month in scored_months]
     columns = asset_returns.columns
@@ -872,10 +919,12 @@ def mandate_weights(asset_returns, risk_free, scored_months, membership):
         index=columns,
         dtype=float,
     )
-    held = None
-    previous = {"minimum_volatility": None, "maximum_sharpe": None}
+    # `carried` is the book the month starts with. A decision replaces it at the
+    # start of a quarter. Inside a quarter it drifts with the market, with no
+    # trade. The turnover budget is measured against the drifted book.
+    carried = None
     for month in scored:
-        if held is None or _quarter_start(month):
+        if carried is None or _quarter_start(month):
             end = history.index(month)
             sample_index = history[end - ESTIMATION_MONTHS : end]
             if len(sample_index) != ESTIMATION_MONTHS or sample_index[-1] >= month:
@@ -884,13 +933,17 @@ def mandate_weights(asset_returns, risk_free, scored_months, membership):
             sample_rate = risk_free.reindex(sample_index)
             if sample_rate.isna().any():
                 raise RuntimeError(f"{month} is missing a SARON observation in its estimation sample.")
+            before = {
+                strategy: None if carried is None else carried[strategy].to_numpy(dtype=float)
+                for strategy in ("minimum_volatility", "maximum_sharpe")
+            }
             decided = {
                 "equal_weight": base,
                 "minimum_volatility": minimum_volatility(
-                    sample, sectors, zones, currencies, previous["minimum_volatility"]
+                    sample, sectors, zones, currencies, before["minimum_volatility"]
                 ),
                 "maximum_sharpe": maximum_sharpe(
-                    sample, sample_rate, sectors, zones, currencies, previous["maximum_sharpe"]
+                    sample, sample_rate, sectors, zones, currencies, before["maximum_sharpe"]
                 ),
             }
             for strategy, series in decided.items():
@@ -905,17 +958,22 @@ def mandate_weights(asset_returns, risk_free, scored_months, membership):
                     raise RuntimeError(
                         f"{strategy} {month} smallest line is {float(invested_weights.min())}."
                     )
-            previous["minimum_volatility"] = decided["minimum_volatility"].to_numpy()
-            previous["maximum_sharpe"] = decided["maximum_sharpe"].to_numpy()
-            held = decided
-            logger.info("Mandate weights fixed for %s", month)
-        for strategy, weights in held.items():
+            carried = {
+                strategy: series.reindex(columns).astype(float) for strategy, series in decided.items()
+            }
+            logger.info("Mandate weights decided for %s", month)
+        for strategy, weights in carried.items():
             row = weights.reindex(columns)
             if row.isna().any():
                 raise RuntimeError(f"{strategy} is missing a weight for {month}.")
             row = row.copy()
             row.name = month
             panels[strategy].append(row)
+        month_returns = asset_returns.loc[month, columns]
+        carried = {
+            strategy: drift_weights(weights.reindex(columns), month_returns)
+            for strategy, weights in carried.items()
+        }
     return {strategy: pd.DataFrame(rows) for strategy, rows in panels.items()}
 
 
@@ -979,7 +1037,7 @@ def attach_odd_status(membership):
 
 def load_construction_inputs():
     """Read the treated CHF prices, the eligible universe, and SARON."""
-    prices = pd.read_csv(MARKET_PRICES_CHF, usecols=["symbol", "timestamp", "close_chf"])
+    prices = pd.read_csv(MARKET_PRICES_CHF, usecols=["symbol", "timestamp", "close_chf", RETURN_LEVEL])
     universe = pd.read_csv(CHF_UNIVERSE, dtype=str, keep_default_na=False)
     saron = pd.read_csv(SARON_TREATED, dtype=str, keep_default_na=False)
     if universe["yahoo_symbol"].duplicated().any():

@@ -27,6 +27,7 @@ data/05_monitoring/portfolio_path.csv
 data/05_monitoring/sector_contribution.csv
 data/05_monitoring/holding_contribution.csv
 data/05_monitoring/weight_changes.csv
+data/05_monitoring/mandate_feasibility.csv
 """
 
 from pathlib import Path
@@ -36,6 +37,7 @@ import pandas as pd
 
 from src.config import (
     CURRENCY_WEIGHT_CAP,
+    IPS_SECTOR_WEIGHT_CAP,
     ISSUER_WEIGHT_CAP,
     MAX_POSITIONS,
     MIN_POSITIONS,
@@ -59,6 +61,7 @@ from src.portfolio_construction.build_portfolios import (
     estimation_window,
     load_construction_inputs,
     month_end_levels,
+    pre_trade_weights,
     shared_membership,
     shared_monthly_returns,
     write_csv_atomically,
@@ -175,7 +178,19 @@ LIMIT_COLUMNS = (
     "currency_over_cap",
     "invested_names",
     "positions_outside_band",
+    "rebalance_month",
+    "sector_over_ips_cap",
 )
+FEASIBILITY_COLUMNS = (
+    "sector",
+    "names",
+    "issuer_cap",
+    "sector_cap_ips",
+    "capacity_ips",
+    "sector_cap_working",
+    "capacity_working",
+)
+FEASIBILITY_FILE = MONITORING_DATA / "mandate_feasibility.csv"
 TURNOVER_COLUMNS = (
     "month",
     "strategy",
@@ -494,9 +509,22 @@ def build_concentration_history(classified):
     return pd.concat(frames, ignore_index=True)
 
 
+def decision_months(months):
+    """The first scored month and every quarter start: the months a book may trade."""
+    ordered = sorted(str(month) for month in months)
+    return {ordered[0]} | {month for month in ordered if int(month[5:7]) in REBALANCE_MONTHS}
+
+
 def build_limit_watch(classified):
-    """One row per month. A flag is 1 when the published weight is above the IPS cap."""
+    """One row per month. A flag is 1 when the weight the month starts with is above a cap.
+
+    The caps are checked at each decision. Between two decisions a weight can pass a cap
+    by drift alone: that is a passive breach, and `rebalance_month` tells the two apart.
+    `sector_over_cap` uses the working cap of the books. `sector_over_ips_cap` uses the
+    sector limit written in the IPS.
+    """
     frames = []
+    decisions = decision_months(classified["month"].unique())
     for strategy in STRATEGY_IDS:
         book = classified.loc[classified["strategy"].eq(strategy)]
         rows = []
@@ -524,46 +552,41 @@ def build_limit_watch(classified):
                     "currency_over_cap": over_cap(currency_weight, CURRENCY_WEIGHT_CAP),
                     "invested_names": invested,
                     "positions_outside_band": outside_band(strategy, invested),
+                    "rebalance_month": int(str(month) in decisions),
+                    "sector_over_ips_cap": over_cap(sector_weight, IPS_SECTOR_WEIGHT_CAP),
                 }
             )
         frames.append(pd.DataFrame(rows))
     return pd.concat(frames, ignore_index=True)
 
 
-def build_turnover(weights):
-    """Gross turnover when a quarter replaces the previous book.
+def build_turnover(weights, asset_returns):
+    """Gross turnover of each quarterly trade, measured against the drifted book.
 
-    Gross turnover is the sum of absolute weight changes. The construction
-    compares that sum with the quarterly cap. The first book has no
-    predecessor. A month inside a quarter keeps the same weights.
-    The annual figure adds the four latest quarterly changes.
+    A quarter's trade moves the book from where the market left it to the
+    decided weights. Gross turnover is the sum of absolute weight changes,
+    the definition of the quarterly cap. The first book has no predecessor.
+    Inside a quarter nothing is traded: the weights must equal the previous
+    month's book moved by its returns, or the run stops.
+    The annual figure adds the four latest quarterly trades.
     """
     frames = []
     for strategy in STRATEGY_IDS:
         book = weights.loc[weights["strategy"].eq(strategy)]
-        wide = (
-            book.pivot(index="month", columns="yahoo_symbol", values="weight")
-            .fillna(0.0)
-            .sort_index()
-        )
-        months = [str(month) for month in wide.index]
-        previous = None
+        wide = book.pivot(index="month", columns="yahoo_symbol", values="weight").fillna(0.0).sort_index()
+        wide.index = wide.index.astype(str)
+        before = pre_trade_weights(wide, asset_returns)
+        months = list(wide.index)
         previous_rebalance = None
         quarterly = []
         rows = []
-        for month in months:
-            current = wide.loc[month].to_numpy(dtype=float)
-            if previous is None:
-                previous = current
-                continue
-            change = float(np.abs(current - previous).sum())
-            rebalance = int(month[5:7]) in REBALANCE_MONTHS
-            if not rebalance:
+        for month in months[1:]:
+            change = float((wide.loc[month] - before.loc[month]).abs().sum())
+            if int(month[5:7]) not in REBALANCE_MONTHS:
                 if change > CAP_TOLERANCE:
                     raise RuntimeError(
-                        f"{strategy} changes weight in {month}, outside a quarter start."
+                        f"{strategy} trades in {month}, outside a quarter start."
                     )
-                previous = current
                 continue
             if previous_rebalance is not None:
                 gap = (pd.Period(month, freq="M") - pd.Period(previous_rebalance, freq="M")).n
@@ -585,7 +608,6 @@ def build_turnover(weights):
                     "over_annual_cap": int(complete and annual > ANNUAL_TURNOVER_CAP + CAP_TOLERANCE),
                 }
             )
-            previous = current
             previous_rebalance = month
         if not rows:
             raise RuntimeError(f"{strategy} has no quarterly rebalance to measure.")
@@ -593,13 +615,14 @@ def build_turnover(weights):
     return pd.concat(frames, ignore_index=True)
 
 
-def build_weight_changes(weights, turnover):
-    """Weight of each name before and after a quarterly rebalance.
+def build_weight_changes(weights, turnover, asset_returns):
+    """The weight of each name before and after a quarterly trade.
 
-    These are the movements of a hypothetical book. They are not
-    transactions: no order was placed and no custody record exists.
-    The absolute changes of a rebalance must add up to the gross
-    turnover already published for that month. A difference stops the run.
+    `weight_before` is the weight the market left the name at, `weight_after` the
+    decided weight. These are the movements of a hypothetical book. They are not
+    transactions: no order was placed and no custody record exists. The absolute
+    changes of a trade must add up to the gross turnover already published for
+    that month. A difference stops the run.
     """
     names = weights.drop_duplicates("yahoo_symbol").set_index("yahoo_symbol")["name"].astype(str)
     frames = []
@@ -610,14 +633,11 @@ def build_weight_changes(weights, turnover):
             .fillna(0.0)
             .sort_index()
         )
-        months = [str(month) for month in wide.index]
+        wide.index = wide.index.astype(str)
+        before = pre_trade_weights(wide, asset_returns)
         published = turnover.loc[turnover["strategy"].eq(strategy)].set_index("month")["gross_turnover"]
-        for position, month in enumerate(months):
-            if position == 0 or month not in published.index:
-                continue
-            before = wide.iloc[position - 1]
-            after = wide.iloc[position]
-            change = after - before
+        for month in published.index:
+            change = wide.loc[month] - before.loc[month]
             if abs(float(change.abs().sum()) - float(published.loc[month])) > CAP_TOLERANCE:
                 raise RuntimeError(f"{strategy} weight changes of {month} do not rebuild the gross turnover.")
             moved = change.loc[change.abs() > POSITION_WEIGHT_FLOOR]
@@ -628,8 +648,8 @@ def build_weight_changes(weights, turnover):
                         "strategy": strategy,
                         "yahoo_symbol": moved.index.astype(str),
                         "name": [names[symbol] for symbol in moved.index],
-                        "weight_before": before.loc[moved.index].to_numpy(dtype=float),
-                        "weight_after": after.loc[moved.index].to_numpy(dtype=float),
+                        "weight_before": before.loc[month, moved.index].to_numpy(dtype=float),
+                        "weight_after": wide.loc[month, moved.index].to_numpy(dtype=float),
                         "weight_change": moved.to_numpy(dtype=float),
                     }
                 )
@@ -637,6 +657,45 @@ def build_weight_changes(weights, turnover):
     if not frames:
         return pd.DataFrame(columns=list(WEIGHT_CHANGE_COLUMNS))
     return pd.concat(frames, ignore_index=True)
+
+
+def build_feasibility(classified_report_month):
+    """Can a fully invested long-only book respect a sector cap on this list?
+
+    A sector can hold at most its cap, and at most its number of names times the
+    issuer cap. If the sectors cannot add up to the whole book, no book on the
+    list respects the cap. The result is read by the reports, not typed in them.
+    """
+    book = classified_report_month.loc[
+        classified_report_month["strategy"].eq(STRATEGY_IDS[0])
+        & classified_report_month["weight"].gt(POSITION_WEIGHT_FLOOR)
+    ]
+    counts = book.groupby("sector")["yahoo_symbol"].nunique().sort_index()
+    rows = []
+    for sector, names in counts.items():
+        room = float(names) * ISSUER_WEIGHT_CAP
+        rows.append(
+            {
+                "sector": sector,
+                "names": int(names),
+                "issuer_cap": ISSUER_WEIGHT_CAP,
+                "sector_cap_ips": IPS_SECTOR_WEIGHT_CAP,
+                "capacity_ips": min(IPS_SECTOR_WEIGHT_CAP, room),
+                "sector_cap_working": SECTOR_WEIGHT_CAP,
+                "capacity_working": min(SECTOR_WEIGHT_CAP, room),
+            }
+        )
+    frame = pd.DataFrame(rows, columns=list(FEASIBILITY_COLUMNS))
+    total = {
+        "sector": "TOTAL",
+        "names": int(frame["names"].sum()),
+        "issuer_cap": ISSUER_WEIGHT_CAP,
+        "sector_cap_ips": IPS_SECTOR_WEIGHT_CAP,
+        "capacity_ips": float(frame["capacity_ips"].sum()),
+        "sector_cap_working": SECTOR_WEIGHT_CAP,
+        "capacity_working": float(frame["capacity_working"].sum()),
+    }
+    return pd.concat([frame, pd.DataFrame([total])], ignore_index=True)
 
 
 def build_concentration(history, metrics):
@@ -740,7 +799,7 @@ def shared_asset_returns():
     return history.loc[[str(month) for month in scored_months]]
 
 
-def build_time_series(classified, weight_history):
+def build_time_series(classified, weight_history, asset_returns):
     """Path of the monthly mandate weights, and the additive contribution of each sector and name.
 
     The contribution of a name in a month is its weight times its CHF return.
@@ -748,7 +807,6 @@ def build_time_series(classified, weight_history):
     names of a sector add up to the sector line. The cumulative column is the
     running sum of the monthly contributions. It is not compounded.
     """
-    asset_returns = shared_asset_returns()
     published = pd.read_csv(MONTHLY_RETURNS_FILE, dtype={"strategy": str, "month": str})
     sector_of = (
         classified.drop_duplicates("yahoo_symbol").set_index("yahoo_symbol")["sector"].astype(str)
@@ -869,7 +927,8 @@ def build_monitoring():
     exposure = build_exposure(classified)
     history = build_concentration_history(classified_all)
     limits = build_limit_watch(classified_all)
-    turnover = build_turnover(weights)
+    asset_returns = shared_asset_returns()
+    turnover = build_turnover(weights, asset_returns)
     concentration = build_concentration(history, metrics)
     top10 = build_top10(classified)
     report = build_monthly_report(concentration, sectors, zones, exposure)
@@ -888,12 +947,13 @@ def build_monitoring():
                 raise RuntimeError(f"{strategy} {label} disagrees with the monthly report.")
             if abs(float(watched[amount]) - float(published[amount])) > CAP_TOLERANCE:
                 raise RuntimeError(f"{strategy} {amount} disagrees with the monthly report.")
-    path, contributions, holding_contributions = build_time_series(classified, weights)
+    path, contributions, holding_contributions = build_time_series(classified, weights, asset_returns)
     by_sector = holding_contributions.groupby(["strategy", "month", "sector"])["month_contribution"].sum()
     published_sector = contributions.set_index(["strategy", "month", "sector"])["month_contribution"]
     if (by_sector.reindex(published_sector.index) - published_sector).abs().max() > CONTRIBUTION_TOLERANCE:
         raise RuntimeError("Name contributions do not rebuild the sector contributions.")
-    weight_changes = build_weight_changes(weights, turnover)
+    weight_changes = build_weight_changes(weights, turnover, asset_returns)
+    feasibility = build_feasibility(classified_all.loc[classified_all["month"].eq(report_month)])
     outputs = {
         "holdings": (classified, HOLDINGS_FILE, HOLDING_COLUMNS),
         "sectors": (sectors, SECTOR_FILE, SECTOR_COLUMNS),
@@ -917,6 +977,7 @@ def build_monitoring():
             HOLDING_CONTRIBUTION_COLUMNS,
         ),
         "weight_changes": (weight_changes, WEIGHT_CHANGES_FILE, WEIGHT_CHANGE_COLUMNS),
+        "feasibility": (feasibility, FEASIBILITY_FILE, FEASIBILITY_COLUMNS),
     }
     written = {}
     for name, (dataframe, path, columns) in outputs.items():

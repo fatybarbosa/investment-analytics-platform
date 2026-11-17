@@ -77,6 +77,8 @@ PRICE_COLUMNS = (
     "fx_unit",
     "chf_per_unit",
     "close_chf",
+    "adj_close",
+    "adj_close_chf",
 )
 EXCLUSION_COLUMNS = (
     "symbol",
@@ -194,6 +196,13 @@ def price_defect(prices):
     reason = reason.mask(outside, "outside_high_low")
     reason = reason.mask(negative, "negative_price")
     reason = reason.mask(missing_close, "missing_close")
+    # The adjusted close carries the dividends. A bar without a usable one
+    # cannot give a total return, so it is left out. The original close
+    # reasons keep their priority, and nothing is filled.
+    if "adj_close" in prices.columns:
+        adjusted = prices["adj_close"]
+        reason = reason.mask(reason.eq("") & adjusted.isna(), "missing_adj_close")
+        reason = reason.mask(reason.eq("") & adjusted.le(0), "non_positive_adj_close")
     return reason
 
 
@@ -207,10 +216,10 @@ def snb_quotes(fx_rates):
 
 def treat_market_prices(prices, master, fx_rates):
     """Drop unusable bars and convert the remaining close to CHF."""
-    bars = prices.loc[:, ["symbol", "timestamp", "open", "high", "low", "close", "volume"]].copy()
+    bars = prices.loc[:, ["symbol", "timestamp", "open", "high", "low", "close", "adj_close", "volume"]].copy()
     bars["symbol"] = bars["symbol"].astype(str)
     bars["timestamp"] = bars["timestamp"].astype(str).str.slice(0, 10)
-    for column in ("open", "high", "low", "close", "volume"):
+    for column in ("open", "high", "low", "close", "adj_close", "volume"):
         bars[column] = pd.to_numeric(bars[column], errors="coerce")
     bars["price_reason"] = price_defect(bars)
 
@@ -273,13 +282,16 @@ def treat_market_prices(prices, master, fx_rates):
     )
 
     kept = bars["reason"].eq("")
-    if bars.loc[kept, "chf_per_unit"].isna().any() or bars.loc[kept, "close"].isna().any():
-        raise RuntimeError("A kept price bar has no close or no CHF rate.")
-    bars.loc[kept, "close_chf"] = (
-        bars.loc[kept, "close"]
-        / bars.loc[kept, "quote_scale"]
-        * bars.loc[kept, "chf_per_unit"]
-    )
+    if (
+        bars.loc[kept, "chf_per_unit"].isna().any()
+        or bars.loc[kept, "close"].isna().any()
+        or bars.loc[kept, "adj_close"].isna().any()
+    ):
+        raise RuntimeError("A kept price bar has no close, no adjusted close or no CHF rate.")
+    conversion = bars.loc[kept, "chf_per_unit"] / bars.loc[kept, "quote_scale"]
+    bars.loc[kept, "close_chf"] = bars.loc[kept, "close"] * conversion
+    # Total-return level in CHF: the adjusted close folds the dividends in.
+    bars.loc[kept, "adj_close_chf"] = bars.loc[kept, "adj_close"] * conversion
 
     clean = bars.loc[kept, list(PRICE_COLUMNS)].sort_values(
         ["symbol", "timestamp"],

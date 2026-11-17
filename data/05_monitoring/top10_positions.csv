@@ -9,23 +9,23 @@ equal_weight,7,4568.T,4568,DAIICHI SANKYO LTD,0.0344827586206896,Health Care,Asi
 equal_weight,8,8951.T,8951,NIPPON BUILDING FUND REIT,0.0344827586206896,Real Estate,Asie-Pacifique,JPY
 equal_weight,9,9022.T,9022,CENTRAL JAPAN RAILWAY,0.0344827586206896,Industrials,Asie-Pacifique,JPY
 equal_weight,10,ALNY,ALNY,ALNYLAM PHARMACEUTICALS,0.0344827586206896,Health Care,Amériques,USD
-minimum_volatility,1,1044.HK,1044,HENGAN INTERNATIONAL GROUP,0.05,Consumer Staples,Asie-Pacifique,HKD
-minimum_volatility,2,3898.HK,3898,ZHUZHOU CRRC TIMES ELECTRIC LTD H,0.05,Industrials,Asie-Pacifique,HKD
-minimum_volatility,3,4507.T,4507,SHIONOGI,0.05,Health Care,Asie-Pacifique,JPY
-minimum_volatility,4,4523.T,4523,EISAI,0.05,Health Care,Asie-Pacifique,JPY
-minimum_volatility,5,8951.T,8951,NIPPON BUILDING FUND REIT,0.05,Real Estate,Asie-Pacifique,JPY
-minimum_volatility,6,9022.T,9022,CENTRAL JAPAN RAILWAY,0.05,Industrials,Asie-Pacifique,JPY
-minimum_volatility,7,C38U.SI,CICT,CAPITALAND INTEGRATED COMMERCIAL T,0.05,Real Estate,Asie-Pacifique,SGD
-minimum_volatility,8,DEMANT.CO,DEMANT,DEMANT,0.05,Health Care,Europe,DKK
-minimum_volatility,9,DLR,DLR,DIGITAL REALTY TRUST REIT,0.05,Real Estate,Amériques,USD
-minimum_volatility,10,PSON.L,PSON,PEARSON PLC,0.05,Consumer Discretionary,Europe,GBP
-maximum_sharpe,1,3898.HK,3898,ZHUZHOU CRRC TIMES ELECTRIC LTD H,0.05,Industrials,Asie-Pacifique,HKD
-maximum_sharpe,2,NRP.JO,NRP,NEPI ROCKCASTLE,0.05,Real Estate,Moyen-Orient et Afrique,ZAR
-maximum_sharpe,3,PSON.L,PSON,PEARSON PLC,0.05,Consumer Discretionary,Europe,GBP
-maximum_sharpe,4,ALNY,ALNY,ALNYLAM PHARMACEUTICALS,0.0499999999999999,Health Care,Amériques,USD
-maximum_sharpe,5,BMY,BMY,BRISTOL MYERS SQUIBB,0.0499999999999999,Health Care,Amériques,USD
-maximum_sharpe,6,SALM.OL,SALM,SALMAR,0.0499999999999996,Consumer Staples,Europe,NOK
-maximum_sharpe,7,REC.MI,REC,RECORDATI INDUSTRIA CHIMICA E FARM,0.0487987791025792,Health Care,Europe,EUR
-maximum_sharpe,8,VWS.CO,VWS,VESTAS WIND SYSTEMS,0.0476418774767269,Industrials,Europe,DKK
-maximum_sharpe,9,SOBI.ST,SOBI,SWEDISH ORPHAN BIOVITRUM,0.0472539566092826,Health Care,Europe,SEK
-maximum_sharpe,10,DLR,DLR,DIGITAL REALTY TRUST REIT,0.0466493242979055,Real Estate,Amériques,USD
+minimum_volatility,1,4523.T,4523,EISAI,0.05,Health Care,Asie-Pacifique,JPY
+minimum_volatility,2,9022.T,9022,CENTRAL JAPAN RAILWAY,0.05,Industrials,Asie-Pacifique,JPY
+minimum_volatility,3,DEMANT.CO,DEMANT,DEMANT,0.05,Health Care,Europe,DKK
+minimum_volatility,4,PSON.L,PSON,PEARSON PLC,0.05,Consumer Discretionary,Europe,GBP
+minimum_volatility,5,REC.MI,REC,RECORDATI INDUSTRIA CHIMICA E FARM,0.05,Health Care,Europe,EUR
+minimum_volatility,6,4507.T,4507,SHIONOGI,0.0498114712715906,Health Care,Asie-Pacifique,JPY
+minimum_volatility,7,DLR,DLR,DIGITAL REALTY TRUST REIT,0.0497862013248743,Real Estate,Amériques,USD
+minimum_volatility,8,C38U.SI,CICT,CAPITALAND INTEGRATED COMMERCIAL T,0.0496102898836173,Real Estate,Asie-Pacifique,SGD
+minimum_volatility,9,8951.T,8951,NIPPON BUILDING FUND REIT,0.049299138228955,Real Estate,Asie-Pacifique,JPY
+minimum_volatility,10,SPSN.SW,SPSN,SWISS PRIME SITE AG,0.0487180210099747,Real Estate,Europe,CHF
+maximum_sharpe,1,BMY,BMY,BRISTOL MYERS SQUIBB,0.05,Health Care,Amériques,USD
+maximum_sharpe,2,PSON.L,PSON,PEARSON PLC,0.0498509484211028,Consumer Discretionary,Europe,GBP
+maximum_sharpe,3,REC.MI,REC,RECORDATI INDUSTRIA CHIMICA E FARM,0.0498509484211028,Health Care,Europe,EUR
+maximum_sharpe,4,SALM.OL,SALM,SALMAR,0.0498509484211028,Consumer Staples,Europe,NOK
+maximum_sharpe,5,SOON.SW,SOON,SONOVA HOLDING AG,0.0498509484211028,Health Care,Europe,CHF
+maximum_sharpe,6,NRP.JO,NRP,NEPI ROCKCASTLE,0.0487235619950016,Real Estate,Moyen-Orient et Afrique,ZAR
+maximum_sharpe,7,4507.T,4507,SHIONOGI,0.0477427993397878,Health Care,Asie-Pacifique,JPY
+maximum_sharpe,8,SOBI.ST,SOBI,SWEDISH ORPHAN BIOVITRUM,0.04764634119001,Health Care,Europe,SEK
+maximum_sharpe,9,DLR,DLR,DIGITAL REALTY TRUST REIT,0.0464982538463225,Real Estate,Amériques,USD
+maximum_sharpe,10,EQIX,EQIX,EQUINIX REIT,0.0462726927415732,Real Estate,Amériques,USD

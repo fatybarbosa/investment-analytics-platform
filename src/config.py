@@ -233,14 +233,18 @@ MARKET_HISTORY_YEARS = 10
 # Five years is the risk horizon. The month being scored is excluded.
 ESTIMATION_MONTHS = 60
 # CLIENT001 IPS limits for a long-only equity mandate.
-# Issuer 5%, sector 40%, region 50%, listing currency 40%.
-# The sector ceiling is 40% so the Eligible names with a complete CHF
-# history can be held together. At equal weight that list puts more
-# than 20% in two sectors and stays under 40%. Issuer, region,
-# currency, and the 25–40 name band are unchanged.
+# Issuer 5%, sector 20%, region 50%, listing currency 40%.
+# The written sector limit of the IPS is 20%. On the Eligible names with a
+# complete CHF history, a fully invested long-only book cannot respect it:
+# the sectors cannot hold 100% between them under the issuer cap. The books
+# are therefore built with a WORKING sector cap of 40%. The working cap is not
+# a limit of the client. It has not been approved by the client, and the
+# reports show the breach of the written limit instead of hiding it.
+# Issuer, region, currency, and the 25–40 name band are unchanged.
 # The optimized books keep 25 to 40 names. Gross turnover is at most
 # 50% a year, applied as 12.5% at each quarterly rebalance.
 ISSUER_WEIGHT_CAP = 0.05
+IPS_SECTOR_WEIGHT_CAP = 0.20
 SECTOR_WEIGHT_CAP = 0.40
 ZONE_WEIGHT_CAP = 0.50
 CURRENCY_WEIGHT_CAP = 0.40
