@@ -2,7 +2,7 @@
 
 English summary. The project documents, reports and comments are written in French; this page gives a reader of English the scope, the method and the limits. It repeats no result figure: the figures live in the deliverables, where an automated check reads each one back from its source file.
 
-**Author:** Faty Barbosa Monteiro. Individual training project.
+**Author:** Faty Barbosa. Individual training project.
 
 ## What it is
 
@@ -52,4 +52,4 @@ python -m src.pipeline.refresh
 python -m pytest tests
 ```
 
-Run the pipeline before the tests: the number-check tests read `audit/data_control_center.xlsx`, which the pipeline rebuilds and the repository does not version. On a fresh clone, `pytest` alone stops on that missing file.
+The tests read the published files of the repository, including the quality control center `audit/data_control_center.xlsx`. They pass on a fresh clone without running the pipeline. Excel must be installed: one test recalculates a workbook through COM.

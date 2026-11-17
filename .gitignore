@@ -58,7 +58,6 @@ database/*.sqlite3
 # AUDIT OUTPUTS
 # ============================================================================
 
-audit/data_control_center.xlsx
 
 # ============================================================================
 # GENERATED DATASETS
@@ -101,3 +100,7 @@ database/*.db-shm
 database/*.db-wal
 data/01_raw/fundamentals/fundamentals_sec.csv
 data/01_raw/market/market_prices.csv
+
+# Brief and CV material stay on disk
+documentation/Portfolio Construction (1).docx
+documentation/Portfolio_for_CV.pdf

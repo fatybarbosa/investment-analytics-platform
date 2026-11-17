@@ -2,7 +2,7 @@
 
 Plateforme d'analyse d'un mandat discrétionnaire fictif, en francs suisses. Elle part du profil du client, construit trois livres sur des cours publics, mesure la performance et le risque, et restitue le résultat dans des pages, une annexe Excel, un modèle Power BI et un rapport court.
 
-**Autrice :** Faty Barbosa Monteiro
+**Autrice :** Faty Barbosa
 
 CLIENT001 est un cas d'école. Aucun compte n'est ouvert. Les trois livres sont des portefeuilles hypothétiques construits rétrospectivement : ils n'ont pas été détenus. Les cours, les changes, le SARON et le rendement publié du fonds iShares sont des données réelles et publiques. Il n'y a pas de relevé de dépositaire, pas de frais, pas de flux. Le rendement des livres est un rendement de cours. Le rendement du fonds est le rendement total publié par iShares, converti en francs.
 
@@ -39,7 +39,7 @@ python -m src.pipeline.refresh
 python -m pytest tests
 ```
 
-Lancer le pipeline avant les tests : les tests du contrôle des nombres lisent `audit/data_control_center.xlsx`, que le pipeline reconstruit et que le dépôt ne versionne pas. Sur un clone frais, `pytest` seul s'arrête sur ce fichier absent.
+Les tests lisent les fichiers publiés du dépôt, dont le centre de contrôle qualité `audit/data_control_center.xlsx`. Ils passent sur un clone frais sans lancer le pipeline. Excel doit être installé : un test recalcule un classeur par COM.
 
 Fermer `reports/excel/annexe_reporting.xlsx` avant le rafraîchissement. Un classeur ouvert verrouille le fichier.
 
