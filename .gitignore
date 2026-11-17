@@ -83,6 +83,7 @@ test_*.py
 reset_*.py
 !tests/reporting/test_injected_errors.py
 !tests/reporting/test_number_check.py
+!tests/monitoring/test_contributions.py
 
 # ============================================================================
 # POWER BI LOCAL CACHE
