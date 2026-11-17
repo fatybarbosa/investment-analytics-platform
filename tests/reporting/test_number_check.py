@@ -145,6 +145,27 @@ def test_tokenizer_reads_french_numbers():
     assert not re.search(r"003|001", " ".join(token.text for token in tokens))
 
 
+def test_two_numbers_swapped_inside_a_sentence_are_detected(sections, return_sentence):
+    """Each swapped number is still a declared fact. Only the sentence itself catches the swap."""
+    statement, first = return_sentence
+    second = french(float(resolve(perf("minimum_volatility", "annualized_return"))) * 100, 2)
+    assert first != second
+    swapped = statement.text.replace(first, "@@", 1).replace(second, first, 1).replace("@@", second, 1)
+    assert swapped != statement.text
+    text = render_markdown(sections, GENERATED).replace(statement.text, swapped, 1)
+    # The numbers alone pass: both values are facts of the same document.
+    check_document(text, all_statements(sections), where="markdown", integrity=False)
+    with pytest.raises(NumberCheckError, match="plus celles qui ont été vérifiées"):
+        check_document(text, all_statements(sections), where="markdown")
+
+
+def test_a_deleted_sentence_is_detected(sections):
+    statement = sections["alertes"][0]
+    text = render_markdown(sections, GENERATED).replace(statement.text, "", 1)
+    with pytest.raises(NumberCheckError, match="plus celles qui ont été vérifiées"):
+        check_document(text, all_statements(sections), where="markdown")
+
+
 def test_pipeline_step_stops_on_a_false_number(sections, return_sentence, tmp_path, monkeypatch):
     """The step called by src.pipeline.refresh raises when the written comment is false.
 

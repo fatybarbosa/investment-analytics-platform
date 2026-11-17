@@ -77,6 +77,21 @@ def d2_decision():
     ))
 
 
+def _adjusted_close_window():
+    """Say whether the left-out adjusted-close bars touch the measured window. Read from the files."""
+    import pandas as pd
+
+    from src.config import PROJECT_ROOT
+
+    excluded = pd.read_csv(PROJECT_ROOT / EXCLUSIONS)
+    left_out = excluded.loc[excluded["reason"].isin(["non_positive_adj_close", "missing_adj_close"])]
+    start = str(pd.read_csv(PROJECT_ROOT / "data/04_portfolios/portfolio_metrics.csv")["window_start"].iloc[0])
+    touching = left_out.loc[left_out["timestamp"].astype(str).str.slice(0, 7) >= start]
+    if left_out.empty or touching.empty:
+        return "Toutes sont antérieures à la fenêtre de mesure et ne touchent aucun livre."
+    return "Certaines tombent dans la fenêtre de mesure : un titre concerné peut sortir des livres, ce que le fichier d'appartenance enregistre."
+
+
 def _case_prices():
     d = Draft()
     return [
@@ -95,6 +110,11 @@ def _case_prices():
             f"les mêmes nombres que le contrôle. Aucune valeur n'est interpolée. "
             f"Le même fichier garde {d.count(exclusions('no_snb_series'))} séances sans série de change et "
             f"{d.count(exclusions('missing_monthly_fx'))} séances sans taux de fin de mois."
+        )),
+        d.done("cas cours", (
+            "Cours ajusté. Le rendement des livres est un rendement total : il utilise le cours ajusté des dividendes, converti en CHF comme le cours de clôture. "
+            f"{d.count(exclusions('non_positive_adj_close'))} séances ont un cours ajusté nul ou négatif et {d.count(exclusions('missing_adj_close'))} n'en ont pas : "
+            f"elles sont écartées, sans valeur reconstituée. {_adjusted_close_window()}"
         )),
         plain_case(
             "Trace. Le contrôle reste en avertissement sur la table des cours. "

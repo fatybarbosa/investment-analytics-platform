@@ -193,7 +193,6 @@ def add_dashboard(workbook, inputs, recalcul):
     cats = reference(label_col, first, last)
     book_names = [SERIES_LABELS[series] for series in BOOKS]
     all_names = [SERIES_LABELS[series] for series in SERIES]
-    shock_names = [shock_labels[shock] for shock in SHOCK_IDS]
 
     chart_labels = {
         "iShares, rendement de la valeur liquidative en CHF": "Fonds iShares",

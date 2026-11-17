@@ -8,7 +8,6 @@ of the repository. The SQL files in sql/ are executed against it when
 it is present, and a failing statement stops the command.
 """
 
-from pathlib import Path
 import sqlite3
 
 import pandas as pd
@@ -18,6 +17,7 @@ from src.config import DATABASE_FILE, PROJECT_ROOT
 
 DICTIONARY_FILE = PROJECT_ROOT / "documentation" / "DICTIONNAIRE_DONNEES.md"
 SQL_DIR = PROJECT_ROOT / "sql"
+FAILING_ROW_CONTROLS = ("12_controle_somme_des_poids.sql", "15_controle_rotation.sql")
 LABEL = "Généré automatiquement, à relire avant diffusion."
 
 GROUPS = (
@@ -136,11 +136,17 @@ def execute_sql():
     scripts = sorted(SQL_DIR.glob("*.sql"))
     if not scripts:
         raise RuntimeError("No SQL file is published.")
+    from src.database.load_books import load_book_tables
+
     connection = sqlite3.connect(DATABASE_FILE)
     try:
+        load_book_tables(connection)
         for script in scripts:
             for statement in _statements(script.read_text(encoding="utf-8")):
-                connection.execute(statement).fetchall()
+                rows = connection.execute(statement).fetchall()
+                # These queries return a row only when their check fails.
+                if script.name in FAILING_ROW_CONTROLS and rows:
+                    raise RuntimeError(f"SQL control {script.name} failed on {len(rows)} row(s): {rows[0]}")
     finally:
         connection.close()
     return scripts

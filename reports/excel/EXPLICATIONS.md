@@ -4,6 +4,8 @@
 
 Le recalcul part des rendements mensuels. Il ne lit pas les indicateurs déjà écrits par Python.
 
+Ces rendements mensuels sont ceux du pipeline : rendement total en CHF, avec le cours ajusté des dividendes converti au cours BNS de fin de mois, et des poids qui dérivent entre deux rééquilibrages trimestriels. Excel ne refait pas cette étape. Il ne peut donc pas détecter une erreur de base de rendement ou de dérive : il vérifie que les indicateurs sont bien calculés à partir de ces rendements.
+
 Le rendement chaîné est le produit des `1 + r`, moins un. Le rendement annualisé est ce produit élevé à la puissance `12 / T`, moins un. `T` est le nombre de mois. L'annualisation n'utilise pas 252.
 
 La volatilité annualisée est l'écart-type d'échantillon des rendements du portefeuille, diviseur `T - 1`, multiplié par la racine de 12. Ce n'est pas l'écart-type de l'excédent.
@@ -38,7 +40,7 @@ Lignes Power BI en attente d'export : 0. Lignes Power BI passées OK par la form
 
 ## Export Power BI
 
-`export_power_bi` contient 101 valeurs lues dans Power BI Desktop le 2026-11-16 10:02:04 UTC, sur le moteur localhost:55129 (Analysis Services 17.0.93.23, ADOMD.NET). Les données du modèle avaient été actualisées dans Desktop entre 2026-11-16T10:01:16 → 2026-11-16T10:01:36 UTC.
+`export_power_bi` contient 101 valeurs lues dans Power BI Desktop le 2026-11-17 08:53:56 UTC, sur le moteur localhost:57662 (Analysis Services 17.0.93.23, ADOMD.NET). Les données du modèle avaient été actualisées dans Desktop entre 2026-11-17T08:53:46 → 2026-11-17T08:53:48 UTC.
 
 Méthode. Pendant qu'un rapport est ouvert, Desktop fait tourner un moteur Analysis Services local. `python -m src.reporting.power_bi_export` lit son port dans le dossier de travail de Desktop, s'y connecte avec ADOMD.NET et envoie une requête DAX `EVALUATE` par ligne : la mesure du modèle, filtrée sur le livre, le choc ou le dernier mois. La requête de chaque ligne est écrite dans `power_bi_export.csv`. Le rapport n'est ni modifié ni enregistré.
 
@@ -57,7 +59,7 @@ Sans export automatique, la saisie reste manuelle : ouvrir le projet dans Deskto
 3. Pourquoi l'écart-type est-il celui de l'échantillon ? Le diviseur est T − 1, `STDEV.S` dans Excel et `std(ddof=1)` dans Python. Les mois de la fenêtre servent à estimer une dispersion, ils ne sont pas traités comme la population entière. `STDEV.P` n'est pas utilisé.
 4. Comment le TWR est-il calculé ? Le rendement chaîné est le produit des (1 + r) mensuels, moins un. Chaque r est déjà le rendement du livre de fin de mois à fin de mois, poids du mois compris. En l'absence de flux externe, ce produit est le rendement pondéré par le temps. Il n'y a pas de fichier de conservation, donc pas de flux à retirer, et ce n'est pas un rendement de Dietz.
 5. Comment la VaR historique fonctionne-t-elle ? Les rendements mensuels sont triés du pire au meilleur, puis par mois croissant. k est le plafond de 5 % de T. La VaR est le rendement du rang k. L'expected shortfall est la moyenne des rangs 1 à k. Pas de loi normale, pas d'annualisation.
-6. Que ne prouve pas la réconciliation ? Elle prouve que les formules Excel retrouvent les chiffres publiés par le pipeline, à la tolérance près. Elle ne prouve pas que les titres ont été détenus, que les cours sont ceux d'un conservateur, ni que des frais ont été prélevés. Il n'y a pas de données de conservation.
+6. Que ne prouve pas la réconciliation ? Elle prouve que les formules Excel retrouvent les chiffres publiés par le pipeline, à la tolérance près. Elle ne prouve pas que les titres ont été détenus, que les cours sont ceux d'un conservateur, ni que des frais ont été prélevés. Il n'y a pas de données de conservation. Elle ne prouve pas non plus que les définitions sont les bonnes : Excel applique celles du pipeline, écrites par le même auteur, et la plupart des lignes Power BI relisent simplement la cellule publiée. Elle trouve une erreur de calcul, pas une erreur de méthode.
 7. Comment un écart serait-il traité ? Le statut passe à EXCEPTION et la clôture reste ouverte tant que la cause n'est pas écrite. La commande du pipeline s'arrête. On documente la cause. On ne modifie pas la tolérance et on n'ajuste pas une formule pour forcer OK. Un écart qui vient d'une définition différente est un résultat, pas une erreur à masquer.
 8. Pourquoi le ratio d'information du fonds n'est-il pas publié ? L'écart de suivi du fonds contre lui-même est nul. Diviser la moyenne de cet écart par un écart-type nul n'est pas défini. Le Sharpe, le Sortino, la VaR et l'expected shortfall du fonds sont publiés, avec les mêmes définitions que pour les livres.
 9. Pourquoi la colonne Power BI n'est-elle jamais OK avant un export Desktop ? `valeur_power_bi` est la valeur attendue, lue dans expected_values.csv. Ce n'est pas une copie d'écran de Desktop. Le statut reste « en attente d'export Power BI » tant que `export_power_bi` est vide. Une valeur lue dans Desktop, écrite par `src.reporting.power_bi_export` ou collée à la main, fait basculer la formule vers OK ou EXCEPTION.

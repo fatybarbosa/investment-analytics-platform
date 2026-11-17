@@ -18,6 +18,7 @@ any comparison. A later step must not change it to force a pass.
 from __future__ import annotations
 
 import math
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -34,11 +35,13 @@ from src.config import (
     CURRENCY_WEIGHT_CAP,
     DATA_CONTROL_CENTER_FILE,
     EXCEL_REPORTS,
+    IPS_SECTOR_WEIGHT_CAP,
     ISSUER_WEIGHT_CAP,
     MARKET_SHOCK_RETURN,
     MAX_POSITIONS,
     MIN_POSITIONS,
     MONTHS_PER_YEAR,
+    PROJECT_ROOT,
     RATE_SHOCK_ANNUAL_POINTS,
     RECESSION_SHOCK_MONTHS,
     RECESSION_SHOCK_RETURN,
@@ -75,10 +78,13 @@ from src.risk.build_risk import AGREEMENT as RISK_AGREEMENT
 from src.risk.build_risk import MATRIX_FILE, METRICS_OUTPUT as RISK_METRICS_FILE, TAIL_FILE, VAR_LEVEL
 from src.stress_testing.build_stress import AGREEMENT as STRESS_AGREEMENT
 from src.stress_testing.build_stress import RESULTS_FILE, SHOCK_IDS
-from src.reporting.power_bi_export import EXPORT_FILE, NO_ANSWER, NOT_EXPORTED, read_export
+from src.reporting.power_bi_export import COMPUTED_IN_DAX, EXPORT_FILE, NO_ANSWER, NOT_EXPORTED, read_export
 from src.utils.logger import logger
 
 
+# The Power Query drafts carry this token instead of the folder of the machine that wrote them.
+# The PowerShell step that loads them into Excel replaces it with the real project folder.
+PROJECT_TOKEN = "{{ProjectRoot}}"
 WORKBOOK_FILE = EXCEL_REPORTS / "annexe_reporting.xlsx"
 EXPLANATIONS_FILE = EXCEL_REPORTS / "EXPLICATIONS.md"
 EXPECTED_FILE = EXCEL_REPORTS / "expected_values.csv"
@@ -388,11 +394,12 @@ def _parameters(workbook, inputs):
         (9, "ChocRecessionMois", RECESSION_SHOCK_MONTHS, "0", "Nombre de derniers mois remplacés."),
         (10, "ChocVol", VOLATILITY_SHOCK_MULTIPLIER, "0.0", "Multiplie l'écart à la moyenne."),
         (11, "PlafondEmetteur", ISSUER_WEIGHT_CAP, "0%", "Plafond IPS par ligne."),
-        (12, "PlafondSecteur", SECTOR_WEIGHT_CAP, "0%", "Plafond IPS par secteur."),
+        (12, "PlafondSecteur", SECTOR_WEIGHT_CAP, "0%", "Plafond de TRAVAIL par secteur, utilisé pour construire les livres. Non approuvé par le client."),
         (13, "PlafondZone", ZONE_WEIGHT_CAP, "0%", "Plafond IPS par zone."),
         (14, "PlafondDevise", CURRENCY_WEIGHT_CAP, "0%", "Plafond IPS par devise de cotation."),
         (15, "PlancherLignes", MIN_POSITIONS, "0", "Plancher de lignes des livres optimisés."),
         (16, "PlafondLignes", MAX_POSITIONS, "0", "Plafond de lignes des livres optimisés."),
+        (17, "PlafondSecteurIPS", IPS_SECTOR_WEIGHT_CAP, "0%", "Plafond par secteur ÉCRIT dans l'IPS. Non satisfaisable sur cette liste : voir mandate_feasibility.csv."),
     ]
     for row, name, value, number_format, gloss in rows:
         worksheet.cell(row, 1, name).font = LABEL_FONT
@@ -770,6 +777,13 @@ def _power_bi_cells(worksheet, row, exported=None, indicator=None, book=None):
     )
     value = None if exported is None else exported.get((indicator, book))
     worksheet.cell(row, 12, value)
+    if indicator == "ratio_information" and book == "benchmark":
+        nature = "non publié"
+    elif indicator in COMPUTED_IN_DAX:
+        nature = "recalcul DAX"
+    else:
+        nature = "relecture"
+    worksheet.cell(row, 15, nature)
     if value is None and not (indicator == "ratio_information" and book == "benchmark"):
         reason = NOT_EXPORTED.get(f"{indicator} / {book}") or NOT_EXPORTED.get(indicator) or NO_ANSWER
         if exported and reason:
@@ -810,6 +824,7 @@ def _reconciliation(workbook, recalcul, stress):
         "export_power_bi",
         "statut_power_bi",
         "cause_power_bi",
+        "nature_power_bi",
     )
     exported = read_export()
     for column, header in enumerate(headers, 1):
@@ -923,7 +938,7 @@ def _reconciliation(workbook, recalcul, stress):
             _power_bi_cells(worksheet, row, exported, f"stress_{indicator}", stress_book)
             row += 1
     last = row - 1
-    table = Table(displayName="Reconciliation", ref=f"A4:N{last}")
+    table = Table(displayName="Reconciliation", ref=f"A4:O{last}")
     table.tableStyleInfo = TableStyleInfo(name="TableStyleMedium2", showRowStripes=True)
     worksheet.add_table(table)
     worksheet.freeze_panes = "A5"
@@ -936,6 +951,7 @@ def _reconciliation(workbook, recalcul, stress):
     worksheet.column_dimensions["L"].width = 22
     worksheet.column_dimensions["M"].width = 32
     worksheet.column_dimensions["N"].width = 62
+    worksheet.column_dimensions["O"].width = 18
     worksheet.conditional_formatting.add(f"M5:M{last}", CellIsRule(operator="equal", formula=['"EXCEPTION"'], fill=PatternFill("solid", fgColor="F4B183")))
     worksheet.conditional_formatting.add(f"I5:I{last}", CellIsRule(operator="equal", formula=['"EXCEPTION"'], fill=PatternFill("solid", fgColor="F4B183")))
     worksheet.conditional_formatting.add(f"K5:K{last}", CellIsRule(operator="equal", formula=['"ouvert"'], fill=PatternFill("solid", fgColor="FF6B6B")))
@@ -1235,10 +1251,10 @@ def _readme(workbook, inputs):
     worksheet = workbook.create_sheet("Lisez_moi", 0)
     _title(worksheet, "Annexe Excel — reporting")
     lines = [
-        "Sources. Les cours sont les clôtures publiques traitées en CHF. Le change et le SARON viennent de la Banque nationale suisse. Le fonds de comparaison est l'iShares MSCI Global Sustainable Development Goals ETF : son rendement mensuel publié de la valeur liquidative est converti en CHF au cours BNS de fin de mois.",
+        "Sources. Les cours sont les cours de clôture ajustés des dividendes, publics, convertis en CHF au cours de fin de mois. Le change et le SARON viennent de la Banque nationale suisse. Le fonds de comparaison est l'iShares MSCI Global Sustainable Development Goals ETF : son rendement mensuel publié de la valeur liquidative est converti en CHF au cours BNS de fin de mois.",
         f"Actualisation du classeur : {inputs['generated']}. La fenêtre affichée est la formule DebutFenetre → FinFenetre, lue sur les mois du fichier de rendements.",
         "Tolérance : la cellule nommée Tolerance. Elle est égale à l'agreement du pipeline et elle est fixée avant la comparaison.",
-        "Périmètre : trois livres d'actions cotées en CHF, plus le fonds iShares en CHF. Pas de données de conservation. Aucun frais n'est déduit. Les dividendes ne sont pas dans le rendement de cours.",
+        "Périmètre : trois livres d'actions cotées en CHF, plus le fonds iShares en CHF. Pas de données de conservation. Les rendements des livres sont des rendements totaux bruts : dividendes réinvestis, avant frais et avant impôt à la source. Les poids dérivent avec le marché entre deux rééquilibrages trimestriels.",
         "Illustratif : les quatre chocs de la feuille Stress sont des simulations. Ils ne sont pas une prévision et ils ne réestiment pas les poids.",
         "Power BI lit les cellules publiées. Il ne recalcule pas le Sharpe, la VaR ni les chocs. Ce classeur recalcule ces indicateurs à partir des rendements mensuels. Suivi, Performance, Risque et Chocs portent les titres des pages HTML et des visuels Power BI correspondants. Les formules des graphiques sont sur la feuille Series.",
         "La colonne valeur_power_bi reprend expected_values.csv. Le statut Power BI reste « en attente d'export Power BI » tant que la colonne export_power_bi est vide. La procédure de collage est dans EXPLICATIONS.md.",
@@ -1298,7 +1314,7 @@ def _queries(inputs):
         )
         text = (
             "let\n"
-            f'    Source = Csv.Document(File.Contents("{path.resolve().as_posix()}"), '
+            f'    Source = Csv.Document(File.Contents("{PROJECT_TOKEN}/{path.resolve().relative_to(PROJECT_ROOT.resolve()).as_posix()}"), '
             "[Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),\n"
             "    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),\n"
             f"    Typed = Table.TransformColumnTypes(Promoted, {{{pairs}}})\n"
@@ -1458,27 +1474,28 @@ def calculate_in_excel(path):
     import subprocess
 
     target = str(Path(path).resolve())
-    script = f"""
+    script = """
 $ErrorActionPreference = 'Stop'
 $excel = $null
-try {{
+try {
   $excel = New-Object -ComObject Excel.Application
   $excel.Visible = $false
   $excel.DisplayAlerts = $false
   $excel.AskToUpdateLinks = $false
-  $wb = $excel.Workbooks.Open('{target}')
+  $wb = $excel.Workbooks.Open($env:ANNEX_PATH)
   $excel.CalculateFull()
   $wb.Save()
   $wb.Close($true)
-}} finally {{
-  if ($null -ne $excel) {{ $excel.Quit() }}
-}}
+} finally {
+  if ($null -ne $excel) { $excel.Quit() }
+}
 """
     completed = subprocess.run(
         ["powershell", "-NoProfile", "-Command", script],
         capture_output=True,
         text=True,
         timeout=300,
+        env={**os.environ, "ANNEX_PATH": target},
     )
     if completed.returncode != 0:
         raise RuntimeError(completed.stderr or completed.stdout or "Excel did not calculate the workbook.")
@@ -1590,6 +1607,8 @@ def _write_explanations(rows):
 
 Le recalcul part des rendements mensuels. Il ne lit pas les indicateurs déjà écrits par Python.
 
+Ces rendements mensuels sont ceux du pipeline : rendement total en CHF, avec le cours ajusté des dividendes converti au cours BNS de fin de mois, et des poids qui dérivent entre deux rééquilibrages trimestriels. Excel ne refait pas cette étape. Il ne peut donc pas détecter une erreur de base de rendement ou de dérive : il vérifie que les indicateurs sont bien calculés à partir de ces rendements.
+
 Le rendement chaîné est le produit des `1 + r`, moins un. Le rendement annualisé est ce produit élevé à la puissance `12 / T`, moins un. `T` est le nombre de mois. L'annualisation n'utilise pas 252.
 
 La volatilité annualisée est l'écart-type d'échantillon des rendements du portefeuille, diviseur `T - 1`, multiplié par la racine de 12. Ce n'est pas l'écart-type de l'excédent.
@@ -1633,7 +1652,7 @@ Lignes Power BI en attente d'export : {len(pending)}. Lignes Power BI passées O
 3. Pourquoi l'écart-type est-il celui de l'échantillon ? Le diviseur est T − 1, `STDEV.S` dans Excel et `std(ddof=1)` dans Python. Les mois de la fenêtre servent à estimer une dispersion, ils ne sont pas traités comme la population entière. `STDEV.P` n'est pas utilisé.
 4. Comment le TWR est-il calculé ? Le rendement chaîné est le produit des (1 + r) mensuels, moins un. Chaque r est déjà le rendement du livre de fin de mois à fin de mois, poids du mois compris. En l'absence de flux externe, ce produit est le rendement pondéré par le temps. Il n'y a pas de fichier de conservation, donc pas de flux à retirer, et ce n'est pas un rendement de Dietz.
 5. Comment la VaR historique fonctionne-t-elle ? Les rendements mensuels sont triés du pire au meilleur, puis par mois croissant. k est le plafond de 5 % de T. La VaR est le rendement du rang k. L'expected shortfall est la moyenne des rangs 1 à k. Pas de loi normale, pas d'annualisation.
-6. Que ne prouve pas la réconciliation ? Elle prouve que les formules Excel retrouvent les chiffres publiés par le pipeline, à la tolérance près. Elle ne prouve pas que les titres ont été détenus, que les cours sont ceux d'un conservateur, ni que des frais ont été prélevés. Il n'y a pas de données de conservation.
+6. Que ne prouve pas la réconciliation ? Elle prouve que les formules Excel retrouvent les chiffres publiés par le pipeline, à la tolérance près. Elle ne prouve pas que les titres ont été détenus, que les cours sont ceux d'un conservateur, ni que des frais ont été prélevés. Il n'y a pas de données de conservation. Elle ne prouve pas non plus que les définitions sont les bonnes : Excel applique celles du pipeline, écrites par le même auteur, et la plupart des lignes Power BI relisent simplement la cellule publiée. Elle trouve une erreur de calcul, pas une erreur de méthode.
 7. Comment un écart serait-il traité ? Le statut passe à EXCEPTION et la clôture reste ouverte tant que la cause n'est pas écrite. La commande du pipeline s'arrête. On documente la cause. On ne modifie pas la tolérance et on n'ajuste pas une formule pour forcer OK. Un écart qui vient d'une définition différente est un résultat, pas une erreur à masquer.
 8. Pourquoi le ratio d'information du fonds n'est-il pas publié ? L'écart de suivi du fonds contre lui-même est nul. Diviser la moyenne de cet écart par un écart-type nul n'est pas défini. Le Sharpe, le Sortino, la VaR et l'expected shortfall du fonds sont publiés, avec les mêmes définitions que pour les livres.
 9. Pourquoi la colonne Power BI n'est-elle jamais OK avant un export Desktop ? `valeur_power_bi` est la valeur attendue, lue dans expected_values.csv. Ce n'est pas une copie d'écran de Desktop. Le statut reste « en attente d'export Power BI » tant que `export_power_bi` est vide. Une valeur lue dans Desktop, écrite par `src.reporting.power_bi_export` ou collée à la main, fait basculer la formule vers OK ou EXCEPTION.
@@ -1675,12 +1694,12 @@ try {
   $excel.Visible = $false
   $excel.DisplayAlerts = $false
   $excel.AskToUpdateLinks = $false
-  $wb = $excel.Workbooks.Open('__PATH__')
+  $wb = $excel.Workbooks.Open($env:ANNEX_PATH)
   try { $excel.Calculation = -4135 } catch { $report.Add('calc_mode_fail') }
   try { $wb.Queries.FastCombine = $true } catch { $report.Add('fastcombine_fail') }
-  Get-ChildItem -Path '__QUERY__' -Filter '*.m' | ForEach-Object {
+  Get-ChildItem -Path $env:ANNEX_QUERY_DIR -Filter '*.m' | ForEach-Object {
     try {
-      $text = Get-Content -Raw -Path $_.FullName
+      $text = (Get-Content -Raw -Path $_.FullName).Replace('{{ProjectRoot}}', $env:ANNEX_PROJECT_ROOT)
       $wb.Queries.Add($_.BaseName, $text) | Out-Null
       $report.Add('csv:' + $_.BaseName)
     } catch {
@@ -1833,12 +1852,17 @@ try {
 }
 $report -join ','
 """
-    script = script.replace("__PATH__", target).replace("__QUERY__", query_dir)
     completed = subprocess.run(
         ["powershell", "-NoProfile", "-Command", script],
         capture_output=True,
         text=True,
         timeout=900,
+        env={
+            **os.environ,
+            "ANNEX_PATH": target,
+            "ANNEX_QUERY_DIR": query_dir,
+            "ANNEX_PROJECT_ROOT": PROJECT_ROOT.resolve().as_posix(),
+        },
     )
     report = (completed.stdout or "").strip().splitlines()
     summary = report[-1] if report else ""

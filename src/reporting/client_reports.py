@@ -31,9 +31,11 @@ from reportlab.lib.units import mm
 from src.config import CLIENT_REPORTS, PROJECT_ROOT
 from src.reporting import report_content as content
 from src.reporting.commentary import (
+    BASIS_NOTE,
     BOOKS,
     LABELS,
     MONTHS,
+    pick,
     PORTFOLIO_LABEL,
     REAL_DATA_NOTE,
     TURNOVER,
@@ -41,8 +43,8 @@ from src.reporting.commentary import (
     WINDOW_START,
     config,
 )
-from src.reporting.executive_report import LABEL, Report, SMALL, plain, read_report
-from src.reporting.number_check import AUTO_LABEL, Draft, Statement, fact
+from src.reporting.executive_report import LABEL, Report, SMALL, plain
+from src.reporting.number_check import AUTO_LABEL, Draft, fact
 
 
 PENSION_FILE = CLIENT_REPORTS / "rapport_client.pdf"
@@ -82,7 +84,7 @@ def _scope(client_needs):
     return plain("périmètre", (
         f"{PORTFOLIO_LABEL}. {REAL_DATA_NOTE} Les trois livres partagent la même liste de titres et sont comparés "
         "au fonds iShares MSCI Global Sustainable Development Goals, dont le rendement publié est converti en CHF. "
-        "Le rendement des livres n'inclut pas les dividendes, celui du fonds les inclut. Pas de données de conservation. "
+        + BASIS_NOTE + " Pas de données de conservation. "
         + client_needs
     ))
 
@@ -140,12 +142,13 @@ def contributors_table(book, header=None):
     lines = lines.sort_values("cumulative_contribution", ascending=False)
     chosen = pd.concat([lines.head(TOP_LINES), lines.tail(TOP_LINES)])
     d = Draft()
-    header = header or ["Titre", "Secteur", "Poids au mois de rapport", "Contribution cumulée"]
+    header = header or ["Rôle", "Titre", "Secteur", "Poids au mois de rapport", "Contribution cumulée"]
     rows = []
     for position, record in enumerate(chosen.itertuples(index=False)):
         where = {"strategy": book, "month": last, "yahoo_symbol": str(record.yahoo_symbol)}
         rows.append([
-            ("▲ " if position < TOP_LINES else "▼ ") + d.label(str(record.name)),
+            "Contributeur" if position < TOP_LINES else "Détracteur",
+            d.label(str(record.name)),
             d.label(str(record.sector)),
             d.pct(fact(HOLDING_CONTRIBUTION, "weight", where, scale="ratio")),
             d.pct(fact(HOLDING_CONTRIBUTION, "cumulative_contribution", where, scale="ratio")),
@@ -214,8 +217,10 @@ def build_allocation_report(sections, _figures, generated):
 
     rep.heading("Limites du mandat et situation au mois de rapport")
     rep.table(content.limits_table(), widths=[36 * mm, 24 * mm, 22 * mm, 34 * mm, 34 * mm, 24 * mm])
-    cap_alerts = [s for s in sections["alertes"] if s.kind == "alerte" and "plafond" in s.text]
-    rep.bullets([sections["alertes"][0]] + cap_alerts)
+    alerts = sections["alertes"]
+    rep.bullets(
+        pick(alerts, "limites_decision") + pick(alerts, "passifs") + pick(alerts, "ips_secteur") + pick(alerts, "vigilance")
+    )
 
     rep.heading("Allocation")
     rep.table(allocation_table(SECTORS, "sector", "Secteur"), widths=[52 * mm, 36 * mm, 36 * mm, 36 * mm])
@@ -249,7 +254,7 @@ def build_manager_report(sections, figures, generated):
     )), SMALL)
     for book in BOOKS:
         rep.para(plain("livre", f"{LABELS[book]}."), SMALL)
-        rep.table(contributors_table(book), widths=[72 * mm, 40 * mm, 34 * mm, 34 * mm])
+        rep.table(contributors_table(book), widths=[24 * mm, 56 * mm, 34 * mm, 30 * mm, 30 * mm])
 
     rep.heading("Mouvements de poids du dernier rééquilibrage")
     rep.para(plain("mouvements", MOVEMENT_NOTE), SMALL)

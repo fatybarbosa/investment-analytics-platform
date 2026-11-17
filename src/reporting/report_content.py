@@ -20,7 +20,6 @@ import pandas as pd
 
 from src.config import EXECUTIVE_REPORTS, PROJECT_ROOT
 from src.reporting.commentary import (
-    ANNEX,
     BOOKS,
     FUND,
     LABELS,
@@ -61,7 +60,8 @@ NOT_DEFINED = "n. d."
 # --------------------------------------------------------------------------
 
 def _table(section, header, rows, draft):
-    text = " | ".join(" | ".join(row) for row in rows)
+    # One line per row: a table may be split by a page break, so each row is compared alone.
+    text = "\n".join(" | ".join(row) for row in rows)
     return header, rows, draft.done(section, text, "tableau")
 
 
@@ -127,7 +127,7 @@ def shock_definitions():
     return _table("définition des chocs", ["Choc", "Ce qui est appliqué"], rows, d)
 
 
-def limits_table(cap_label="Plafond du mandat", span_word="à"):
+def limits_table(cap_label="Plafond du mandat (IPS)", span_word="à", working_label="Plafond de travail des livres, non approuvé"):
     d = Draft()
     header = ["Livre", "Lignes investies", "Poids maximal", "Premier secteur", "Première zone", "Première devise"]
     rows = []
@@ -148,6 +148,8 @@ def limits_table(cap_label="Plafond du mandat", span_word="à"):
         d.pct(config("ZONE_WEIGHT_CAP"), 0),
         d.pct(config("CURRENCY_WEIGHT_CAP"), 0),
     ])
+    rows[-1][3] = d.pct(config("IPS_SECTOR_WEIGHT_CAP"), 0)
+    rows.append([working_label, "–", "–", d.pct(config("SECTOR_WEIGHT_CAP"), 0), "–", "–"])
     return _table("tableau limites", header, rows, d)
 
 

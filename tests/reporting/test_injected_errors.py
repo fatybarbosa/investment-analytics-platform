@@ -26,6 +26,8 @@ from src.portfolio_construction.build_portfolios import MONTHLY_RETURNS_FILE
 from src.reporting.build_workbook import calculate_in_excel
 
 
+pytestmark = pytest.mark.office
+
 MONTHS = 12
 SAMPLE = "equal_weight"
 

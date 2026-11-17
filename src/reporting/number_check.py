@@ -254,6 +254,7 @@ class Statement:
     facts: tuple = ()
     kind: str = "constat"
     structural: tuple = ()
+    tag: str = ""
 
     def check(self, where=None):
         return check_tokens(self.text, self.facts, structural=self.structural, where=where or self.section)
@@ -303,8 +304,8 @@ class Draft:
         """The file value, for a decision. The fact is declared only if printed."""
         return resolve(item)
 
-    def done(self, section, text, kind="constat"):
-        statement = Statement(section, text, tuple(self.facts), kind, tuple(self.labels))
+    def done(self, section, text, kind="constat", tag=""):
+        statement = Statement(section, text, tuple(self.facts), kind, tuple(self.labels), tag)
         statement.check()
         return statement
 
@@ -318,7 +319,34 @@ def check_statements(statements):
     return rows
 
 
-def check_document(text, statements, structural=(), where="document"):
+def flatten(text):
+    """One line, no table bars, no special spaces: the form two texts are compared in."""
+    return " ".join(str(text).replace("|", " ").replace("\u2212", "-").split())
+
+
+def check_integrity(text, statements, where="document"):
+    """Every statement must be in the written file, word for word.
+
+    The number check alone accepts a number that equals another fact of the
+    same document. Requiring each sentence and each table row to appear
+    unchanged closes that gap: a number moved or edited inside a sentence
+    no longer matches the sentence that was checked when it was written.
+    """
+    flat = flatten(text)
+    missing = []
+    for statement in statements:
+        for line in statement.text.split("\n"):
+            if len(line) >= 12 and flatten(line) not in flat:
+                missing.append(line[:100])
+    if missing:
+        raise NumberCheckError(
+            f"{where} : {len(missing)} phrase(s) ou ligne(s) du fichier ne sont plus celles qui ont été vérifiées. "
+            f"Première : {missing[0]}"
+        )
+    return len(statements)
+
+
+def check_document(text, statements, structural=(), where="document", integrity=True):
     """Check the text read back from a finished file against all its facts."""
     clear_cache()
     facts = []
@@ -333,7 +361,10 @@ def check_document(text, statements, structural=(), where="document"):
                 facts.append(item)
     if AUTO_LABEL.casefold() not in " ".join(str(text).split()).casefold():
         raise NumberCheckError(f"{where} : la mention « {AUTO_LABEL} » est absente.")
-    return check_tokens(text, facts, structural=structural, where=where)
+    rows = check_tokens(text, facts, structural=structural, where=where)
+    if integrity:
+        check_integrity(text, statements, where=where)
+    return rows
 
 
 def relative(path):

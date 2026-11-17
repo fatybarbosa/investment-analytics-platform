@@ -28,8 +28,11 @@ from src.reporting.commentary import (
     LABELS,
     MONTHS,
     NAMES,
+    BASIS_NOTE,
     PENDING,
     PORTFOLIO_LABEL,
+    pick,
+    UNIVERSE_NOTE,
     REAL_DATA_NOTE,
     SCOPE_NOTE,
     WINDOW_END,
@@ -38,7 +41,6 @@ from src.reporting.commentary import (
     LIMITS,
     perf,
     quality_summary,
-    report,
     reconciliation,
     resolve,
     risk,
@@ -197,22 +199,15 @@ def _messages():
         f"La baisse la plus profonde atteint {d.pct(perf(worst, 'maximum_drawdown'), 1)} ({LABELS[worst]})."
     ))
     d = Draft()
-    watch = float(resolve(config("REPORTING_WATCH_RATIO"))) * float(resolve(config("SECTOR_WEIGHT_CAP")))
-    near = [book for book in BOOKS if float(resolve(report(book, "largest_sector_weight"))) >= watch]
-    breaches = sum(
-        float(resolve(fact(LIMITS, flag, op="sum")))
-        for flag in ("issuer_over_cap", "sector_over_cap", "zone_over_cap", "currency_over_cap")
-    )
-    lead = "Aucun plafond n'est franchi sur la fenêtre" if breaches == 0 else "Des plafonds ont été franchis sur la fenêtre"
-    if near:
-        tail = (
-            f", mais le premier secteur est tout près du plafond de {d.pct(config('SECTOR_WEIGHT_CAP'), 0)} "
-            f"pour : {', '.join(LABELS[book] for book in near)}."
-        )
+    ips_breaches = float(resolve(fact(LIMITS, "sector_over_ips_cap", op="sum")))
+    if ips_breaches > 0:
+        out["limits"] = d.done("diapositive", (
+            f"Le plafond de secteur écrit dans le mandat ({d.pct(config('IPS_SECTOR_WEIGHT_CAP'), 0)}) est dépassé par les livres, "
+            f"construits avec un plafond de travail de {d.pct(config('SECTOR_WEIGHT_CAP'), 0)} que le client n'a pas approuvé."
+        ))
     else:
-        tail = f". Aucun livre n'approche le plafond de secteur de {d.pct(config('SECTOR_WEIGHT_CAP'), 0)}."
-    out["limits"] = d.done("diapositive", lead + tail)
-    out["breaches"] = breaches
+        out["limits"] = d.done("diapositive", "Les livres respectent le plafond de secteur écrit dans le mandat.")
+    out["breaches"] = ips_breaches
     d = Draft()
     book = min(BOOKS, key=lambda b: min(float(resolve(stress(b, s, "terminal_wealth"))) for s in ("marche", "taux", "recession", "volatilite")))
     shock = min(("marche", "taux", "recession", "volatilite"), key=lambda s: float(resolve(stress(book, s, "terminal_wealth"))))
@@ -296,7 +291,7 @@ def build_deck(sections, figures, generated):
     )
     deck.bullets(slide, [
         plain("diapositive", verdict),
-        plain("diapositive", "La comparaison n'est pas à périmètre égal : les rendements des livres n'incluent pas les dividendes, celui du fonds les inclut."),
+        plain("diapositive", "Les livres sont mesurés en rendement total brut de frais, le fonds net de ses frais : la comparaison avantage donc les livres."),
         plain("diapositive", f"Le meilleur des trois livres sur la période est le livre {LABELS[max(returns, key=returns.get)]}."),
     ], left=Inches(9.2), top=Inches(1.9), width=Inches(3.6), size=15)
 
@@ -313,20 +308,19 @@ def build_deck(sections, figures, generated):
     deck.picture(slide, figures["tail"], MARGIN, Inches(1.95), Inches(7.6))
     deck.bullets(slide, [
         plain("diapositive", "VaR : la perte d'un mauvais mois. Expected shortfall : la perte moyenne des pires mois."),
-        risks[3],
+        *pick(risks, "drawdown"),
     ], left=Inches(8.5), top=Inches(1.95), width=Inches(4.3), size=14)
 
     # Correlation and concentration
     slide = deck.slide("Corrélation et concentration", messages["limits"])
     deck.picture(slide, figures["sector"], MARGIN, Inches(1.95), Inches(7.6))
-    deck.bullets(slide, [risks[4]] + [statement for statement in alerts if statement.kind == "alerte" and "plafond de" in statement.text and "pèse" in statement.text][:2],
+    deck.bullets(slide, pick(risks, "correlation") + pick(alerts, "ips_secteur") + pick(alerts, "vigilance")[:1],
                  left=Inches(8.5), top=Inches(1.95), width=Inches(4.3), size=13)
 
     # Stress
     slide = deck.slide("Tests de résistance (illustratifs)", messages["stress"])
     deck.picture(slide, figures["stress"], MARGIN, Inches(1.95), Inches(7.4))
     header, rows, statement = content.shock_definitions()
-    deck.keep(statement)
     deck.bullets(slide, [_shock_line(name, text, statement) for name, text in rows],
                  left=Inches(8.3), top=Inches(1.95), width=Inches(4.5), size=13)
     deck.bullets(slide, [plain("diapositive", "Ce sont des simulations écrites à l'avance, pas des prévisions.")], left=MARGIN, top=Inches(5.9), height=Inches(0.6), size=14)
@@ -334,19 +328,19 @@ def build_deck(sections, figures, generated):
     # Quality
     slide = deck.slide("Qualité des données", messages["quality"])
     deck.table(slide, content.quality_table(), width=Inches(6.6), size=13, first_width=Inches(3.0))
-    deck.bullets(slide, [alerts[-2]], left=Inches(7.6), top=Inches(1.9), width=Inches(5.2), size=14)
+    deck.bullets(slide, pick(alerts, "qualite") + pick(alerts, "qualite_ponderation"), left=Inches(7.6), top=Inches(1.9), width=Inches(5.2), size=13)
 
     # Control
     slide = deck.slide("Contrôle des calculs", messages["control"])
     deck.table(slide, content.reconciliation_table(), size=14, first_width=Inches(3.2), row_height=Inches(0.5))
     deck.bullets(slide, [
-        plain("diapositive", "Python calcule. Excel recalcule sans lire le résultat de Python. Power BI affiche le chiffre publié."),
+        plain("diapositive", "Python calcule. Excel recalcule sans lire le résultat de Python. Power BI recalcule deux indicateurs et relit le chiffre publié pour les autres."),
         content.reconciliation_sentence(),
         plain("diapositive", "Ce que cela ne prouve pas : que les titres ont été détenus. Il n'y a pas de données de conservation."),
     ], top=Inches(3.8), height=Inches(2.6), size=15)
 
     # Alerts
-    slide = deck.slide("Alertes", plain("diapositive", ("Aucun plafond du mandat n'est franchi. " if messages["breaches"] == 0 else "Des plafonds du mandat sont franchis. ") + "Les points ci-dessous demandent une attention avant le prochain rééquilibrage."))
+    slide = deck.slide("Alertes", plain("diapositive", ("Des écarts avec le mandat restent ouverts. " if messages["breaches"] > 0 else "Aucun écart de plafond n'est ouvert. ") + "Les points ci-dessous demandent une attention avant le prochain rééquilibrage."))
     flagged = [statement for statement in alerts if statement.kind == "alerte"]
     deck.bullets(slide, flagged, size=13 if len(flagged) > 5 else 15)
 
@@ -361,8 +355,8 @@ def build_deck(sections, figures, generated):
         plain("diapositive", f"{PORTFOLIO_LABEL}. Aucun ordre n'a été passé, aucun frais ni impôt n'est déduit."),
         plain("diapositive", REAL_DATA_NOTE + " Ce qui est hypothétique, ce sont les portefeuilles, pas les données."),
         plain("diapositive", "Pas de données de conservation : ni positions réelles, ni transactions, ni flux."),
-        plain("diapositive", "La liste de titres vient de la composition actuelle du fonds. Les sociétés sorties du fonds dans le passé n'y sont pas, ce qui peut embellir l'historique."),
-        plain("diapositive", "Le rendement des livres n'inclut pas les dividendes. Celui du fonds les inclut."),
+        plain("diapositive", UNIVERSE_NOTE),
+        plain("diapositive", BASIS_NOTE),
         plain("diapositive", "Les chocs sont des hypothèses simples, appliquées au rendement global du livre et non titre par titre."),
         plain("diapositive", "Une performance passée ne préjuge pas d'une performance future."),
     ], size=16)

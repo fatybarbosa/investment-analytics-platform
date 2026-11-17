@@ -31,7 +31,7 @@ from reportlab.platypus import (
 
 from src.config import EXECUTIVE_REPORT_MAX_PAGES, EXECUTIVE_REPORTS
 from src.reporting import report_content as content
-from src.reporting.commentary import DISCLAIMER, PORTFOLIO_LABEL, SCOPE_NOTE
+from src.reporting.commentary import DISCLAIMER, PORTFOLIO_LABEL, SCOPE_NOTE, UNIVERSE_NOTE, pick
 from src.reporting.number_check import AUTO_LABEL, Statement
 
 
@@ -43,7 +43,7 @@ RULE = colors.HexColor("#c3c2b7")
 BAND = colors.HexColor("#eef3f8")
 ALERT = colors.HexColor("#9C5700")
 
-BODY = ParagraphStyle("body", fontName="Helvetica", fontSize=8.3, leading=10.6, textColor=INK, alignment=TA_LEFT, spaceAfter=2.2)
+BODY = ParagraphStyle("body", fontName="Helvetica", fontSize=8.0, leading=10.0, textColor=INK, alignment=TA_LEFT, spaceAfter=2.0)
 BULLET = ParagraphStyle("bullet", parent=BODY, leftIndent=9, bulletIndent=1, spaceAfter=1.8)
 SMALL = ParagraphStyle("small", parent=BODY, fontSize=7.3, leading=9.2, textColor=SECONDARY)
 H1 = ParagraphStyle("h1", fontName="Helvetica-Bold", fontSize=15, leading=18, textColor=NAVY, spaceAfter=2)
@@ -106,7 +106,7 @@ class Report:
         self.story.append(table)
         self.story.append(Spacer(1, 3))
 
-    def figure(self, path, caption, width=172 * mm):
+    def figure(self, path, caption, width=150 * mm):
         from PIL import Image as PilImage
 
         with PilImage.open(path) as picture:
@@ -189,8 +189,8 @@ def build_report(sections, figures, generated):
         "iShares MSCI Global Sustainable Development Goals, dont le rendement publié est converti en CHF. "
         "Données. Sources publiques seulement : feuille de positions et rendement publiés par iShares, cours de clôture Yahoo Finance, "
         "change et SARON de la Banque nationale suisse, registre d'éligibilité ODD saisi à partir des rapports des sociétés. "
-        "Limites. " + SCOPE_NOTE + " Les poids sont recalculés chaque trimestre sur les mois déjà observés. "
-        "La liste de titres vient de la composition actuelle du fonds : les sociétés qui en sont sorties n'y figurent pas, ce qui peut embellir l'historique."
+        "Limites. " + SCOPE_NOTE + " Les poids sont décidés chaque trimestre sur les mois déjà observés, puis dérivent avec le marché jusqu'à la décision suivante. "
+        + UNIVERSE_NOTE
     )))
 
     report.heading("Faits marquants")
@@ -200,32 +200,35 @@ def build_report(sections, figures, generated):
     report.table(content.performance_table(), widths=[34 * mm, 22 * mm, 19 * mm, 15 * mm, 15 * mm, 24 * mm, 21 * mm, 24 * mm])
     report.figure(figures["wealth"], (
         "Richesse cumulée pour une unité investie au début de la fenêtre. Le fonds est en pointillé. "
-        "Rendement des livres hors dividendes, rendement total publié pour le fonds."
+        "Rendements totaux : livres bruts de frais et d'impôt à la source, fonds net de ses frais."
     ))
 
     report.heading("Risque : VaR, expected shortfall, corrélation")
     report.table(content.risk_table(), widths=[36 * mm, 29 * mm, 25 * mm, 33 * mm, 21 * mm, 30 * mm])
-    report.bullets([risks[1], risks[3], risks[4], risks[5]])
+    report.bullets(
+        pick(risks, "var") + pick(risks, "echantillon") + pick(risks, "drawdown")
+        + pick(risks, "correlation") + pick(risks, "concentration")
+    )
 
     report.heading("Tests de résistance (illustratifs)")
     report.table(content.shock_definitions(), widths=[24 * mm, 150 * mm])
     report.para(plain("chocs", "Richesse finale pour une unité investie, par livre et par choc :"), SMALL)
     report.table(content.stress_table(), widths=[36 * mm, 24 * mm, 24 * mm, 24 * mm, 24 * mm, 24 * mm])
-    report.bullets([risks[6]])
+    report.bullets(pick(risks, "chocs") + pick(risks, "chocs_limites"))
     report.figure(figures["stress"], (
         "Richesse finale par livre et par choc. La ligne pointillée est la mise de départ. "
         "Le choc de taux ne change pas la richesse : il ne modifie que le taux sans risque."
-    ), width=150 * mm)
+    ), width=118 * mm)
 
     report.heading("Qualité des données")
-    report.bullets([alerts[-2]])
+    report.bullets(pick(alerts, "qualite") + pick(alerts, "qualite_ponderation"))
     report.table(content.quality_table(), widths=[52 * mm, 34 * mm, 28 * mm])
 
     report.heading("Contrôle des calculs : Python, Excel, Power BI")
     report.para(plain("contrôle", (
         "Trois lectures du même indicateur sont comparées dans l'annexe Excel. Python publie l'indicateur. Excel le recalcule "
-        "à partir des seuls rendements mensuels, sans lire le chiffre de Python. Power BI affiche la cellule publiée : "
-        "ses mesures relisent le chiffre, elles ne le recalculent pas."
+        "à partir des seuls rendements mensuels, sans lire le chiffre de Python. Power BI recalcule en DAX deux indicateurs, "
+        "le rendement chaîné et le drawdown maximal, et relit la cellule publiée pour tous les autres."
     )))
     report.table(content.reconciliation_table(), widths=[44 * mm, 18 * mm, 24 * mm, 88 * mm])
     report.para(content.reconciliation_sentence())
@@ -237,11 +240,13 @@ def build_report(sections, figures, generated):
     report.para(plain("contrôle", (
         "Ce que ce contrôle ne prouve pas. Il prouve que les formules se recoupent sur les mêmes rendements mensuels. "
         "Il ne prouve pas que les titres ont été détenus, que les cours sont ceux d'un dépositaire, ni que des frais ont été prélevés : "
-        "il n'y a pas de données de conservation. Il ne valide pas non plus les rendements mensuels eux-mêmes, qui sont l'entrée commune des trois lectures."
+        "il n'y a pas de données de conservation. Il ne valide pas non plus les rendements mensuels eux-mêmes, qui sont l'entrée commune des trois lectures : "
+        "leur base (rendement total brut, poids qui dérivent entre deux rééquilibrages) et les définitions des indicateurs sont celles du pipeline, que les trois lectures reprennent."
     )))
 
     report.heading("Alertes liées aux limites du mandat")
-    report.bullets(alerts[:-2] + [alerts[-1]])
+    report.bullets([item for item in alerts if item.tag not in ("qualite", "qualite_ponderation")])
+    report.bullets(pick(risks, "odd"))
 
     report.heading("Points à instruire")
     report.bullets(points)

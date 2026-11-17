@@ -54,6 +54,7 @@ CONFIG = "py:src.config"
 RISK_MODULE = "py:src.risk.build_risk"
 MONITORING_MODULE = "py:src.portfolio_monitoring.build_monitoring"
 STRESS_MODULE = "py:src.stress_testing.build_stress"
+FEASIBILITY = "data/05_monitoring/mandate_feasibility.csv"
 
 BOOKS = ("equal_weight", "minimum_volatility", "maximum_sharpe")
 FUND = "benchmark"
@@ -78,9 +79,18 @@ DISCLAIMER = (
 )
 PORTFOLIO_LABEL = "Portefeuilles hypothétiques construits rétrospectivement sur des données publiques"
 REAL_DATA_NOTE = "Les cours, les cours de change et le SARON sont des données réelles et publiques."
+BASIS_NOTE = (
+    "Les livres sont mesurés en rendement total brut : dividendes réinvestis par le cours ajusté, avant frais et avant impôt à la source. "
+    "Le fonds est mesuré par le rendement de sa valeur liquidative, net de ses frais : la comparaison avantage donc les livres."
+)
 SCOPE_NOTE = (
     f"{PORTFOLIO_LABEL} : ils n'ont jamais été détenus. {REAL_DATA_NOTE} "
-    "Pas de données de conservation, pas de frais, pas de dividendes dans le rendement des livres."
+    "Pas de données de conservation et pas de frais. "
+    + BASIS_NOTE
+)
+UNIVERSE_NOTE = (
+    "La liste de titres est la composition actuelle du fonds de référence, et l'éligibilité ODD a été jugée à la date de saisie du registre puis appliquée à tout l'historique : "
+    "les sociétés sorties du fonds n'y figurent pas, ce qui peut embellir le résultat."
 )
 SECTION_TITLES = {
     "faits": "Faits marquants",
@@ -188,9 +198,8 @@ def _highlights():
     out.append(d.done("faits", (
         f"Rendement annualisé en CHF : {listed}, contre {d.pct(perf(FUND, 'annualized_return'))} "
         f"pour le fonds iShares, rendement de la valeur liquidative converti en CHF. {verdict} "
-        "La comparaison n'est pas à périmètre égal : le rendement des livres n'inclut pas les dividendes, "
-        "celui du fonds est un rendement total publié."
-    )))
+        + BASIS_NOTE
+    ), tag="rendement"))
 
     d = Draft()
     listed = ", ".join(f"{LABELS[book]} {d.num(perf(book, 'sharpe_ratio', 'raw'))}" for book in BOOKS)
@@ -227,7 +236,7 @@ def _risks():
     )
     out.append(d.done("risques", (
         f"Volatilité annualisée : {listed}, fonds {d.pct(risk(FUND, 'annualized_volatility'))}."
-    )))
+    ), tag="volatilite"))
 
     d = Draft()
     level = fact(RISK_MODULE, "VAR_LEVEL", scale="ratio")
@@ -238,7 +247,15 @@ def _risks():
     out.append(d.done("risques", (
         f"Perte mensuelle historique, lue sur les {d.pct(level, 0)} de mois les plus défavorables : {listed}. "
         "Ce sont des rendements mensuels observés, sans loi normale et sans annualisation."
-    )))
+    ), tag="var"))
+
+    d = Draft()
+    months = fact(RISK, "months", {"strategy": "equal_weight"})
+    tail_size = fact(TAIL, "rank", {"strategy": "equal_weight"}, op="count")
+    out.append(d.done("risques", (
+        f"Limite de l'échantillon : la VaR est lue sur {d.count(months)} mois, et l'expected shortfall est la moyenne des {d.count(tail_size)} pires mois. "
+        "Ce sont de petits échantillons : aucun intervalle de confiance n'est calculé, et un seul mois de plus ou de moins déplace ces chiffres."
+    ), tag="echantillon"))
 
     d = Draft()
     parts = []
@@ -246,7 +263,7 @@ def _risks():
         worst_month = fact(TAIL, "month", {"strategy": book, "rank": 1}, scale="text")
         worst = fact(TAIL, "portfolio_return", {"strategy": book, "rank": 1}, scale="ratio")
         parts.append(f"{LABELS[book]} {d.pct(worst)} en {d.text(worst_month)}")
-    out.append(d.done("risques", f"Pire mois de la fenêtre : {', '.join(parts)}."))
+    out.append(d.done("risques", f"Pire mois de la fenêtre : {', '.join(parts)}.", tag="pire_mois"))
 
     d = Draft()
     parts = []
@@ -266,7 +283,7 @@ def _risks():
         if open_books
         else " Les trois livres ont retrouvé leur sommet avant la fin de la fenêtre."
     )
-    out.append(d.done("risques", f"Drawdown maximal : {'; '.join(parts)}.{tail}"))
+    out.append(d.done("risques", f"Drawdown maximal : {'; '.join(parts)}.{tail}", tag="drawdown"))
 
     d = Draft()
     first, second = _top_pair()
@@ -276,7 +293,7 @@ def _risks():
         f"sur {d.count(fact(CORRELATION, 'names', op='last'))} titres. La paire la plus liée est "
         f"{d.label(_holding_name(first))} et {d.label(_holding_name(second))}, à {d.num(pair)}. "
         "Une corrélation moyenne basse ne protège pas dans un mois de baisse générale : les pires mois des trois livres sont proches."
-    )))
+    ), tag="correlation"))
 
     d = Draft()
     parts = []
@@ -289,7 +306,7 @@ def _risks():
     d.facts.append(fact(MONITORING_MODULE, "TOP_POSITIONS"))
     out.append(d.done("risques", (
         f"Concentration au mois de {d.text(report('equal_weight', 'report_month', 'text'))} : {'; '.join(parts)}."
-    )))
+    ), tag="concentration"))
 
     d = Draft()
     parts = []
@@ -303,7 +320,29 @@ def _risks():
         "Tests de résistance, illustratifs : richesse finale la plus basse des quatre chocs, pour une unité investie. "
         f"{'; '.join(parts)}. Les chocs sont des paramètres écrits à l'avance, appliqués aux rendements déjà publiés. "
         "Ce ne sont pas des prévisions."
-    )))
+    ), tag="chocs"))
+
+    d = Draft()
+    shock = float(resolve(fact(CONFIG, "MARKET_SHOCK_RETURN")))
+    worst_observed = min(float(resolve(fact(TAIL, "portfolio_return", {"strategy": book, "rank": 1}))) for book in BOOKS)
+    harsher = "plus sévère" if shock < worst_observed else "moins sévère"
+    worst_book = min(BOOKS, key=lambda book: float(resolve(fact(TAIL, "portfolio_return", {"strategy": book, "rank": 1}))))
+    out.append(d.done("risques", (
+        f"Le choc de marché ({d.pct(config('MARKET_SHOCK_RETURN'), 0)} sur le dernier mois) est {harsher} que le pire mois réellement observé "
+        f"({d.pct(fact(TAIL, 'portfolio_return', {'strategy': worst_book, 'rank': 1}, scale='ratio'))}, livre {LABELS[worst_book]}). "
+        "Le choc de taux ne change pas le rendement des actions : il ne modifie que le taux sans risque, donc le ratio de Sharpe. "
+        "Ce n'est pas un test de sensibilité des titres aux taux. Aucun scénario daté n'est rejoué en dehors des pires mois observés ci-dessus."
+    ), tag="chocs_limites"))
+
+    d = Draft()
+    out.append(d.done("risques", (
+        f"Éligibilité ODD : sur {d.count(fact(MEMBERSHIP, 'yahoo_symbol', op='count'))} titres examinés, "
+        f"{d.count(fact(MEMBERSHIP, 'yahoo_symbol', {'odd_status': 'Eligible'}, op='count'))} sont Eligible, "
+        f"{d.count(fact(MEMBERSHIP, 'yahoo_symbol', {'odd_status': 'Indeterminate'}, op='count'))} Indeterminate et "
+        f"{d.count(fact(MEMBERSHIP, 'yahoo_symbol', {'odd_status': 'Not_Eligible'}, op='count'))} Not_Eligible. "
+        "Les statuts sont saisis par un seul analyste à partir de rapports de sociétés qui ne sont pas versionnés : un tiers ne peut pas les rejouer depuis ce dépôt. "
+        + UNIVERSE_NOTE
+    ), tag="odd"))
     return out
 
 
@@ -314,20 +353,72 @@ CAP_RULES = (
 )
 
 
+def _breaches(where):
+    """Month-books above each cap, for the months that match `where`."""
+    flags = ("issuer_over_cap", "sector_over_cap", "zone_over_cap", "currency_over_cap", "positions_outside_band")
+    return {flag: fact(LIMITS, flag, where, op="sum") for flag in flags}
+
+
 def _alerts():
     out = []
+    names = {
+        "issuer_over_cap": "émetteur",
+        "sector_over_cap": "secteur, plafond de travail",
+        "zone_over_cap": "zone",
+        "currency_over_cap": "devise",
+        "positions_outside_band": "bande de lignes",
+    }
+
     d = Draft()
-    flags = ("issuer_over_cap", "sector_over_cap", "zone_over_cap", "currency_over_cap", "positions_outside_band")
-    names = ("émetteur", "secteur", "zone", "devise", "bande de lignes")
-    total = sum(float(resolve(fact(LIMITS, flag, op="sum"))) for flag in flags)
-    listed = ", ".join(f"{name} {d.count(fact(LIMITS, flag, op='sum'))}" for name, flag in zip(names, flags))
-    lead = "Aucun dépassement de plafond sur la fenêtre." if total == 0 else "Des mois dépassent un plafond du mandat."
+    decided = _breaches({"rebalance_month": 1})
+    total = sum(float(resolve(item)) for item in decided.values())
+    listed = ", ".join(f"{names[flag]} {d.count(item)}" for flag, item in decided.items())
+    lead = (
+        "Aux dates de décision, aucun livre ne dépasse un plafond de construction."
+        if total == 0
+        else "Aux dates de décision, des livres dépassent un plafond de construction."
+    )
     out.append(d.done("alertes", (
-        f"{lead} Nombre de mois-livres au-dessus d'une limite : {listed}. "
-        f"Plafonds du mandat : émetteur {d.pct(config('ISSUER_WEIGHT_CAP'), 0)}, secteur {d.pct(config('SECTOR_WEIGHT_CAP'), 0)}, "
-        f"zone {d.pct(config('ZONE_WEIGHT_CAP'), 0)}, devise {d.pct(config('CURRENCY_WEIGHT_CAP'), 0)}, "
+        f"{lead} Mois-livres au-dessus d'une limite, comptés sur les {d.count(fact(LIMITS, 'month', {'rebalance_month': 1}, op='count'))} "
+        f"mois-livres de décision (début de trimestre) : {listed}. "
+        f"Plafonds : émetteur {d.pct(config('ISSUER_WEIGHT_CAP'), 0)}, zone {d.pct(config('ZONE_WEIGHT_CAP'), 0)}, "
+        f"devise {d.pct(config('CURRENCY_WEIGHT_CAP'), 0)}, secteur {d.pct(config('SECTOR_WEIGHT_CAP'), 0)} (plafond de travail, voir ci-dessous), "
         f"{d.count(config('MIN_POSITIONS', 'raw'))} à {d.count(config('MAX_POSITIONS', 'raw'))} lignes pour les livres optimisés."
-    ), "constat" if total == 0 else "alerte"))
+    ), "constat" if total == 0 else "alerte", tag="limites_decision"))
+
+    d = Draft()
+    passive = _breaches({"rebalance_month": 0})
+    passive_total = sum(float(resolve(passive[flag])) for flag in ("issuer_over_cap", "sector_over_cap", "zone_over_cap", "currency_over_cap"))
+    listed = ", ".join(
+        f"{names[flag]} {d.count(passive[flag])}" for flag in ("issuer_over_cap", "sector_over_cap", "zone_over_cap", "currency_over_cap")
+    )
+    out.append(d.done("alertes", (
+        f"Entre deux décisions, les poids dérivent avec le marché et un livre ne se corrige qu'au rééquilibrage suivant. "
+        f"Dépassements passifs, en mois-livres sur {d.count(fact(LIMITS, 'month', {'rebalance_month': 0}, op='count'))} : {listed}. "
+        f"Le plus gros poids d'un titre atteint {d.pct(fact(LIMITS, 'largest_issuer_weight', op='max', scale='ratio'))} "
+        f"pour un plafond de {d.pct(config('ISSUER_WEIGHT_CAP'), 0)}. "
+        "Le mandat ne dit pas si un dépassement passif est toléré jusqu'au prochain rééquilibrage : la décision est à prendre."
+    ), "alerte" if passive_total > 0 else "constat", tag="passifs"))
+
+    d = Draft()
+    capacity = float(resolve(fact(FEASIBILITY, "capacity_ips", {"sector": "TOTAL"})))
+    infeasible = capacity < 1.0 - 1e-9
+    breach_item = fact(LIMITS, "sector_over_ips_cap", op="sum")
+    feasibility_text = (
+        f"Sur cette liste, un livre entièrement investi ne peut pas respecter ce plafond : au plus "
+        f"{d.pct(fact(FEASIBILITY, 'capacity_ips', {'sector': 'TOTAL'}, scale='ratio'), 0)} du livre peut être placé "
+        f"sous le plafond d'émetteur de {d.pct(config('ISSUER_WEIGHT_CAP'), 0)} et ce plafond de secteur. "
+        f"Les livres sont donc construits avec un plafond de travail de {d.pct(config('SECTOR_WEIGHT_CAP'), 0)}, "
+        "qui n'a pas été approuvé par le client. "
+        if infeasible
+        else "Un livre entièrement investi peut respecter ce plafond sur cette liste. "
+    )
+    out.append(d.done("alertes", (
+        f"Plafond de secteur écrit dans le mandat : {d.pct(config('IPS_SECTOR_WEIGHT_CAP'), 0)}. "
+        f"Il est dépassé dans {d.count(breach_item)} mois-livres sur {d.count(fact(LIMITS, 'month', op='count'))}. "
+        + feasibility_text
+        + "C'est un écart ouvert entre le mandat et la construction, pas une conformité."
+    ), "alerte" if float(resolve(breach_item)) > 0 else "constat", tag="ips_secteur"))
 
     watch = float(resolve(config("REPORTING_WATCH_RATIO")))
     for book in BOOKS:
@@ -337,11 +428,12 @@ def _alerts():
             if weight < watch * cap:
                 continue
             d = Draft()
+            cap_label = "plafond de travail" if cap_name == "SECTOR_WEIGHT_CAP" else "plafond"
             out.append(d.done("alertes", (
                 f"{LABELS[book]} : {name} ({d.label(resolve(report(book, label_column, 'text')))}) pèse "
-                f"{d.pct(report(book, weight_column))} pour un plafond de {d.pct(config(cap_name), 0)}. "
+                f"{d.pct(report(book, weight_column))} pour un {cap_label} de {d.pct(config(cap_name), 0)}. "
                 f"Le poids dépasse {d.pct(config('REPORTING_WATCH_RATIO'), 0)} du plafond, seuil de vigilance du rapport et non limite du mandat."
-            ), "alerte"))
+            ), "alerte", tag="vigilance"))
 
     target = float(resolve(config("TRACKING_ERROR_TARGET")))
     above = [book for book in BOOKS if float(resolve(perf(book, "tracking_error"))) > target]
@@ -355,7 +447,7 @@ def _alerts():
     out.append(d.done("alertes", (
         f"Écart de suivi mesuré contre le fonds : {listed}, pour une cible ex ante de {d.pct(config('TRACKING_ERROR_TARGET'), 0)} "
         f"dans la politique d'investissement. {verdict} La cible n'est pas appliquée aux poids publiés : c'est une mesure après coup."
-    ), "alerte" if above else "constat"))
+    ), "alerte" if above else "constat", tag="suivi"))
 
     reference = float(resolve(config("TEMPORARY_LOSS_REFERENCE")))
     beyond = [book for book in BOOKS if abs(float(resolve(perf(book, "maximum_drawdown")))) > reference]
@@ -365,16 +457,22 @@ def _alerts():
         out.append(d.done("alertes", (
             f"Drawdown maximal au-delà du repère de {d.pct(config('TEMPORARY_LOSS_REFERENCE'), 0)} du profil du client : {listed}. "
             "Le profil accepte une perte temporaire au-delà de ce repère et précise qu'il ne déclenche pas, à lui seul, une vente."
-        ), "alerte"))
+        ), "alerte", tag="drawdown_repere"))
 
     d = Draft()
-    quarterly = fact(TURNOVER, "over_quarterly_cap", op="sum")
-    annual = fact(TURNOVER, "over_annual_cap", op="sum")
+    turnover_alert = 0.0
+    parts = []
+    for book in BOOKS:
+        quarterly = fact(TURNOVER, "over_quarterly_cap", {"strategy": book}, op="sum")
+        annual = fact(TURNOVER, "over_annual_cap", {"strategy": book}, op="sum")
+        turnover_alert += float(resolve(quarterly)) + float(resolve(annual))
+        parts.append(f"{LABELS[book]} : plafond trimestriel dépassé {d.count(quarterly)} fois, plafond annuel dépassé {d.count(annual)} fois")
     out.append(d.done("alertes", (
-        f"Rotation : {d.count(quarterly)} rééquilibrage au-dessus du plafond trimestriel de {d.pct(config('QUARTERLY_TURNOVER_CAP'), 1)} "
-        f"et {d.count(annual)} au-dessus du plafond annuel. La rotation la plus forte observée est de "
-        f"{d.pct(fact(TURNOVER, 'gross_turnover', op='max', scale='ratio'), 1)}."
-    )))
+        f"Rotation brute, mesurée contre le livre que le marché a laissé, dérive comprise : {'; '.join(parts)}. "
+        f"Plafonds : {d.pct(config('QUARTERLY_TURNOVER_CAP'), 1)} par trimestre. La rotation la plus forte observée est de "
+        f"{d.pct(fact(TURNOVER, 'gross_turnover', op='max', scale='ratio'), 1)}. "
+        "À la date de transaction, les plafonds de poids priment sur le budget de rotation : quand les deux ne tiennent pas ensemble, la rotation dépasse."
+    ), "alerte" if turnover_alert > 0 else "constat", tag="rotation"))
 
     d = Draft()
     issues = pd.read_excel(resolve_path(QUALITY), sheet_name="Quality Issues")
@@ -390,18 +488,35 @@ def _alerts():
         f"{d.count(fact(QUALITY, 'issue_count', where, sheet='Quality Issues'))} lignes sur "
         f"{d.count(fact(QUALITY, 'records_checked', where, sheet='Quality Issues'))}, "
         f"soit {d.pct(fact(QUALITY, 'issue_rate', where, scale='percent', sheet='Quality Issues'))}, gravité {worst['severity']}."
-    ), "alerte" if str(status) != "PASS" else "constat"))
+    ), "alerte" if str(status) != "PASS" else "constat", tag="qualite"))
+
+    d = Draft()
+    market = issues.loc[issues["table_name"].astype(str).eq("market_prices")].iloc[0]
+    out.append(d.done("alertes", (
+        f"Le score de qualité est pondéré par les enregistrements : {d.count(fact(QUALITY, 'records_checked', {'issue_id': market['issue_id']}, sheet='Quality Issues'))} lignes de cours "
+        f"sur {d.count(quality_summary('records_checked'))} enregistrements contrôlés. Il masque donc les défauts qui touchent peu de lignes mais des titres entiers : "
+        f"le contrôle de cohérence des devises signale {d.count(issue_item('DS-002', 'QC-005', 'issue_count'))} titres sur {d.count(issue_item('DS-002', 'QC-005', 'records_checked'))} "
+        f"({d.pct(issue_item('DS-002', 'QC-005', 'issue_rate', 'percent'))}) sans série de change."
+    ), "constat", tag="qualite_ponderation"))
 
     d = Draft()
     pending = reconciliation("statut_power_bi", {"statut_power_bi": PENDING})
     power_ok = reconciliation("statut_power_bi", {"statut_power_bi": "OK"})
     power_exception = reconciliation("statut_power_bi", {"statut_power_bi": "EXCEPTION"})
+    recomputed = reconciliation("nature_power_bi", {"nature_power_bi": "recalcul DAX"})
+    echoed = reconciliation("nature_power_bi", {"nature_power_bi": "relecture"})
     has_alert = float(resolve(pending)) > 0 or float(resolve(power_exception)) > 0
     out.append(d.done("alertes", (
         f"Colonne Power BI de la réconciliation : {d.count(power_ok)} lignes OK sur une valeur lue dans Power BI Desktop, "
-        f"{d.count(power_exception)} en EXCEPTION, {d.count(pending)} en attente d'export."
-    ), "alerte" if has_alert else "constat"))
+        f"{d.count(power_exception)} en EXCEPTION, {d.count(pending)} en attente d'export. "
+        f"Sur ces lignes, {d.count(recomputed)} sont recalculées en DAX à partir des rendements et {d.count(echoed)} relisent la cellule publiée : "
+        "ces dernières prouvent le chargement du bon fichier, pas un second calcul."
+    ), "alerte" if has_alert else "constat", tag="power_bi"))
     return out
+
+
+def issue_item(dataset, control, column, scale="raw"):
+    return fact(QUALITY, column, {"dataset_id": dataset, "control_id": control}, scale=scale, sheet="Quality Issues")
 
 
 def _points():
@@ -422,6 +537,18 @@ def _points():
             f"{', '.join(LABELS[book] for book in near)}. Une hausse relative du premier secteur ou de la première zone "
             "suffirait à franchir la limite entre deux rééquilibrages."
         ), "point"))
+    capacity = float(resolve(fact(FEASIBILITY, "capacity_ips", {"sector": "TOTAL"})))
+    if capacity < 1.0 - 1e-9:
+        d = Draft()
+        out.append(d.done("points", (
+            f"Faire approuver ou refuser par le client le plafond de travail de secteur de {d.pct(config('SECTOR_WEIGHT_CAP'), 0)}, "
+            f"contre {d.pct(config('IPS_SECTOR_WEIGHT_CAP'), 0)} écrit dans le mandat. Tant qu'il ne l'est pas, le dépassement du plafond écrit reste ouvert."
+        ), "point"))
+    d = Draft()
+    out.append(d.done("points", (
+        "Décider du traitement des dépassements passifs : toléré jusqu'au rééquilibrage suivant, ou corrigé dès qu'il apparaît. "
+        "Le mandat ne le dit pas."
+    ), "point"))
     target = float(resolve(config("TRACKING_ERROR_TARGET")))
     if any(float(resolve(perf(book, "tracking_error"))) > target for book in BOOKS):
         d = Draft()
@@ -452,14 +579,19 @@ def _points():
     out.append(d.done("points", (
         "Avant toute présentation comme performance réelle : obtenir des données de conservation "
         "(positions, transactions, frais, flux). La réconciliation prouve que les formules se recoupent, "
-        "pas que les titres ont été détenus."
+        "pas que les titres ont été détenus, ni que les définitions sont les bonnes."
     ), "point"))
     d = Draft()
     out.append(d.done("points", (
-        "Ajouter les dividendes au rendement des livres, ou comparer au rendement en prix du fonds, "
-        "pour rendre la comparaison au fonds homogène."
+        "Rendre la comparaison au fonds strictement homogène : le rendement total des livres est brut de frais et d'impôt à la source, "
+        "celui du fonds est net de ses frais. Il manque une série de rendement du fonds avant frais."
     ), "point"))
     return out
+
+
+def pick(statements, tag):
+    """The statements of a section that carry a tag."""
+    return [statement for statement in statements if statement.tag == tag]
 
 
 def build_statements():
