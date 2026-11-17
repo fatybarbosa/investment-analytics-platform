@@ -51,3 +51,5 @@ Windows, Python 3.12, Excel installed for the annex recalculation, Power BI Desk
 python -m src.pipeline.refresh
 python -m pytest tests
 ```
+
+Run the pipeline before the tests: the number-check tests read `audit/data_control_center.xlsx`, which the pipeline rebuilds and the repository does not version. On a fresh clone, `pytest` alone stops on that missing file.

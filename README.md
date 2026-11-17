@@ -39,6 +39,8 @@ python -m src.pipeline.refresh
 python -m pytest tests
 ```
 
+Lancer le pipeline avant les tests : les tests du contrôle des nombres lisent `audit/data_control_center.xlsx`, que le pipeline reconstruit et que le dépôt ne versionne pas. Sur un clone frais, `pytest` seul s'arrête sur ce fichier absent.
+
 Fermer `reports/excel/annexe_reporting.xlsx` avant le rafraîchissement. Un classeur ouvert verrouille le fichier.
 
 ## Périmètre

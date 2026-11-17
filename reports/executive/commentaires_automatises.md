@@ -2,7 +2,7 @@
 
 **Généré automatiquement, à relire avant diffusion.**
 
-Produit par `python -m src.pipeline.refresh` le 2026-11-16 07:47 UTC. Portefeuilles hypothétiques construits rétrospectivement sur des données publiques : ils n'ont jamais été détenus. Les cours, les cours de change et le SARON sont des données réelles et publiques. Pas de données de conservation, pas de frais, pas de dividendes dans le rendement des livres.
+Produit par `python -m src.pipeline.refresh` le 2026-11-16 12:29 UTC. Portefeuilles hypothétiques construits rétrospectivement sur des données publiques : ils n'ont jamais été détenus. Les cours, les cours de change et le SARON sont des données réelles et publiques. Pas de données de conservation, pas de frais, pas de dividendes dans le rendement des livres.
 
 Chaque nombre de ce texte est relu dans un fichier du pipeline par `src/reporting/number_check.py`. La liste des nombres et de leur source est dans `controle_des_nombres.csv`.
 

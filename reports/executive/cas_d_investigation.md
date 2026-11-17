@@ -2,7 +2,7 @@
 
 **Généré automatiquement, à relire avant diffusion.**
 
-Produit par le pipeline le 2026-11-16 07:47 UTC. Chaque nombre est relu dans un fichier du pipeline. Les cas décrivent ce que le pipeline a fait d'un défaut : il l'écarte et l'écrit, il ne le corrige pas en silence.
+Produit par le pipeline le 2026-11-16 12:29 UTC. Chaque nombre est relu dans un fichier du pipeline. Les cas décrivent ce que le pipeline a fait d'un défaut : il l'écarte et l'écrit, il ne le corrige pas en silence.
 
 ## Titres sans série de change
 
@@ -13,9 +13,9 @@ Produit par le pipeline le 2026-11-16 07:47 UTC. Chaque nombre est relu dans un 
 
 ## Clôtures manquantes et cours hors fourchette
 
-- Symptôme. Sur 650 716 séances de cours, 1 745 ont une clôture hors de la fourchette plus haut / plus bas ou négative, et 1 123 n'ont pas de clôture.
+- Symptôme. Sur 650 807 séances de cours, 1 743 ont une clôture hors de la fourchette plus haut / plus bas ou négative, et 1 123 n'ont pas de clôture.
 - Cause. Les séances viennent d'une source gratuite, avec des barres incomplètes ou incohérentes sur certaines places. Une clôture hors fourchette ne peut pas être vraie en même temps que son plus haut et son plus bas.
-- Décision. Chaque séance fautive est retirée de la série en CHF et inscrite dans le fichier des exclusions avec sa raison : 1 745 séances hors fourchette et 1 123 sans clôture, les mêmes nombres que le contrôle. Aucune valeur n'est interpolée. Le même fichier garde 50 871 séances sans série de change et 6 940 séances sans taux de fin de mois.
+- Décision. Chaque séance fautive est retirée de la série en CHF et inscrite dans le fichier des exclusions avec sa raison : 1 743 séances hors fourchette et 1 123 sans clôture, les mêmes nombres que le contrôle. Aucune valeur n'est interpolée. Le même fichier garde 50 881 séances sans série de change et 7 023 séances sans taux de fin de mois.
 - Trace. Le contrôle reste en avertissement sur la table des cours. Le fichier des exclusions est relu par cette note à chaque génération.
 
 ## Unité du rendement publié du fonds

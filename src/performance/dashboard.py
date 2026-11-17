@@ -81,6 +81,12 @@ def load_frames():
             if present != set(STRATEGY_IDS) | {"benchmark"}:
                 raise RuntimeError("The active-return file does not cover the three books and the fund.")
             frame = frame.loc[frame["strategy"].astype(str).isin(STRATEGY_IDS)].copy()
+        elif name == "path":
+            # The monitoring path carries the fund too. This page draws the fund from its own file.
+            present = set(frame["strategy"].astype(str))
+            if present != set(STRATEGY_IDS) | {"benchmark"}:
+                raise RuntimeError("The path file does not cover the three books and the fund.")
+            frame = frame.loc[frame["strategy"].astype(str).isin(STRATEGY_IDS)].copy()
         elif name != "benchmark" and set(frame["strategy"].astype(str)) != set(STRATEGY_IDS):
             raise RuntimeError(f"{name} does not cover the three strategies.")
         if name == "benchmark":

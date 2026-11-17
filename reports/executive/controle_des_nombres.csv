@@ -103,14 +103,14 @@ commentaires (phrase par phrase),alertes #19,"12,5 %",py:src.config | cell QUAR
 commentaires (phrase par phrase),alertes #20,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
 commentaires (phrase par phrase),alertes #20,6,audit/data_control_center.xlsx[Quality Issues] | count issue_id
 commentaires (phrase par phrase),alertes #20,54,audit/data_control_center.xlsx[Quality Controls] | count control_id
-commentaires (phrase par phrase),alertes #20,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261113-122941-738321-ISS-004
-commentaires (phrase par phrase),alertes #20,120,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261113-122941-738321-ISS-004
-commentaires (phrase par phrase),alertes #20,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261113-122941-738321-ISS-004
+commentaires (phrase par phrase),alertes #20,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261116-132624-466226-ISS-004
+commentaires (phrase par phrase),alertes #20,120,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261116-132624-466226-ISS-004
+commentaires (phrase par phrase),alertes #20,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261116-132624-466226-ISS-004
 commentaires (phrase par phrase),alertes #21,101,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut_power_bi | statut_power_bi=OK
 commentaires (phrase par phrase),alertes #21,0,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut_power_bi | statut_power_bi=EXCEPTION
 commentaires (phrase par phrase),alertes #21,0,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut_power_bi | statut_power_bi=EXCEPTION
 commentaires (phrase par phrase),points #23,8 %,py:src.config | cell TRACKING_ERROR_TARGET
-commentaires (phrase par phrase),points #24,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261113-122941-738321-ISS-004
+commentaires (phrase par phrase),points #24,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261116-132624-466226-ISS-004
 commentaires_automatises.md,commentaires_automatises.md,2016-11,data/04_portfolios/portfolio_metrics.csv | cell window_start | strategy=equal_weight
 commentaires_automatises.md,commentaires_automatises.md,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
 commentaires_automatises.md,commentaires_automatises.md,2020-03,"data/07_risk/var_tail.csv | cell month | rank=1, strategy=equal_weight"
@@ -215,14 +215,14 @@ commentaires_automatises.md,commentaires_automatises.md,"12,5 %",py:src.config 
 commentaires_automatises.md,commentaires_automatises.md,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
 commentaires_automatises.md,commentaires_automatises.md,6,audit/data_control_center.xlsx[Quality Issues] | count issue_id
 commentaires_automatises.md,commentaires_automatises.md,54,audit/data_control_center.xlsx[Quality Controls] | count control_id
-commentaires_automatises.md,commentaires_automatises.md,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261113-122941-738321-ISS-004
+commentaires_automatises.md,commentaires_automatises.md,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261116-132624-466226-ISS-004
 commentaires_automatises.md,commentaires_automatises.md,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-commentaires_automatises.md,commentaires_automatises.md,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261113-122941-738321-ISS-004
+commentaires_automatises.md,commentaires_automatises.md,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261116-132624-466226-ISS-004
 commentaires_automatises.md,commentaires_automatises.md,101,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut | statut=OK
 commentaires_automatises.md,commentaires_automatises.md,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 commentaires_automatises.md,commentaires_automatises.md,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 commentaires_automatises.md,commentaires_automatises.md,8 %,data/06_performance/performance_metrics.csv | cell tracking_error | strategy=equal_weight
-commentaires_automatises.md,commentaires_automatises.md,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261113-122941-738321-ISS-004
+commentaires_automatises.md,commentaires_automatises.md,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261116-132624-466226-ISS-004
 rapport_executif.pdf,rapport_executif.pdf,2016-11,data/04_portfolios/portfolio_metrics.csv | cell window_start | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,2020-03,"data/07_risk/var_tail.csv | cell month | rank=1, strategy=equal_weight"
@@ -353,9 +353,9 @@ rapport_executif.pdf,rapport_executif.pdf,"1,53","data/08_stress/stress_results.
 rapport_executif.pdf,rapport_executif.pdf,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
 rapport_executif.pdf,rapport_executif.pdf,6,py:src.config | cell RECESSION_SHOCK_MONTHS
 rapport_executif.pdf,rapport_executif.pdf,54,audit/data_control_center.xlsx[Quality Controls] | count control_id
-rapport_executif.pdf,rapport_executif.pdf,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261113-122941-738321-ISS-004
+rapport_executif.pdf,rapport_executif.pdf,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261116-132624-466226-ISS-004
 rapport_executif.pdf,rapport_executif.pdf,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-rapport_executif.pdf,rapport_executif.pdf,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261113-122941-738321-ISS-004
+rapport_executif.pdf,rapport_executif.pdf,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261116-132624-466226-ISS-004
 rapport_executif.pdf,rapport_executif.pdf,"99,97 %",audit/data_control_center.xlsx[Quality Dashboard] | cell value | metric=Valeurs manquantes
 rapport_executif.pdf,rapport_executif.pdf,"100,00 %",audit/data_control_center.xlsx[Quality Dashboard] | cell value | metric=Doublons
 rapport_executif.pdf,rapport_executif.pdf,"99,86 %",audit/data_control_center.xlsx[Quality Dashboard] | cell value | metric=Valeurs aberrantes
@@ -406,7 +406,7 @@ rapport_executif.pdf,rapport_executif.pdf,101,reports/excel/annexe_reporting.xls
 rapport_executif.pdf,rapport_executif.pdf,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,8 %,data/06_performance/performance_metrics.csv | cell tracking_error | strategy=equal_weight
-rapport_executif.pdf,rapport_executif.pdf,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261113-122941-738321-ISS-004
+rapport_executif.pdf,rapport_executif.pdf,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261116-132624-466226-ISS-004
 presentation_management.pptx,presentation_management.pptx,2016-11,data/04_portfolios/portfolio_metrics.csv | cell window_start | strategy=equal_weight
 presentation_management.pptx,presentation_management.pptx,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
 presentation_management.pptx,presentation_management.pptx,2021-08,data/06_performance/drawdown_episode.csv | cell peak_month | strategy=equal_weight
@@ -499,9 +499,9 @@ presentation_management.pptx,presentation_management.pptx,"100,00 %",audit/data
 presentation_management.pptx,presentation_management.pptx,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
 presentation_management.pptx,presentation_management.pptx,6,py:src.config | cell RECESSION_SHOCK_MONTHS
 presentation_management.pptx,presentation_management.pptx,54,audit/data_control_center.xlsx[Quality Controls] | count control_id
-presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261113-122941-738321-ISS-004
+presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261116-132624-466226-ISS-004
 presentation_management.pptx,presentation_management.pptx,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-presentation_management.pptx,presentation_management.pptx,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261113-122941-738321-ISS-004
+presentation_management.pptx,presentation_management.pptx,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261116-132624-466226-ISS-004
 presentation_management.pptx,presentation_management.pptx,101,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut | statut=OK
 presentation_management.pptx,presentation_management.pptx,102,reports/excel/annexe_reporting.xlsx[Reconciliation] | count indicateur
 presentation_management.pptx,presentation_management.pptx,101,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut | statut=OK
@@ -534,433 +534,11 @@ presentation_management.pptx,presentation_management.pptx,"-30,32 %",data/06_pe
 presentation_management.pptx,presentation_management.pptx,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
 presentation_management.pptx,presentation_management.pptx,6,py:src.config | cell RECESSION_SHOCK_MONTHS
 presentation_management.pptx,presentation_management.pptx,54,audit/data_control_center.xlsx[Quality Controls] | count control_id
-presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261113-122941-738321-ISS-004
+presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261116-132624-466226-ISS-004
 presentation_management.pptx,presentation_management.pptx,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-presentation_management.pptx,presentation_management.pptx,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261113-122941-738321-ISS-004
+presentation_management.pptx,presentation_management.pptx,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261116-132624-466226-ISS-004
 presentation_management.pptx,presentation_management.pptx,8 %,data/06_performance/performance_metrics.csv | cell tracking_error | strategy=equal_weight
-presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261113-122941-738321-ISS-004
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,2016-11,data/04_portfolios/portfolio_metrics.csv | cell window_start | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,2020-03,"data/07_risk/var_tail.csv | cell month | rank=1, strategy=equal_weight"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,2020-03,"data/07_risk/var_tail.csv | cell month | rank=1, strategy=equal_weight"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,2022-09,"data/07_risk/var_tail.csv | cell month | rank=1, strategy=maximum_sharpe"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,2022-09,"data/07_risk/var_tail.csv | cell month | rank=1, strategy=maximum_sharpe"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,2021-08,data/06_performance/drawdown_episode.csv | cell peak_month | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,2023-10,data/06_performance/drawdown_episode.csv | cell trough_month | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,2021-08,data/06_performance/drawdown_episode.csv | cell peak_month | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,2023-10,data/06_performance/drawdown_episode.csv | cell trough_month | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,2021-08,data/06_performance/drawdown_episode.csv | cell peak_month | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,2025-06,data/06_performance/drawdown_episode.csv | cell trough_month | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,29,data/05_monitoring/monthly_report.csv | cell invested_names | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"3,45 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"34,48 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"44,83 %",data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"17,24 %",data/05_monitoring/monthly_report.csv | cell largest_currency_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,26,data/05_monitoring/monthly_report.csv | cell invested_names | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"5,00 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"39,71 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"46,47 %",data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"23,52 %",data/05_monitoring/monthly_report.csv | cell largest_currency_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,25,data/05_monitoring/monthly_report.csv | cell invested_names | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"5,00 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"39,79 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"49,89 %",data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"21,26 %",data/05_monitoring/monthly_report.csv | cell largest_currency_weight | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,25,data/05_monitoring/monthly_report.csv | cell invested_names | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,40,py:src.config | cell MAX_POSITIONS
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,5 %,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,50 %,data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,0,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,0,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,0,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,0,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,0,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,5 %,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,50 %,data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,25,data/05_monitoring/monthly_report.csv | cell invested_names | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,40,py:src.config | cell MAX_POSITIONS
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"39,71 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,95 %,py:src.config | cell REPORTING_WATCH_RATIO
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"39,79 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,95 %,py:src.config | cell REPORTING_WATCH_RATIO
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"49,89 %",data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,50 %,data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,95 %,py:src.config | cell REPORTING_WATCH_RATIO
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"3,45 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"5,00 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"5,00 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"6,90 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Consumer Staples, strategy=equal_weight"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"5,00 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"5,00 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"34,48 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"39,71 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"39,79 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"10,34 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Industrials, strategy=equal_weight"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"11,00 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Industrials, strategy=minimum_volatility"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"14,33 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Industrials, strategy=maximum_sharpe"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"3,45 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"4,77 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Information Technology, strategy=minimum_volatility"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"3,45 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"0,50 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Materials, strategy=minimum_volatility"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"4,27 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Materials, strategy=maximum_sharpe"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"34,48 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"30,85 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Real Estate, strategy=minimum_volatility"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"31,61 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Real Estate, strategy=maximum_sharpe"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"3,45 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"3,18 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Utilities, strategy=minimum_volatility"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"17,24 %",data/05_monitoring/monthly_report.csv | cell largest_currency_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"17,23 %","data/05_monitoring/allocation_by_zone.csv | cell weight | strategy=minimum_volatility, zone=Amériques"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"21,26 %",data/05_monitoring/monthly_report.csv | cell largest_currency_weight | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"34,48 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"46,47 %",data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"23,85 %","data/05_monitoring/allocation_by_zone.csv | cell weight | strategy=maximum_sharpe, zone=Asie-Pacifique"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"44,83 %",data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"32,04 %","data/05_monitoring/allocation_by_zone.csv | cell weight | strategy=minimum_volatility, zone=Europe"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"49,89 %",data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"3,45 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"4,26 %","data/05_monitoring/allocation_by_zone.csv | cell weight | strategy=minimum_volatility, zone=Moyen-Orient et Afrique"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"5,00 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"6,90 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Consumer Staples, strategy=equal_weight"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"6,89 %","data/05_monitoring/exposure.csv | cell weight | exposure=CHF, strategy=minimum_volatility"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"6,24 %","data/05_monitoring/exposure.csv | cell weight | exposure=CHF, strategy=maximum_sharpe"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"3,45 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"4,77 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Information Technology, strategy=minimum_volatility"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"10,34 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Industrials, strategy=equal_weight"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"6,00 %","data/05_monitoring/exposure.csv | cell weight | exposure=DKK, strategy=minimum_volatility"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"13,69 %","data/05_monitoring/exposure.csv | cell weight | exposure=DKK, strategy=maximum_sharpe"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"10,34 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Industrials, strategy=equal_weight"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"7,83 %","data/05_monitoring/exposure.csv | cell weight | exposure=EUR, strategy=minimum_volatility"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"7,08 %","data/05_monitoring/exposure.csv | cell weight | exposure=EUR, strategy=maximum_sharpe"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"6,90 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Consumer Staples, strategy=equal_weight"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"6,25 %","data/05_monitoring/exposure.csv | cell weight | exposure=GBP, strategy=minimum_volatility"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"8,87 %","data/05_monitoring/exposure.csv | cell weight | exposure=GBP, strategy=maximum_sharpe"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"10,34 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Industrials, strategy=equal_weight"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"13,18 %","data/05_monitoring/exposure.csv | cell weight | exposure=HKD, strategy=minimum_volatility"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"5,00 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"17,24 %",data/05_monitoring/monthly_report.csv | cell largest_currency_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"23,52 %",data/05_monitoring/monthly_report.csv | cell largest_currency_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"14,79 %","data/05_monitoring/exposure.csv | cell weight | exposure=JPY, strategy=maximum_sharpe"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"3,45 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"5,00 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"6,90 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Consumer Staples, strategy=equal_weight"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"5,07 %","data/05_monitoring/exposure.csv | cell weight | exposure=SEK, strategy=minimum_volatility"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"9,00 %","data/05_monitoring/exposure.csv | cell weight | exposure=SEK, strategy=maximum_sharpe"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"3,45 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"5,00 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"4,05 %","data/05_monitoring/exposure.csv | cell weight | exposure=SGD, strategy=maximum_sharpe"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"17,24 %",data/05_monitoring/monthly_report.csv | cell largest_currency_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"17,23 %","data/05_monitoring/allocation_by_zone.csv | cell weight | strategy=minimum_volatility, zone=Amériques"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"21,26 %",data/05_monitoring/monthly_report.csv | cell largest_currency_weight | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"3,45 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"4,26 %","data/05_monitoring/allocation_by_zone.csv | cell weight | strategy=minimum_volatility, zone=Moyen-Orient et Afrique"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"5,00 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"5,29 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"12,37 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"0,49",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"0,73",data/06_performance/performance_metrics.csv | cell sortino_ratio | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-26,44 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"7,68 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-0,11",data/06_performance/performance_metrics.csv | cell information_ratio | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"3,87 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"11,79 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"0,39",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"0,58",data/06_performance/performance_metrics.csv | cell sortino_ratio | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-25,68 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"8,23 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-0,28",data/06_performance/performance_metrics.csv | cell information_ratio | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"4,35 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"12,61 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"0,41",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"0,60",data/06_performance/performance_metrics.csv | cell sortino_ratio | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-30,32 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"8,68 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-0,20",data/06_performance/performance_metrics.csv | cell information_ratio | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"6,08 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=benchmark
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"13,24 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=benchmark
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"0,52",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=benchmark
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"0,81",data/06_performance/performance_metrics.csv | cell sortino_ratio | strategy=benchmark
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-29,67 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=benchmark
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"5,29 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"6,08 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=benchmark
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"7,68 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"8,23 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"8,68 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,8 %,"data/05_monitoring/exposure.csv | cell weight | exposure=EUR, strategy=minimum_volatility"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"12,37 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-5,52 %",data/07_risk/risk_by_strategy.csv | cell var_95 | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-8,02 %",data/07_risk/risk_by_strategy.csv | cell expected_shortfall_95 | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-11,85 %","data/07_risk/var_tail.csv | cell portfolio_return | rank=1, strategy=equal_weight"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"11,79 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-6,25 %",data/07_risk/risk_by_strategy.csv | cell var_95 | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-7,60 %",data/07_risk/risk_by_strategy.csv | cell expected_shortfall_95 | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-10,55 %","data/07_risk/var_tail.csv | cell portfolio_return | rank=1, strategy=minimum_volatility"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"12,61 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-6,53 %",data/07_risk/risk_by_strategy.csv | cell var_95 | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-8,58 %",data/07_risk/risk_by_strategy.csv | cell expected_shortfall_95 | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-12,76 %","data/07_risk/var_tail.csv | cell portfolio_return | rank=1, strategy=maximum_sharpe"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"13,24 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=benchmark
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-5,50 %",data/07_risk/risk_by_strategy.csv | cell var_95 | strategy=benchmark
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-7,42 %",data/07_risk/risk_by_strategy.csv | cell expected_shortfall_95 | strategy=benchmark
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-10,00 %","data/07_risk/var_tail.csv | cell portfolio_return | rank=1, strategy=benchmark"
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-26,44 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=equal_weight
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-25,68 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=minimum_volatility
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-30,32 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=maximum_sharpe
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,30 %,py:src.config | cell TEMPORARY_LOSS_REFERENCE
-rapport_mensuel_caisse_de_pension.pdf,rapport_mensuel_caisse_de_pension.pdf,"-30,32 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=maximum_sharpe
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,2016-11,data/04_portfolios/portfolio_metrics.csv | cell window_start | strategy=equal_weight
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,1,"data/05_monitoring/top10_positions.csv | cell rank | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,2,"data/05_monitoring/top10_positions.csv | cell rank | rank=2, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,3,"data/05_monitoring/top10_positions.csv | cell rank | rank=3, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,4,"data/05_monitoring/top10_positions.csv | cell rank | rank=4, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,5,"data/05_monitoring/top10_positions.csv | cell rank | rank=5, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,6,"data/05_monitoring/top10_positions.csv | cell rank | rank=6, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,7,"data/05_monitoring/top10_positions.csv | cell rank | rank=7, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,8,"data/05_monitoring/top10_positions.csv | cell rank | rank=8, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,9,"data/05_monitoring/top10_positions.csv | cell rank | rank=9, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,10,"data/05_monitoring/top10_positions.csv | cell rank | rank=10, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,1,"data/05_monitoring/top10_positions.csv | cell rank | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,2,"data/05_monitoring/top10_positions.csv | cell rank | rank=2, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,3,"data/05_monitoring/top10_positions.csv | cell rank | rank=3, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,4,"data/05_monitoring/top10_positions.csv | cell rank | rank=4, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,5,"data/05_monitoring/top10_positions.csv | cell rank | rank=5, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,6,"data/05_monitoring/top10_positions.csv | cell rank | rank=6, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,7,"data/05_monitoring/top10_positions.csv | cell rank | rank=7, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,8,"data/05_monitoring/top10_positions.csv | cell rank | rank=8, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,9,"data/05_monitoring/top10_positions.csv | cell rank | rank=9, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,10,"data/05_monitoring/top10_positions.csv | cell rank | rank=10, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,1,"data/05_monitoring/top10_positions.csv | cell rank | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,2,"data/05_monitoring/top10_positions.csv | cell rank | rank=2, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,3,"data/05_monitoring/top10_positions.csv | cell rank | rank=3, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,4,"data/05_monitoring/top10_positions.csv | cell rank | rank=4, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,5,"data/05_monitoring/top10_positions.csv | cell rank | rank=5, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,6,"data/05_monitoring/top10_positions.csv | cell rank | rank=6, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,7,"data/05_monitoring/top10_positions.csv | cell rank | rank=7, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,88 %","data/05_monitoring/top10_positions.csv | cell weight | rank=7, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,8,"data/05_monitoring/top10_positions.csv | cell rank | rank=8, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,76 %","data/05_monitoring/top10_positions.csv | cell weight | rank=8, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,9,"data/05_monitoring/top10_positions.csv | cell rank | rank=9, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,73 %","data/05_monitoring/top10_positions.csv | cell weight | rank=9, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,10,"data/05_monitoring/top10_positions.csv | cell rank | rank=10, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,66 %","data/05_monitoring/top10_positions.csv | cell weight | rank=10, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"8,57 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=equal_weight, yahoo_symbol=ALNY"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"6,85 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=equal_weight, yahoo_symbol=SOBI.ST"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,92 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=equal_weight, yahoo_symbol=GMAB.CO"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,88 %","data/05_monitoring/top10_positions.csv | cell weight | rank=7, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,13 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=equal_weight, yahoo_symbol=4568.T"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-0,82 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=equal_weight, yahoo_symbol=COV.PA"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-0,84 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=equal_weight, yahoo_symbol=4523.T"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-1,71 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=equal_weight, yahoo_symbol=8951.T"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-1,98 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=equal_weight, yahoo_symbol=GFC.PA"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-3,28 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=equal_weight, yahoo_symbol=1044.HK"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"6,46 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=minimum_volatility, yahoo_symbol=DEMANT.CO"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,52 %","data/05_monitoring/holding_contribution.csv | cell weight | month=2026-10, strategy=minimum_volatility, yahoo_symbol=4568.T"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"6,08 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=minimum_volatility, yahoo_symbol=4568.T"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"0,50 %","data/05_monitoring/holding_contribution.csv | cell weight | month=2026-10, strategy=minimum_volatility, yahoo_symbol=SCA-B.ST"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,48 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=minimum_volatility, yahoo_symbol=SCA-B.ST"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"1,00 %","data/05_monitoring/holding_contribution.csv | cell weight | month=2026-10, strategy=minimum_volatility, yahoo_symbol=VWS.CO"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,14 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=minimum_volatility, yahoo_symbol=VWS.CO"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,04 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=minimum_volatility, yahoo_symbol=PSON.L"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-1,13 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=minimum_volatility, yahoo_symbol=9022.T"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"2,83 %","data/05_monitoring/holding_contribution.csv | cell weight | month=2026-10, strategy=minimum_volatility, yahoo_symbol=GFC.PA"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-2,08 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=minimum_volatility, yahoo_symbol=GFC.PA"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,77 %","data/05_monitoring/holding_contribution.csv | cell weight | month=2026-10, strategy=minimum_volatility, yahoo_symbol=002129.SZ"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-2,11 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=minimum_volatility, yahoo_symbol=002129.SZ"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-2,45 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=minimum_volatility, yahoo_symbol=8951.T"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-4,76 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=minimum_volatility, yahoo_symbol=1044.HK"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,50 %","data/05_monitoring/holding_contribution.csv | cell weight | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=GMAB.CO"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"7,61 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=GMAB.CO"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,73 %","data/05_monitoring/top10_positions.csv | cell weight | rank=9, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"6,96 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=SOBI.ST"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,71 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=ALNY"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,61 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=SALM.OL"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,66 %","data/05_monitoring/top10_positions.csv | cell weight | rank=10, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,38 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=EQIX"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"0,00 %","data/05_monitoring/holding_contribution.csv | cell weight | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=002129.SZ"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-1,04 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=002129.SZ"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"1,37 %","data/05_monitoring/holding_contribution.csv | cell weight | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=COV.PA"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-1,07 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=COV.PA"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-1,63 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=3898.HK"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"1,09 %","data/05_monitoring/holding_contribution.csv | cell weight | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=8951.T"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-2,32 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=8951.T"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"0,00 %","data/05_monitoring/holding_contribution.csv | cell weight | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=002129.SZ"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-2,33 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=0916.HK"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"0,0 %","data/05_monitoring/holding_contribution.csv | cell weight | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=002129.SZ"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,22,"data/05_monitoring/weight_changes.csv | count yahoo_symbol | month=2026-10, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,8 %","data/05_monitoring/turnover.csv | cell gross_turnover | month=2026-10, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"12,5 %",py:src.config | cell QUARTERLY_TURNOVER_CAP
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,38 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=minimum_volatility, yahoo_symbol=002129.SZ"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,77 %","data/05_monitoring/holding_contribution.csv | cell weight | month=2026-10, strategy=minimum_volatility, yahoo_symbol=002129.SZ"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"1,39 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=minimum_volatility, yahoo_symbol=002129.SZ"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,98 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=minimum_volatility, yahoo_symbol=ALNY"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,91 %","data/05_monitoring/weight_changes.csv | cell weight_after | month=2026-10, strategy=minimum_volatility, yahoo_symbol=ALNY"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"0,93 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=minimum_volatility, yahoo_symbol=ALNY"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,96 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=minimum_volatility, yahoo_symbol=0916.HK"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,18 %","data/05_monitoring/weight_changes.csv | cell weight_after | month=2026-10, strategy=minimum_volatility, yahoo_symbol=0916.HK"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-0,79 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=minimum_volatility, yahoo_symbol=0916.HK"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"2,53 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=minimum_volatility, yahoo_symbol=SOON.SW"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"1,89 %","data/05_monitoring/weight_changes.csv | cell weight_after | month=2026-10, strategy=minimum_volatility, yahoo_symbol=SOON.SW"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-0,64 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=minimum_volatility, yahoo_symbol=SOON.SW"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"1,79 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=minimum_volatility, yahoo_symbol=LAND.L"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"1,25 %","data/05_monitoring/weight_changes.csv | cell weight_after | month=2026-10, strategy=minimum_volatility, yahoo_symbol=LAND.L"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-0,54 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=minimum_volatility, yahoo_symbol=LAND.L"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"2,46 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=minimum_volatility, yahoo_symbol=GFC.PA"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"2,83 %","data/05_monitoring/holding_contribution.csv | cell weight | month=2026-10, strategy=minimum_volatility, yahoo_symbol=GFC.PA"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"0,37 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=minimum_volatility, yahoo_symbol=GFC.PA"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,89 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=minimum_volatility, yahoo_symbol=SOBI.ST"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,58 %","data/05_monitoring/weight_changes.csv | cell weight_after | month=2026-10, strategy=minimum_volatility, yahoo_symbol=SOBI.ST"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-0,32 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=minimum_volatility, yahoo_symbol=SOBI.ST"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"0,78 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=minimum_volatility, yahoo_symbol=SCA-B.ST"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"0,50 %","data/05_monitoring/holding_contribution.csv | cell weight | month=2026-10, strategy=minimum_volatility, yahoo_symbol=SCA-B.ST"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-0,28 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=minimum_volatility, yahoo_symbol=SCA-B.ST"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,82 %","data/05_monitoring/weight_changes.csv | cell weight_after | month=2026-10, strategy=minimum_volatility, yahoo_symbol=BMY"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-0,18 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=minimum_volatility, yahoo_symbol=BMY"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"1,02 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=minimum_volatility, yahoo_symbol=SUI"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"1,12 %","data/05_monitoring/weight_changes.csv | cell weight_after | month=2026-10, strategy=minimum_volatility, yahoo_symbol=SUI"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"0,09 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=minimum_volatility, yahoo_symbol=SUI"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,19,"data/05_monitoring/weight_changes.csv | count yahoo_symbol | month=2026-10, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"12,5 %",py:src.config | cell QUARTERLY_TURNOVER_CAP
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"12,5 %",py:src.config | cell QUARTERLY_TURNOVER_CAP
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,37 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=SOON.SW"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"2,11 %","data/05_monitoring/weight_changes.csv | cell weight_after | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=SOON.SW"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-2,26 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=SOON.SW"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,83 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=SUI"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"1,93 %","data/05_monitoring/weight_changes.csv | cell weight_after | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=SUI"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-1,90 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=SUI"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"2,79 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=SCA-B.ST"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,27 %","data/05_monitoring/weight_changes.csv | cell weight_after | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=SCA-B.ST"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"1,48 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=SCA-B.ST"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,42 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=4568.T"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,48 %","data/05_monitoring/holding_contribution.csv | cell cumulative_contribution | month=2026-10, strategy=minimum_volatility, yahoo_symbol=SCA-B.ST"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"1,06 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=4568.T"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,67 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=9022.T"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,56 %","data/05_monitoring/weight_changes.csv | cell weight_after | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=9022.T"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"0,89 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=9022.T"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,64 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=DEMANT.CO"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,43 %","data/05_monitoring/weight_changes.csv | cell weight_after | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=DEMANT.CO"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"0,79 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=DEMANT.CO"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"2,12 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=COV.PA"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"1,37 %","data/05_monitoring/holding_contribution.csv | cell weight | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=COV.PA"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"-0,75 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=COV.PA"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,98 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=minimum_volatility, yahoo_symbol=ALNY"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,66 %","data/05_monitoring/top10_positions.csv | cell weight | rank=10, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"0,68 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=4507.T"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,29 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=VWS.CO"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,76 %","data/05_monitoring/top10_positions.csv | cell weight | rank=8, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"0,48 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=VWS.CO"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"0,49 %","data/05_monitoring/weight_changes.csv | cell weight_before | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=GFC.PA"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"0,83 %","data/05_monitoring/weight_changes.csv | cell weight_after | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=GFC.PA"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"0,34 %","data/05_monitoring/weight_changes.csv | cell weight_change | month=2026-10, strategy=maximum_sharpe, yahoo_symbol=GFC.PA"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"6,90 %","data/05_monitoring/exposure.csv | cell weight | exposure=CHF, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"6,89 %","data/05_monitoring/exposure.csv | cell weight | exposure=CHF, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"6,24 %","data/05_monitoring/exposure.csv | cell weight | exposure=CHF, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,77 %","data/05_monitoring/holding_contribution.csv | cell weight | month=2026-10, strategy=minimum_volatility, yahoo_symbol=002129.SZ"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"10,34 %","data/05_monitoring/exposure.csv | cell weight | exposure=DKK, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"6,00 %","data/05_monitoring/exposure.csv | cell weight | exposure=DKK, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"13,69 %","data/05_monitoring/exposure.csv | cell weight | exposure=DKK, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"10,34 %","data/05_monitoring/exposure.csv | cell weight | exposure=DKK, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"7,83 %","data/05_monitoring/exposure.csv | cell weight | exposure=EUR, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"7,08 %","data/05_monitoring/exposure.csv | cell weight | exposure=EUR, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"6,90 %","data/05_monitoring/exposure.csv | cell weight | exposure=CHF, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"6,25 %","data/05_monitoring/exposure.csv | cell weight | exposure=GBP, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"8,87 %","data/05_monitoring/exposure.csv | cell weight | exposure=GBP, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"10,34 %","data/05_monitoring/exposure.csv | cell weight | exposure=DKK, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"13,18 %","data/05_monitoring/exposure.csv | cell weight | exposure=HKD, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"17,24 %","data/05_monitoring/exposure.csv | cell weight | exposure=JPY, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"23,52 %","data/05_monitoring/exposure.csv | cell weight | exposure=JPY, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"14,79 %","data/05_monitoring/exposure.csv | cell weight | exposure=JPY, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"6,90 %","data/05_monitoring/exposure.csv | cell weight | exposure=CHF, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,07 %","data/05_monitoring/exposure.csv | cell weight | exposure=SEK, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"9,00 %","data/05_monitoring/exposure.csv | cell weight | exposure=SEK, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,05 %","data/05_monitoring/exposure.csv | cell weight | exposure=SGD, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"17,24 %","data/05_monitoring/exposure.csv | cell weight | exposure=JPY, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"17,23 %","data/05_monitoring/exposure.csv | cell weight | exposure=USD, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"21,26 %","data/05_monitoring/exposure.csv | cell weight | exposure=USD, strategy=maximum_sharpe"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"4,26 %","data/05_monitoring/exposure.csv | cell weight | exposure=ZAR, strategy=minimum_volatility"
-rapport_mensuel_gerant.pdf,rapport_mensuel_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
-cas_d_investigation.md,cas_d_investigation.md,11,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-005, dataset_id=DS-002"
-cas_d_investigation.md,cas_d_investigation.md,120,"audit/data_control_center.xlsx[Quality Issues] | cell records_checked | control_id=QC-005, dataset_id=DS-002"
-cas_d_investigation.md,cas_d_investigation.md,1,"data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=no_snb_series, listing_currency=ILS"
-cas_d_investigation.md,cas_d_investigation.md,6,"data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=no_snb_series, listing_currency=INR"
-cas_d_investigation.md,cas_d_investigation.md,1,"data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=no_snb_series, listing_currency=ILS"
-cas_d_investigation.md,cas_d_investigation.md,3,"data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=no_snb_series, listing_currency=TWD"
-cas_d_investigation.md,cas_d_investigation.md,3,"data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=no_snb_series, listing_currency=TWD"
-cas_d_investigation.md,cas_d_investigation.md,650 716,"audit/data_control_center.xlsx[Quality Issues] | cell records_checked | control_id=QC-003, dataset_id=DS-003"
-cas_d_investigation.md,cas_d_investigation.md,1 745,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-003, dataset_id=DS-003"
-cas_d_investigation.md,cas_d_investigation.md,1 123,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-001, dataset_id=DS-003"
-cas_d_investigation.md,cas_d_investigation.md,1 745,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-003, dataset_id=DS-003"
-cas_d_investigation.md,cas_d_investigation.md,1 123,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-001, dataset_id=DS-003"
-cas_d_investigation.md,cas_d_investigation.md,50 871,data/02_processed/market/market_price_exclusions.csv | count symbol | reason=no_snb_series
-cas_d_investigation.md,cas_d_investigation.md,6 940,data/02_processed/market/market_price_exclusions.csv | count symbol | reason=missing_monthly_fx
-cas_d_investigation.md,cas_d_investigation.md,6,"data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=no_snb_series, listing_currency=INR"
-cas_d_investigation.md,cas_d_investigation.md,5e-4,py:src.performance.benchmark_return | cell UNIT_TOLERANCE
-cas_d_investigation.md,cas_d_investigation.md,120,"audit/data_control_center.xlsx[Quality Issues] | cell records_checked | control_id=QC-005, dataset_id=DS-002"
-cas_d_investigation.md,cas_d_investigation.md,33,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=incomplete_monthly_history
-cas_d_investigation.md,cas_d_investigation.md,10,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | reason=incomplete_monthly_history
+presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261116-132624-466226-ISS-004
 rapport_client.pdf,rapport_client.pdf,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
 rapport_client.pdf,rapport_client.pdf,2016-11,data/04_portfolios/portfolio_metrics.csv | cell window_start | strategy=equal_weight
 rapport_client.pdf,rapport_client.pdf,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
@@ -1301,3 +879,22 @@ rapport_gerant.pdf,rapport_gerant.pdf,"21,26 %","data/05_monitoring/exposure.csv
 rapport_gerant.pdf,rapport_gerant.pdf,"3,45 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=equal_weight"
 rapport_gerant.pdf,rapport_gerant.pdf,"4,26 %","data/05_monitoring/exposure.csv | cell weight | exposure=ZAR, strategy=minimum_volatility"
 rapport_gerant.pdf,rapport_gerant.pdf,"5,00 %","data/05_monitoring/top10_positions.csv | cell weight | rank=1, strategy=minimum_volatility"
+cas_d_investigation.md,cas_d_investigation.md,11,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-005, dataset_id=DS-002"
+cas_d_investigation.md,cas_d_investigation.md,120,"audit/data_control_center.xlsx[Quality Issues] | cell records_checked | control_id=QC-005, dataset_id=DS-002"
+cas_d_investigation.md,cas_d_investigation.md,1,"data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=no_snb_series, listing_currency=ILS"
+cas_d_investigation.md,cas_d_investigation.md,6,"data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=no_snb_series, listing_currency=INR"
+cas_d_investigation.md,cas_d_investigation.md,1,"data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=no_snb_series, listing_currency=ILS"
+cas_d_investigation.md,cas_d_investigation.md,3,"data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=no_snb_series, listing_currency=TWD"
+cas_d_investigation.md,cas_d_investigation.md,3,"data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=no_snb_series, listing_currency=TWD"
+cas_d_investigation.md,cas_d_investigation.md,650 807,"audit/data_control_center.xlsx[Quality Issues] | cell records_checked | control_id=QC-003, dataset_id=DS-003"
+cas_d_investigation.md,cas_d_investigation.md,1 743,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-003, dataset_id=DS-003"
+cas_d_investigation.md,cas_d_investigation.md,1 123,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-001, dataset_id=DS-003"
+cas_d_investigation.md,cas_d_investigation.md,1 743,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-003, dataset_id=DS-003"
+cas_d_investigation.md,cas_d_investigation.md,1 123,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-001, dataset_id=DS-003"
+cas_d_investigation.md,cas_d_investigation.md,50 881,data/02_processed/market/market_price_exclusions.csv | count symbol | reason=no_snb_series
+cas_d_investigation.md,cas_d_investigation.md,7 023,data/02_processed/market/market_price_exclusions.csv | count symbol | reason=missing_monthly_fx
+cas_d_investigation.md,cas_d_investigation.md,6,"data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=no_snb_series, listing_currency=INR"
+cas_d_investigation.md,cas_d_investigation.md,5e-4,py:src.performance.benchmark_return | cell UNIT_TOLERANCE
+cas_d_investigation.md,cas_d_investigation.md,120,"audit/data_control_center.xlsx[Quality Issues] | cell records_checked | control_id=QC-005, dataset_id=DS-002"
+cas_d_investigation.md,cas_d_investigation.md,33,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=incomplete_monthly_history
+cas_d_investigation.md,cas_d_investigation.md,10,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | reason=incomplete_monthly_history

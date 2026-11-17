@@ -1,6 +1,6 @@
 {
   "mention": "Généré automatiquement, à relire avant diffusion.",
-  "genere_le": "2026-11-16 07:47 UTC",
+  "genere_le": "2026-11-16 12:29 UTC",
   "perimetre": "Portefeuilles hypothétiques construits rétrospectivement sur des données publiques : ils n'ont jamais été détenus. Les cours, les cours de change et le SARON sont des données réelles et publiques. Pas de données de conservation, pas de frais, pas de dividendes dans le rendement des livres.",
   "avertissement": "Ces points sont des constats et des alertes liés aux limites écrites du mandat. Ce ne sont pas des recommandations d'investissement personnalisées.",
   "sections": {
@@ -229,9 +229,9 @@
           "audit/data_control_center.xlsx[Quality History] | last global_quality_score",
           "audit/data_control_center.xlsx[Quality Issues] | count issue_id",
           "audit/data_control_center.xlsx[Quality Controls] | count control_id",
-          "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261113-122941-738321-ISS-004",
-          "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261113-122941-738321-ISS-004",
-          "audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261113-122941-738321-ISS-004"
+          "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261116-132624-466226-ISS-004",
+          "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261116-132624-466226-ISS-004",
+          "audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261116-132624-466226-ISS-004"
         ]
       },
       {
@@ -261,7 +261,7 @@
         "type": "point",
         "texte": "Traiter l'anomalie de gravité MEDIUM du contrôle qualité : cohérence des devises, 11 titres de la table securities_master sans série de change. Ces titres ne peuvent pas être convertis en CHF et restent hors des livres.",
         "sources": [
-          "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261113-122941-738321-ISS-004"
+          "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261116-132624-466226-ISS-004"
         ]
       },
       {
