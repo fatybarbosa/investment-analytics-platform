@@ -1,0 +1,9 @@
+# Binary deliverables are never converted. A line-ending conversion inside a PDF
+# shifts its internal offsets and damages the file on a Windows clone.
+*.pdf binary
+*.pptx binary
+*.xlsx binary
+*.xls binary
+*.png binary
+*.ico binary
+*.docx binary

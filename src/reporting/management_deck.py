@@ -64,10 +64,17 @@ HEIGHT = Inches(7.5)
 MARGIN = Inches(0.6)
 
 
+AUTHOR = "Pipeline du projet (généré automatiquement)"
+
+
 class Deck:
     def __init__(self, generated):
         self.generated = generated
         self.presentation = Presentation()
+        properties = self.presentation.core_properties
+        properties.author = AUTHOR
+        properties.last_modified_by = AUTHOR
+        properties.title = "Trois portefeuilles ODD en CHF"
         self.presentation.slide_width = WIDTH
         self.presentation.slide_height = HEIGHT
         self.statements = []
