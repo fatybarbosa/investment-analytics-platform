@@ -1,6 +1,6 @@
 {
   "mention": "Généré automatiquement, à relire avant diffusion.",
-  "genere_le": "2026-11-23 10:08 UTC",
+  "genere_le": "2026-11-23 10:28 UTC",
   "perimetre": "Portefeuilles hypothétiques construits rétrospectivement sur des données publiques : ils n'ont jamais été détenus. Les cours, les cours de change et le SARON sont des données réelles et publiques. Pas de données de conservation et pas de frais. Les livres sont mesurés en rendement total brut : dividendes réinvestis par le cours ajusté, avant frais et avant impôt à la source. Le fonds est mesuré par le rendement de sa valeur liquidative, net de ses frais : la comparaison avantage donc les livres.",
   "avertissement": "Ces points sont des constats et des alertes liés aux limites écrites du mandat. Ce ne sont pas des recommandations d'investissement personnalisées.",
   "sections": {
@@ -277,16 +277,16 @@
           "audit/data_control_center.xlsx[Quality History] | last global_quality_score",
           "audit/data_control_center.xlsx[Quality Issues] | count issue_id",
           "audit/data_control_center.xlsx[Quality Controls] | count control_id",
-          "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261123-103555-281111-ISS-004",
-          "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261123-103555-281111-ISS-004",
-          "audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261123-103555-281111-ISS-004"
+          "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261123-112656-797390-ISS-004",
+          "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261123-112656-797390-ISS-004",
+          "audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261123-112656-797390-ISS-004"
         ]
       },
       {
         "type": "constat",
         "texte": "Le score de qualité est pondéré par les enregistrements : 651 424 lignes de cours sur 662 294 enregistrements contrôlés. Il masque donc les défauts qui touchent peu de lignes mais des titres entiers : le contrôle de cohérence des devises signale 11 titres sur 120 (9,17 %) sans série de change.",
         "sources": [
-          "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261123-103555-281111-ISS-005",
+          "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261123-112656-797390-ISS-005",
           "audit/data_control_center.xlsx[Quality History] | last records_checked",
           "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-005, dataset_id=DS-002",
           "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | control_id=QC-005, dataset_id=DS-002",
@@ -335,7 +335,7 @@
         "type": "point",
         "texte": "Traiter l'anomalie de gravité MEDIUM du contrôle qualité : cohérence des devises, 11 titres de la table securities_master sans série de change. Ces titres ne peuvent pas être convertis en CHF et restent hors des livres.",
         "sources": [
-          "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261123-103555-281111-ISS-004"
+          "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261123-112656-797390-ISS-004"
         ]
       },
       {

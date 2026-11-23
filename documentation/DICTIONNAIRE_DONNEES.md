@@ -587,7 +587,7 @@ Fichier local `database/sdg_investment.db`. Tables : 26.
 
 ### `acquisition_log`
 
-Lignes : 160.
+Lignes : 168.
 
 | Colonne |
 |---|
@@ -904,7 +904,7 @@ Lignes : 120.
 
 ### `quality_control_result`
 
-Lignes : 1008.
+Lignes : 1116.
 
 | Colonne |
 |---|
@@ -923,7 +923,7 @@ Lignes : 1008.
 
 ### `quality_metric_result`
 
-Lignes : 900.
+Lignes : 996.
 
 | Colonne |
 |---|
@@ -943,7 +943,7 @@ Lignes : 900.
 
 ### `quality_run`
 
-Lignes : 26.
+Lignes : 28.
 
 | Colonne |
 |---|

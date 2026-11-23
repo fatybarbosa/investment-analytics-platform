@@ -40,7 +40,7 @@ Lignes Power BI en attente d'export : 0. Lignes Power BI passées OK par la form
 
 ## Export Power BI
 
-`export_power_bi` contient 101 valeurs lues dans Power BI Desktop le 2026-11-23 09:31:23 UTC, sur le moteur localhost:65116 (Analysis Services 17.0.93.23, ADOMD.NET). Les données du modèle avaient été actualisées dans Desktop entre 2026-11-23T09:31:08 → 2026-11-23T09:31:17 UTC.
+`export_power_bi` contient 101 valeurs lues dans Power BI Desktop le 2026-11-23 10:26:13 UTC, sur le moteur localhost:59824 (Analysis Services 17.0.93.23, ADOMD.NET). Les données du modèle avaient été actualisées dans Desktop entre 2026-11-23T10:25:46 → 2026-11-23T10:26:08 UTC.
 
 Méthode. Pendant qu'un rapport est ouvert, Desktop fait tourner un moteur Analysis Services local. `python -m src.reporting.power_bi_export` lit son port dans le dossier de travail de Desktop, s'y connecte avec ADOMD.NET et envoie une requête DAX `EVALUATE` par ligne : la mesure du modèle, filtrée sur le livre, le choc ou le dernier mois. La requête de chaque ligne est écrite dans `power_bi_export.csv`. Le rapport n'est ni modifié ni enregistré.
 

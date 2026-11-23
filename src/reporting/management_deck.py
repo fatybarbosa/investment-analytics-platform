@@ -267,7 +267,7 @@ def build_deck(sections, figures, generated):
     ], size=18)
 
     # Mandate
-    slide = deck.slide("Mandat et limites", plain("diapositive", "Les règles sont écrites avant le calcul. Les livres doivent rester sous chaque plafond."))
+    slide = deck.slide("Mandat et limites", plain("diapositive", "Les règles sont écrites avant le calcul. Le plafond de secteur écrit n'est pas tenu : les livres utilisent un plafond de travail, non approuvé par le client."))
     deck.table(slide, content.limits_table(), top=Inches(1.9), size=13, first_width=Inches(2.6))
     deck.bullets(slide, [
         plain("diapositive", "Actions cotées seulement, sans vente à découvert ni levier. Les poids sont revus chaque trimestre."),
