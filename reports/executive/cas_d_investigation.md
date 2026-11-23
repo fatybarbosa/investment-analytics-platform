@@ -2,7 +2,7 @@
 
 **Généré automatiquement, à relire avant diffusion.**
 
-Produit par le pipeline le 2026-11-23 08:44 UTC. Chaque nombre est relu dans un fichier du pipeline. Les cas décrivent ce que le pipeline a fait d'un défaut : il l'écarte et l'écrit, il ne le corrige pas en silence.
+Produit par le pipeline le 2026-11-23 09:34 UTC. Chaque nombre est relu dans un fichier du pipeline. Les cas décrivent ce que le pipeline a fait d'un défaut : il l'écarte et l'écrit, il ne le corrige pas en silence.
 
 ## Titres sans série de change
 
@@ -13,9 +13,9 @@ Produit par le pipeline le 2026-11-23 08:44 UTC. Chaque nombre est relu dans un 
 
 ## Clôtures manquantes et cours hors fourchette
 
-- Symptôme. Sur 650 954 séances de cours, 1 744 ont une clôture hors de la fourchette plus haut / plus bas ou négative, et 1 153 n'ont pas de clôture.
+- Symptôme. Sur 651 424 séances de cours, 1 747 ont une clôture hors de la fourchette plus haut / plus bas ou négative, et 1 124 n'ont pas de clôture.
 - Cause. Les séances viennent d'une source gratuite, avec des barres incomplètes ou incohérentes sur certaines places. Une clôture hors fourchette ne peut pas être vraie en même temps que son plus haut et son plus bas.
-- Décision. Chaque séance fautive est retirée de la série en CHF et inscrite dans le fichier des exclusions avec sa raison : 1 744 séances hors fourchette et 1 153 sans clôture, les mêmes nombres que le contrôle. Aucune valeur n'est interpolée. Le même fichier garde 50 890 séances sans série de change et 6 652 séances sans taux de fin de mois.
+- Décision. Chaque séance fautive est retirée de la série en CHF et inscrite dans le fichier des exclusions avec sa raison : 1 747 séances hors fourchette et 1 124 sans clôture, les mêmes nombres que le contrôle. Aucune valeur n'est interpolée. Le même fichier garde 50 937 séances sans série de change et 7 088 séances sans taux de fin de mois.
 - Cours ajusté. Le rendement des livres est un rendement total : il utilise le cours ajusté des dividendes, converti en CHF comme le cours de clôture. 964 séances ont un cours ajusté nul ou négatif et 0 n'en ont pas : elles sont écartées, sans valeur reconstituée. Toutes sont antérieures à la fenêtre de mesure et ne touchent aucun livre.
 - Trace. Le contrôle reste en avertissement sur la table des cours. Le fichier des exclusions est relu par cette note à chaque génération.
 

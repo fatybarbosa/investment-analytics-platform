@@ -3,11 +3,11 @@ equal_weight,Europe,0.4482758620689648,13
 equal_weight,Asie-Pacifique,0.344827586206896,10
 equal_weight,Amériques,0.172413793103448,5
 equal_weight,Moyen-Orient et Afrique,0.0344827586206896,1
-minimum_volatility,Asie-Pacifique,0.4558436139666268,10
-minimum_volatility,Europe,0.3324687627125482,10
-minimum_volatility,Amériques,0.1688471735846678,5
-minimum_volatility,Moyen-Orient et Afrique,0.0428404497361562,1
+minimum_volatility,Asie-Pacifique,0.4558436215022495,10
+minimum_volatility,Europe,0.3324686972888022,10
+minimum_volatility,Amériques,0.1688471718140975,5
+minimum_volatility,Moyen-Orient et Afrique,0.0428405093948499,1
 maximum_sharpe,Europe,0.4999999999999994,13
-maximum_sharpe,Asie-Pacifique,0.242558557608395,6
-maximum_sharpe,Amériques,0.2087178803966031,5
-maximum_sharpe,Moyen-Orient et Afrique,0.0487235619950016,1
+maximum_sharpe,Asie-Pacifique,0.2425585743554784,6
+maximum_sharpe,Amériques,0.20871786288363361,5
+maximum_sharpe,Moyen-Orient et Afrique,0.0487235627608873,1

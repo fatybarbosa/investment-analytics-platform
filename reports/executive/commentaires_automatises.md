@@ -2,7 +2,7 @@
 
 **Généré automatiquement, à relire avant diffusion.**
 
-Produit par `python -m src.pipeline.refresh` le 2026-11-23 08:44 UTC. Portefeuilles hypothétiques construits rétrospectivement sur des données publiques : ils n'ont jamais été détenus. Les cours, les cours de change et le SARON sont des données réelles et publiques. Pas de données de conservation et pas de frais. Les livres sont mesurés en rendement total brut : dividendes réinvestis par le cours ajusté, avant frais et avant impôt à la source. Le fonds est mesuré par le rendement de sa valeur liquidative, net de ses frais : la comparaison avantage donc les livres.
+Produit par `python -m src.pipeline.refresh` le 2026-11-23 09:34 UTC. Portefeuilles hypothétiques construits rétrospectivement sur des données publiques : ils n'ont jamais été détenus. Les cours, les cours de change et le SARON sont des données réelles et publiques. Pas de données de conservation et pas de frais. Les livres sont mesurés en rendement total brut : dividendes réinvestis par le cours ajusté, avant frais et avant impôt à la source. Le fonds est mesuré par le rendement de sa valeur liquidative, net de ses frais : la comparaison avantage donc les livres.
 
 Chaque nombre de ce texte est relu dans un fichier du pipeline par `src/reporting/number_check.py`. La liste des nombres et de leur source est dans `controle_des_nombres.csv`.
 
@@ -38,7 +38,7 @@ Chaque nombre de ce texte est relu dans un fichier du pipeline par `src/reportin
 - **Alerte.** Écart de suivi mesuré contre le fonds : Équipondéré 7,78 %, Volatilité minimale 8,34 %, Sharpe maximal 8,59 %, pour une cible ex ante de 8 % dans la politique d'investissement. Au-dessus de la cible : Volatilité minimale, Sharpe maximal. La cible n'est pas appliquée aux poids publiés : c'est une mesure après coup.
 - **Alerte.** Rotation brute, mesurée contre le livre que le marché a laissé, dérive comprise : Équipondéré : plafond trimestriel dépassé 4 fois, plafond annuel dépassé 1 fois; Volatilité minimale : plafond trimestriel dépassé 0 fois, plafond annuel dépassé 0 fois; Sharpe maximal : plafond trimestriel dépassé 9 fois, plafond annuel dépassé 20 fois. Plafonds : 12,5 % par trimestre. La rotation la plus forte observée est de 18,6 %. À la date de transaction, les plafonds de poids priment sur le budget de rotation : quand les deux ne tiennent pas ensemble, la rotation dépasse.
 - **Alerte.** Qualité des données : score global 99,68 %, note A, statut WARNING. 6 catégories d'anomalies sur 54 contrôles. La plus étendue : cohérence des devises sur la table securities_master, 11 lignes sur 120, soit 9,17 %, gravité MEDIUM.
-- Le score de qualité est pondéré par les enregistrements : 650 954 lignes de cours sur 661 824 enregistrements contrôlés. Il masque donc les défauts qui touchent peu de lignes mais des titres entiers : le contrôle de cohérence des devises signale 11 titres sur 120 (9,17 %) sans série de change.
+- Le score de qualité est pondéré par les enregistrements : 651 424 lignes de cours sur 662 294 enregistrements contrôlés. Il masque donc les défauts qui touchent peu de lignes mais des titres entiers : le contrôle de cohérence des devises signale 11 titres sur 120 (9,17 %) sans série de change.
 - Colonne Power BI de la réconciliation : 101 lignes OK sur une valeur lue dans Power BI Desktop, 0 en EXCEPTION, 0 en attente d'export. Sur ces lignes, 7 sont recalculées en DAX à partir des rendements et 94 relisent la cellule publiée : ces dernières prouvent le chargement du bon fichier, pas un second calcul.
 
 ## Points à instruire

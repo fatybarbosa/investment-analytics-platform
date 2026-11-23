@@ -46,7 +46,7 @@ Lignes : 214.
 
 ### `data/01_raw/market/market_prices.csv`
 
-Lignes : 650954.
+Lignes : 651424.
 
 | Colonne |
 |---|
@@ -587,7 +587,7 @@ Fichier local `database/sdg_investment.db`. Tables : 26.
 
 ### `acquisition_log`
 
-Lignes : 147.
+Lignes : 160.
 
 | Colonne |
 |---|
@@ -863,7 +863,7 @@ Lignes : 7578.
 
 ### `market_prices`
 
-Lignes : 650954.
+Lignes : 651424.
 
 | Colonne |
 |---|
@@ -904,7 +904,7 @@ Lignes : 120.
 
 ### `quality_control_result`
 
-Lignes : 846.
+Lignes : 1008.
 
 | Colonne |
 |---|
@@ -923,7 +923,7 @@ Lignes : 846.
 
 ### `quality_metric_result`
 
-Lignes : 756.
+Lignes : 900.
 
 | Colonne |
 |---|
@@ -943,7 +943,7 @@ Lignes : 756.
 
 ### `quality_run`
 
-Lignes : 23.
+Lignes : 26.
 
 | Colonne |
 |---|

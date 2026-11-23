@@ -1,37 +1,37 @@
 mesure,livre,periode,valeur_attendue
-richesse_finale,equal_weight,2016-11 → 2026-10,2.063557959632783
-rendement_chaine,equal_weight,2016-11 → 2026-10,1.0635579596327829
-rendement_annualise,equal_weight,2016-11 → 2026-10,0.0751317000862017
-volatilite_annualisee,equal_weight,2016-11 → 2026-10,0.1230938305705064
-sharpe,equal_weight,2016-11 → 2026-10,0.6589267901596894
-sortino,equal_weight,2016-11 → 2026-10,1.0270427133439584
-drawdown_maximal,equal_weight,2016-11 → 2026-10,-0.2362522042513082
-ecart_de_suivi,equal_weight,2016-11 → 2026-10,0.077812320634962
-ratio_information,equal_weight,2016-11 → 2026-10,0.1587340132066091
-var_historique,equal_weight,2016-11 → 2026-10,-0.053451375968586
-expected_shortfall,equal_weight,2016-11 → 2026-10,-0.0779539991160901
-richesse_finale,minimum_volatility,2016-11 → 2026-10,1.831012985067885
-rendement_chaine,minimum_volatility,2016-11 → 2026-10,0.8310129850678849
-rendement_annualise,minimum_volatility,2016-11 → 2026-10,0.0623537186205767
-volatilite_annualisee,minimum_volatility,2016-11 → 2026-10,0.1180436444501946
-sharpe,minimum_volatility,2016-11 → 2026-10,0.5803466098137836
-sortino,minimum_volatility,2016-11 → 2026-10,0.8927417876743572
-drawdown_maximal,minimum_volatility,2016-11 → 2026-10,-0.2280526264918627
-ecart_de_suivi,minimum_volatility,2016-11 → 2026-10,0.0834362902516934
-ratio_information,minimum_volatility,2016-11 → 2026-10,-0.0033289157374949
-var_historique,minimum_volatility,2016-11 → 2026-10,-0.0604301828310253
-expected_shortfall,minimum_volatility,2016-11 → 2026-10,-0.0750746446156095
-richesse_finale,maximum_sharpe,2016-11 → 2026-10,1.8054219679679997
-rendement_chaine,maximum_sharpe,2016-11 → 2026-10,0.8054219679679997
-rendement_annualise,maximum_sharpe,2016-11 → 2026-10,0.0608595058909515
-volatilite_annualisee,maximum_sharpe,2016-11 → 2026-10,0.1231483160180143
-sharpe,maximum_sharpe,2016-11 → 2026-10,0.5501587263945741
-sortino,maximum_sharpe,2016-11 → 2026-10,0.8224017314461042
-drawdown_maximal,maximum_sharpe,2016-11 → 2026-10,-0.2862292499673765
-ecart_de_suivi,maximum_sharpe,2016-11 → 2026-10,0.0859432011634446
-ratio_information,maximum_sharpe,2016-11 → 2026-10,-0.0121113808690475
-var_historique,maximum_sharpe,2016-11 → 2026-10,-0.0556498202276321
-expected_shortfall,maximum_sharpe,2016-11 → 2026-10,-0.0802726031205732
+richesse_finale,equal_weight,2016-11 → 2026-10,2.0635578417221603
+rendement_chaine,equal_weight,2016-11 → 2026-10,1.0635578417221603
+rendement_annualise,equal_weight,2016-11 → 2026-10,0.0751316939429551
+volatilite_annualisee,equal_weight,2016-11 → 2026-10,0.123093829397885
+sharpe,equal_weight,2016-11 → 2026-10,0.6589267490354751
+sortino,equal_weight,2016-11 → 2026-10,1.0270426598193847
+drawdown_maximal,equal_weight,2016-11 → 2026-10,-0.236252251575212
+ecart_de_suivi,equal_weight,2016-11 → 2026-10,0.077812326509636
+ratio_information,equal_weight,2016-11 → 2026-10,0.158733925928854
+var_historique,equal_weight,2016-11 → 2026-10,-0.0534513669865609
+expected_shortfall,equal_weight,2016-11 → 2026-10,-0.0779539982585213
+richesse_finale,minimum_volatility,2016-11 → 2026-10,1.8310125866191715
+rendement_chaine,minimum_volatility,2016-11 → 2026-10,0.8310125866191715
+rendement_annualise,minimum_volatility,2016-11 → 2026-10,0.0623536955025803
+volatilite_annualisee,minimum_volatility,2016-11 → 2026-10,0.1180436484825189
+sharpe,minimum_volatility,2016-11 → 2026-10,0.580346411665609
+sortino,minimum_volatility,2016-11 → 2026-10,0.8927413761042248
+drawdown_maximal,minimum_volatility,2016-11 → 2026-10,-0.2280526491117191
+ecart_de_suivi,minimum_volatility,2016-11 → 2026-10,0.0834362851840335
+ratio_information,minimum_volatility,2016-11 → 2026-10,-0.0033291704624129
+var_historique,minimum_volatility,2016-11 → 2026-10,-0.0604301884254503
+expected_shortfall,minimum_volatility,2016-11 → 2026-10,-0.075074660344037
+richesse_finale,maximum_sharpe,2016-11 → 2026-10,1.805422191992842
+rendement_chaine,maximum_sharpe,2016-11 → 2026-10,0.8054221919928419
+rendement_annualise,maximum_sharpe,2016-11 → 2026-10,0.0608595190545708
+volatilite_annualisee,maximum_sharpe,2016-11 → 2026-10,0.1231483137637431
+sharpe,maximum_sharpe,2016-11 → 2026-10,0.5501588346027091
+sortino,maximum_sharpe,2016-11 → 2026-10,0.8224019687292836
+drawdown_maximal,maximum_sharpe,2016-11 → 2026-10,-0.2862292478883458
+ecart_de_suivi,maximum_sharpe,2016-11 → 2026-10,0.0859431910798366
+ratio_information,maximum_sharpe,2016-11 → 2026-10,-0.0121112411488611
+var_historique,maximum_sharpe,2016-11 → 2026-10,-0.055649801407407
+expected_shortfall,maximum_sharpe,2016-11 → 2026-10,-0.0802725871917748
 rendement_annualise,benchmark,2016-11 → 2026-10,0.0608121141707371
 volatilite_annualisee,benchmark,2016-11 → 2026-10,0.1324193474272174
 sharpe,benchmark,2016-11 → 2026-10,0.5196308844495016
@@ -40,63 +40,63 @@ drawdown_maximal,benchmark,2016-11 → 2026-10,-0.2966554868101686
 ecart_de_suivi,benchmark,2016-11 → 2026-10,0.0
 var_historique,benchmark,2016-11 → 2026-10,-0.0549840982348426
 expected_shortfall,benchmark,2016-11 → 2026-10,-0.0741821547561202
-stress_richesse_finale,equal_weight / aucun,2016-11 → 2026-10,2.063557959632785
-stress_drawdown_maximal,equal_weight / aucun,2016-11 → 2026-10,-0.2362522042513073
-stress_volatilite_annualisee,equal_weight / aucun,2016-11 → 2026-10,0.1230938305705063
-stress_sharpe,equal_weight / aucun,2016-11 → 2026-10,0.6589267901596889
-stress_richesse_finale,equal_weight / marche,2016-11 → 2026-10,1.612107170791289
-stress_drawdown_maximal,equal_weight / marche,2016-11 → 2026-10,-0.2459257681839931
-stress_volatilite_annualisee,equal_weight / marche,2016-11 → 2026-10,0.1392381785629258
-stress_sharpe,equal_weight / marche,2016-11 → 2026-10,0.422311713521464
-stress_richesse_finale,equal_weight / taux,2016-11 → 2026-10,2.063557959632785
-stress_drawdown_maximal,equal_weight / taux,2016-11 → 2026-10,-0.2362522042513073
-stress_volatilite_annualisee,equal_weight / taux,2016-11 → 2026-10,0.1230938305705063
-stress_sharpe,equal_weight / taux,2016-11 → 2026-10,0.4982249812016608
-stress_richesse_finale,equal_weight / recession,2016-11 → 2026-10,1.571078794514112
-stress_drawdown_maximal,equal_weight / recession,2016-11 → 2026-10,-0.2651170737525209
-stress_volatilite_annualisee,equal_weight / recession,2016-11 → 2026-10,0.125557709911227
-stress_sharpe,equal_weight / recession,2016-11 → 2026-10,0.4307250617074992
-stress_richesse_finale,equal_weight / volatilite,2016-11 → 2026-10,1.8767924965501583
-stress_drawdown_maximal,equal_weight / volatilite,2016-11 → 2026-10,-0.3971268550974554
-stress_volatilite_annualisee,equal_weight / volatilite,2016-11 → 2026-10,0.1846407458557595
-stress_sharpe,equal_weight / volatilite,2016-11 → 2026-10,0.4397117088275417
-stress_richesse_finale,minimum_volatility / aucun,2016-11 → 2026-10,1.831012985067884
-stress_drawdown_maximal,minimum_volatility / aucun,2016-11 → 2026-10,-0.2280526264918621
-stress_volatilite_annualisee,minimum_volatility / aucun,2016-11 → 2026-10,0.1180436444501945
-stress_sharpe,minimum_volatility / aucun,2016-11 → 2026-10,0.5803466098137834
-stress_richesse_finale,minimum_volatility / marche,2016-11 → 2026-10,1.456006774060012
-stress_drawdown_maximal,minimum_volatility / marche,2016-11 → 2026-10,-0.2679139469197792
-stress_volatilite_annualisee,minimum_volatility / marche,2016-11 → 2026-10,0.1347685024613005
-stress_sharpe,minimum_volatility / marche,2016-11 → 2026-10,0.3561076790933333
-stress_richesse_finale,minimum_volatility / taux,2016-11 → 2026-10,1.831012985067884
-stress_drawdown_maximal,minimum_volatility / taux,2016-11 → 2026-10,-0.2280526264918621
-stress_volatilite_annualisee,minimum_volatility / taux,2016-11 → 2026-10,0.1180436444501945
-stress_sharpe,minimum_volatility / taux,2016-11 → 2026-10,0.4127885903579089
-stress_richesse_finale,minimum_volatility / recession,2016-11 → 2026-10,1.4390942209959612
-stress_drawdown_maximal,minimum_volatility / recession,2016-11 → 2026-10,-0.2764176465184051
-stress_volatilite_annualisee,minimum_volatility / recession,2016-11 → 2026-10,0.1205095131646305
-stress_sharpe,minimum_volatility / recession,2016-11 → 2026-10,0.3707636528562945
-stress_richesse_finale,minimum_volatility / volatilite,2016-11 → 2026-10,1.6781515663951685
-stress_drawdown_maximal,minimum_volatility / volatilite,2016-11 → 2026-10,-0.3781678574566259
-stress_volatilite_annualisee,minimum_volatility / volatilite,2016-11 → 2026-10,0.1770654666752917
-stress_sharpe,minimum_volatility / volatilite,2016-11 → 2026-10,0.3872934628638905
-stress_richesse_finale,maximum_sharpe / aucun,2016-11 → 2026-10,1.805421967968
-stress_drawdown_maximal,maximum_sharpe / aucun,2016-11 → 2026-10,-0.2862292499673758
-stress_volatilite_annualisee,maximum_sharpe / aucun,2016-11 → 2026-10,0.1231483160180141
-stress_sharpe,maximum_sharpe / aucun,2016-11 → 2026-10,0.5501587263945739
-stress_richesse_finale,maximum_sharpe / marche,2016-11 → 2026-10,1.4138779019675942
-stress_drawdown_maximal,maximum_sharpe / marche,2016-11 → 2026-10,-0.326825976581825
-stress_volatilite_annualisee,maximum_sharpe / marche,2016-11 → 2026-10,0.1391396036628824
-stress_sharpe,maximum_sharpe / marche,2016-11 → 2026-10,0.3283427182754362
-stress_richesse_finale,maximum_sharpe / taux,2016-11 → 2026-10,1.805421967968
-stress_drawdown_maximal,maximum_sharpe / taux,2016-11 → 2026-10,-0.2862292499673758
-stress_volatilite_annualisee,maximum_sharpe / taux,2016-11 → 2026-10,0.1231483160180141
-stress_sharpe,maximum_sharpe / taux,2016-11 → 2026-10,0.3895314328717187
-stress_richesse_finale,maximum_sharpe / recession,2016-11 → 2026-10,1.3997480326521607
-stress_drawdown_maximal,maximum_sharpe / recession,2016-11 → 2026-10,-0.3335534747372218
-stress_volatilite_annualisee,maximum_sharpe / recession,2016-11 → 2026-10,0.1254917480666861
-stress_sharpe,maximum_sharpe / recession,2016-11 → 2026-10,0.339112690458115
-stress_richesse_finale,maximum_sharpe / volatilite,2016-11 → 2026-10,1.640391181061322
-stress_drawdown_maximal,maximum_sharpe / volatilite,2016-11 → 2026-10,-0.4490384639538392
-stress_volatilite_annualisee,maximum_sharpe / volatilite,2016-11 → 2026-10,0.1847224740270212
-stress_sharpe,maximum_sharpe / volatilite,2016-11 → 2026-10,0.3671358276616999
+stress_richesse_finale,equal_weight / aucun,2016-11 → 2026-10,2.0635578417221603
+stress_drawdown_maximal,equal_weight / aucun,2016-11 → 2026-10,-0.2362522515752121
+stress_volatilite_annualisee,equal_weight / aucun,2016-11 → 2026-10,0.1230938293978848
+stress_sharpe,equal_weight / aucun,2016-11 → 2026-10,0.6589267490354747
+stress_richesse_finale,equal_weight / marche,2016-11 → 2026-10,1.6121070812893312
+stress_drawdown_maximal,equal_weight / marche,2016-11 → 2026-10,-0.2459257966906529
+stress_volatilite_annualisee,equal_weight / marche,2016-11 → 2026-10,0.1392381774701485
+stress_sharpe,equal_weight / marche,2016-11 → 2026-10,0.4223116760759876
+stress_richesse_finale,equal_weight / taux,2016-11 → 2026-10,2.0635578417221603
+stress_drawdown_maximal,equal_weight / taux,2016-11 → 2026-10,-0.2362522515752121
+stress_volatilite_annualisee,equal_weight / taux,2016-11 → 2026-10,0.1230938293978848
+stress_sharpe,equal_weight / taux,2016-11 → 2026-10,0.4982249385281292
+stress_richesse_finale,equal_weight / recession,2016-11 → 2026-10,1.5710787038308802
+stress_drawdown_maximal,equal_weight / recession,2016-11 → 2026-10,-0.2651171031517055
+stress_volatilite_annualisee,equal_weight / recession,2016-11 → 2026-10,0.1255577086961312
+stress_sharpe,equal_weight / recession,2016-11 → 2026-10,0.4307250189568511
+stress_richesse_finale,equal_weight / volatilite,2016-11 → 2026-10,1.876792391418651
+stress_drawdown_maximal,equal_weight / volatilite,2016-11 → 2026-10,-0.3971269055090186
+stress_volatilite_annualisee,equal_weight / volatilite,2016-11 → 2026-10,0.1846407440968273
+stress_sharpe,equal_weight / volatilite,2016-11 → 2026-10,0.4397116813713799
+stress_richesse_finale,minimum_volatility / aucun,2016-11 → 2026-10,1.831012586619172
+stress_drawdown_maximal,minimum_volatility / aucun,2016-11 → 2026-10,-0.2280526491117186
+stress_volatilite_annualisee,minimum_volatility / aucun,2016-11 → 2026-10,0.1180436484825188
+stress_sharpe,minimum_volatility / aucun,2016-11 → 2026-10,0.5803464116656092
+stress_richesse_finale,minimum_volatility / marche,2016-11 → 2026-10,1.456006455239964
+stress_drawdown_maximal,minimum_volatility / marche,2016-11 → 2026-10,-0.267913895587086
+stress_volatilite_annualisee,minimum_volatility / marche,2016-11 → 2026-10,0.1347685057181891
+stress_sharpe,minimum_volatility / marche,2016-11 → 2026-10,0.3561075127429702
+stress_richesse_finale,minimum_volatility / taux,2016-11 → 2026-10,1.831012586619172
+stress_drawdown_maximal,minimum_volatility / taux,2016-11 → 2026-10,-0.2280526491117186
+stress_volatilite_annualisee,minimum_volatility / taux,2016-11 → 2026-10,0.1180436484825188
+stress_sharpe,minimum_volatility / taux,2016-11 → 2026-10,0.4127883976060968
+stress_richesse_finale,minimum_volatility / recession,2016-11 → 2026-10,1.4390938896369976
+stress_drawdown_maximal,minimum_volatility / recession,2016-11 → 2026-10,-0.276417603948642
+stress_volatilite_annualisee,minimum_volatility / recession,2016-11 → 2026-10,0.1205095165669877
+stress_sharpe,minimum_volatility / recession,2016-11 → 2026-10,0.3707634566288417
+stress_richesse_finale,minimum_volatility / volatilite,2016-11 → 2026-10,1.678151184541074
+stress_drawdown_maximal,minimum_volatility / volatilite,2016-11 → 2026-10,-0.3781678669746942
+stress_volatilite_annualisee,minimum_volatility / volatilite,2016-11 → 2026-10,0.1770654727237781
+stress_sharpe,minimum_volatility / volatilite,2016-11 → 2026-10,0.3872933303956598
+stress_richesse_finale,maximum_sharpe / aucun,2016-11 → 2026-10,1.8054221919928413
+stress_drawdown_maximal,maximum_sharpe / aucun,2016-11 → 2026-10,-0.2862292478883459
+stress_volatilite_annualisee,maximum_sharpe / aucun,2016-11 → 2026-10,0.123148313763743
+stress_sharpe,maximum_sharpe / aucun,2016-11 → 2026-10,0.5501588346027082
+stress_richesse_finale,maximum_sharpe / marche,2016-11 → 2026-10,1.4138780690600623
+stress_drawdown_maximal,maximum_sharpe / marche,2016-11 → 2026-10,-0.3268259368063974
+stress_volatilite_annualisee,maximum_sharpe / marche,2016-11 → 2026-10,0.1391396017520924
+stress_sharpe,maximum_sharpe / marche,2016-11 → 2026-10,0.3283428054070642
+stress_richesse_finale,maximum_sharpe / taux,2016-11 → 2026-10,1.8054221919928413
+stress_drawdown_maximal,maximum_sharpe / taux,2016-11 → 2026-10,-0.2862292478883459
+stress_volatilite_annualisee,maximum_sharpe / taux,2016-11 → 2026-10,0.123148313763743
+stress_sharpe,maximum_sharpe / taux,2016-11 → 2026-10,0.3895315381700731
+stress_richesse_finale,maximum_sharpe / recession,2016-11 → 2026-10,1.3997481569323729
+stress_drawdown_maximal,maximum_sharpe / recession,2016-11 → 2026-10,-0.3335534549479645
+stress_volatilite_annualisee,maximum_sharpe / recession,2016-11 → 2026-10,0.1254917459326026
+stress_sharpe,maximum_sharpe / recession,2016-11 → 2026-10,0.3391127642974708
+stress_richesse_finale,maximum_sharpe / volatilite,2016-11 → 2026-10,1.640391392974745
+stress_drawdown_maximal,maximum_sharpe / volatilite,2016-11 → 2026-10,-0.4490384670676212
+stress_volatilite_annualisee,maximum_sharpe / volatilite,2016-11 → 2026-10,0.1847224706456145
+stress_sharpe,maximum_sharpe / volatilite,2016-11 → 2026-10,0.3671358998907892
