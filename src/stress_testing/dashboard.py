@@ -19,6 +19,7 @@ from src.config import (
 )
 from src.portfolio_monitoring.dashboard import STRATEGY_COLORS, STRATEGY_LABELS
 from src.stress_testing.build_stress import PATHS_FILE, RESULTS_FILE, SHOCK_IDS
+from src.utils.files import replace_file
 
 
 DASHBOARD_FILE = STRESS_REPORTS / "dashboard.html"
@@ -215,5 +216,5 @@ def write_dashboard():
     DASHBOARD_FILE.parent.mkdir(parents=True, exist_ok=True)
     temporary = DASHBOARD_FILE.with_suffix(".html.tmp")
     temporary.write_text(render_dashboard_html(), encoding="utf-8")
-    temporary.replace(DASHBOARD_FILE)
+    replace_file(temporary, DASHBOARD_FILE)
     return DASHBOARD_FILE

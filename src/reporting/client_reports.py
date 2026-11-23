@@ -28,7 +28,7 @@ from __future__ import annotations
 import pandas as pd
 from reportlab.lib.units import mm
 
-from src.config import CLIENT_REPORTS, PROJECT_ROOT
+from src.config import CLIENT_REPORTS, MONITORING_DATA, PROJECT_ROOT, source_id
 from src.reporting import report_content as content
 from src.reporting.commentary import (
     BASIS_NOTE,
@@ -51,12 +51,12 @@ PENSION_FILE = CLIENT_REPORTS / "rapport_client.pdf"
 MANAGER_FILE = CLIENT_REPORTS / "rapport_gerant.pdf"
 CLIENT_REPORT_MAX_PAGES = 4
 
-SECTORS = "data/05_monitoring/allocation_by_sector.csv"
-ZONES = "data/05_monitoring/allocation_by_zone.csv"
-EXPOSURE = "data/05_monitoring/exposure.csv"
-TOP10 = "data/05_monitoring/top10_positions.csv"
-HOLDING_CONTRIBUTION = "data/05_monitoring/holding_contribution.csv"
-WEIGHT_CHANGES = "data/05_monitoring/weight_changes.csv"
+SECTORS = source_id(MONITORING_DATA / "allocation_by_sector.csv")
+ZONES = source_id(MONITORING_DATA / "allocation_by_zone.csv")
+EXPOSURE = source_id(MONITORING_DATA / "exposure.csv")
+TOP10 = source_id(MONITORING_DATA / "top10_positions.csv")
+HOLDING_CONTRIBUTION = source_id(MONITORING_DATA / "holding_contribution.csv")
+WEIGHT_CHANGES = source_id(MONITORING_DATA / "weight_changes.csv")
 TOP_LINES = 5
 NOT_HELD = "–"
 

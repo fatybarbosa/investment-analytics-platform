@@ -24,6 +24,7 @@ from src.config import (
 )
 from src.portfolio_construction.build_portfolios import STRATEGY_IDS
 from src.portfolio_monitoring.build_monitoring import POSITION_WEIGHT_FLOOR
+from src.utils.files import replace_file
 
 
 STRATEGY_LABELS = {
@@ -593,5 +594,5 @@ def write_dashboard():
     DASHBOARD_FILE.parent.mkdir(parents=True, exist_ok=True)
     temporary = DASHBOARD_FILE.with_suffix(".html.tmp")
     temporary.write_text(render_dashboard_html(), encoding="utf-8")
-    temporary.replace(DASHBOARD_FILE)
+    replace_file(temporary, DASHBOARD_FILE)
     return DASHBOARD_FILE

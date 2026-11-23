@@ -36,6 +36,8 @@ from src.quality.quality_config import (
     OHLC_ABSOLUTE_TOLERANCE,
     OHLC_RELATIVE_TOLERANCE,
     PASS_RATE,
+    SARON_MAXIMUM,
+    SARON_MINIMUM,
 )
 from src.quality.quality_rules import rules_for_table
 from src.utils.logger import logger
@@ -218,10 +220,10 @@ def check_outliers(dataframe, rules) -> tuple[bool, int, str]:
 
     if kind == "saron":
         values = pd.to_numeric(dataframe["value"], errors="coerce")
-        issues = int((values.notna() & ((values < -5) | (values > 15))).sum())
+        issues = int((values.notna() & ((values < SARON_MINIMUM) | (values > SARON_MAXIMUM))).sum())
         if issues == 0:
-            return True, 0, "Le SARON renseigné reste dans l'intervalle -5 à 15."
-        return True, issues, f"{issues} observation(s) du SARON sont hors de l'intervalle -5 à 15."
+            return True, 0, f"Le SARON renseigné reste dans l'intervalle {SARON_MINIMUM} à {SARON_MAXIMUM}."
+        return True, issues, f"{issues} observation(s) du SARON sont hors de l'intervalle {SARON_MINIMUM} à {SARON_MAXIMUM}."
 
     if kind == "holdings":
         columns = ("market_value", "weight", "notional_value", "price", "fx_rate", "quantity")

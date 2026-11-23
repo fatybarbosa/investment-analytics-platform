@@ -34,6 +34,7 @@ import pandas as pd
 from scipy.optimize import minimize
 
 from src.config import (
+    CAP_TOLERANCE,
     CURRENCY_WEIGHT_CAP,
     ESTIMATION_MONTHS,
     ISSUER_WEIGHT_CAP,
@@ -63,6 +64,22 @@ STRATEGY_IDS = (
 )
 SOLVER_SEED = 15
 SHARPE_STARTS = 8
+# Numerical settings of the projection and of the line searches. They are
+# not terms of the mandate: they decide when two weights are the same number.
+PROJECTION_PASSES_PER_NAME = 20
+PROJECTION_TOLERANCE = 1e-6
+FILL_TOLERANCE = 1e-10
+ROOM_EPSILON = 1e-14
+ROUNDING_TOLERANCE = 1e-12
+OBJECTIVE_TOLERANCE = 1e-8
+# A line below this weight is not a line of the book.
+MIN_LINE_WEIGHT = 1e-4
+# Weights tried, in order, for a name added to reach the minimum band.
+LINE_LADDER = (0.01, 0.005, 0.002, 0.001, MIN_LINE_WEIGHT * 2)
+LINE_SEARCH_STEPS = 40
+BLEND_STEPS = 24
+# Room left under the quarterly turnover cap when a book is projected.
+TURNOVER_SLACK = 2e-8
 
 WEIGHTS_FILE = PORTFOLIO_DATA / "portfolio_weights.csv"
 METRICS_FILE = PORTFOLIO_DATA / "portfolio_metrics.csv"
@@ -305,7 +322,7 @@ def project_mandate(values, sectors, zones, currencies, locked_out=None):
             raise RuntimeError("Portfolio weights sum to zero.")
         weights = weights / float(weights.sum())
     groups = _mandate_groups(sectors, zones, currencies)
-    for _ in range(len(weights) * 20):
+    for _ in range(len(weights) * PROJECTION_PASSES_PER_NAME):
         weights = np.minimum(weights, ISSUER_WEIGHT_CAP)
         weights[locked] = 0.0
         for indices, cap in groups:
@@ -314,14 +331,14 @@ def project_mandate(values, sectors, zones, currencies, locked_out=None):
                 weights[indices] *= cap / total
         weights[locked] = 0.0
         deficit = 1.0 - float(weights.sum())
-        if abs(deficit) <= 1e-10:
+        if abs(deficit) <= FILL_TOLERANCE:
             break
         if deficit < 0:
             weights /= float(weights.sum())
             continue
-        eligible = ~locked & (weights < ISSUER_WEIGHT_CAP - 1e-14)
+        eligible = ~locked & (weights < ISSUER_WEIGHT_CAP - ROOM_EPSILON)
         for indices, cap in groups:
-            if float(weights[indices].sum()) >= cap - 1e-10:
+            if float(weights[indices].sum()) >= cap - FILL_TOLERANCE:
                 eligible[indices] = False
         if not np.any(eligible):
             raise RuntimeError("The mandate caps cannot be met.")
@@ -329,14 +346,14 @@ def project_mandate(values, sectors, zones, currencies, locked_out=None):
         if float(room.sum()) <= 0:
             raise RuntimeError("The mandate caps cannot be met.")
         weights[eligible] += deficit * room / float(room.sum())
-    if abs(float(weights.sum()) - 1) > 1e-6:
+    if abs(float(weights.sum()) - 1) > PROJECTION_TOLERANCE:
         raise RuntimeError("Projected weights do not sum to one.")
-    if float(weights.max()) > ISSUER_WEIGHT_CAP + 1e-6 or float(weights.min()) < -1e-10:
+    if float(weights.max()) > ISSUER_WEIGHT_CAP + PROJECTION_TOLERANCE or float(weights.min()) < -FILL_TOLERANCE:
         raise RuntimeError("Projected weights leave the issuer cap.")
     for indices, cap in groups:
-        if float(weights[indices].sum()) > cap + 1e-6:
+        if float(weights[indices].sum()) > cap + PROJECTION_TOLERANCE:
             raise RuntimeError("Projected weights leave a group cap.")
-    if float(weights[locked].sum()) > 1e-8:
+    if float(weights[locked].sum()) > CAP_TOLERANCE:
         raise RuntimeError("A locked name received weight.")
     return weights
 
@@ -377,9 +394,9 @@ def _available_room(index, weights, sectors, zones, currencies):
 
 
 def _within_caps(weights, sectors, zones, currencies):
-    if abs(float(weights.sum()) - 1) > 1e-8:
+    if abs(float(weights.sum()) - 1) > CAP_TOLERANCE:
         return False
-    if float(weights.max()) > ISSUER_WEIGHT_CAP + 1e-8 or float(weights.min()) < -1e-12:
+    if float(weights.max()) > ISSUER_WEIGHT_CAP + CAP_TOLERANCE or float(weights.min()) < -ROUNDING_TOLERANCE:
         return False
     for labels, cap in (
         (sectors, SECTOR_WEIGHT_CAP),
@@ -387,7 +404,7 @@ def _within_caps(weights, sectors, zones, currencies):
         (currencies, CURRENCY_WEIGHT_CAP),
     ):
         for indices in _buckets(labels).values():
-            if float(weights[indices].sum()) > cap + 1e-8:
+            if float(weights[indices].sum()) > cap + CAP_TOLERANCE:
                 return False
     return True
 
@@ -423,16 +440,16 @@ def _apply_line(weights, chosen, line, sectors, zones, currencies):
         donors = sorted(donors, key=rank)
         pool = [donor for donor in donors if rank(donor) == rank(donors[0])]
         spare = float(sum(trial[donor] - line for donor in pool))
-        if spare + 1e-12 < deficit:
+        if spare + ROUNDING_TOLERANCE < deficit:
             pool = donors
             spare = float(sum(trial[donor] - line for donor in pool))
-        if spare + 1e-12 < deficit:
+        if spare + ROUNDING_TOLERANCE < deficit:
             return None
         for donor in pool:
             extra = float(trial[donor]) - line
             trial[donor] -= deficit * extra / spare
         trial[index] = line
-    if float(trial.min()) < -1e-12 or not _within_caps(trial, sectors, zones, currencies):
+    if float(trial.min()) < -ROUNDING_TOLERANCE or not _within_caps(trial, sectors, zones, currencies):
         return None
     return trial
 
@@ -451,7 +468,7 @@ def _force_min_line(weights, chosen, sectors, zones, currencies):
     high = float(existing.min()) if len(existing) else 1.0 / len(chosen)
     low = POSITION_WEIGHT_FLOOR * 2
     best = None
-    for _ in range(40):
+    for _ in range(LINE_SEARCH_STEPS):
         line = (low + high) / 2
         trial = _apply_line(weights, chosen, line, sectors, zones, currencies)
         if trial is None:
@@ -472,7 +489,7 @@ def _force_min_line(weights, chosen, sectors, zones, currencies):
 def _band_target(weights, preference, sectors, zones, currencies):
     """Keep 25 to 40 names, and only add a name that still has room under the caps."""
     weights = np.asarray(weights, dtype=float).copy()
-    chosen = [int(index) for index in np.flatnonzero(weights > 1e-4)]
+    chosen = [int(index) for index in np.flatnonzero(weights > MIN_LINE_WEIGHT)]
     if len(chosen) > MAX_POSITIONS:
         chosen = [int(index) for index in np.argsort(-weights) if int(index) in set(chosen)][:MAX_POSITIONS]
     ranking = [int(index) for index in np.argsort(-np.asarray(preference, dtype=float))]
@@ -482,7 +499,7 @@ def _band_target(weights, preference, sectors, zones, currencies):
         if index in chosen:
             continue
         placed = None
-        for line in (0.01, 0.005, 0.002, 0.001, 1e-4 * 2):
+        for line in LINE_LADDER:
             trial = _apply_line(weights, chosen + [index], line, sectors, zones, currencies)
             if trial is not None:
                 placed = trial
@@ -496,7 +513,7 @@ def _band_target(weights, preference, sectors, zones, currencies):
     locked = np.ones(len(weights), dtype=bool)
     locked[chosen] = False
     weights[locked] = 0.0
-    if float(weights[chosen].min()) > 1e-4 and _within_caps(weights, sectors, zones, currencies):
+    if float(weights[chosen].min()) > MIN_LINE_WEIGHT and _within_caps(weights, sectors, zones, currencies):
         return weights, locked
     return _force_min_line(weights, chosen, sectors, zones, currencies), locked
 
@@ -514,7 +531,7 @@ def _restore_band(weights, preference, sectors, zones, currencies, previous):
     invested = weights > POSITION_WEIGHT_FLOOR
     count = int(invested.sum())
     if MIN_POSITIONS <= count <= MAX_POSITIONS:
-        if abs(float(weights.sum()) - 1) > 1e-8 and float(weights.sum()) > 0:
+        if abs(float(weights.sum()) - 1) > CAP_TOLERANCE and float(weights.sum()) > 0:
             weights /= float(weights.sum())
         return weights
     if count > MAX_POSITIONS:
@@ -522,8 +539,8 @@ def _restore_band(weights, preference, sectors, zones, currencies, previous):
         locked = np.ones(len(weights), dtype=bool)
         locked[keep] = False
         restored = project_mandate(weights, sectors, zones, currencies, locked)
-        if previous is not None and float(np.abs(restored - previous).sum()) > QUARTERLY_TURNOVER_CAP - 2e-8:
-            raise RuntimeError("Trimming the book to 40 names breaks the turnover cap.")
+        if previous is not None and float(np.abs(restored - previous).sum()) > QUARTERLY_TURNOVER_CAP - TURNOVER_SLACK:
+            raise RuntimeError(f"Trimming the book to {MAX_POSITIONS} names breaks the turnover cap.")
         return restored
     chosen = [int(index) for index in np.flatnonzero(invested)]
     ranking = [int(index) for index in np.argsort(-np.asarray(preference, dtype=float))]
@@ -549,17 +566,17 @@ def _restore_band(weights, preference, sectors, zones, currencies, previous):
     best = None
     if high <= low:
         high = low
-    for _ in range(40):
+    for _ in range(LINE_SEARCH_STEPS):
         line = (low + high) / 2
         trial = _apply_line(weights, chosen, line, sectors, zones, currencies)
         if trial is None:
             high = line
             continue
         invested = trial[trial > POSITION_WEIGHT_FLOOR]
-        if invested.size < MIN_POSITIONS or float(invested.min()) <= 1e-4:
+        if invested.size < MIN_POSITIONS or float(invested.min()) <= MIN_LINE_WEIGHT:
             high = line
             continue
-        if previous is not None and float(np.abs(trial - previous).sum()) > QUARTERLY_TURNOVER_CAP - 2e-8:
+        if previous is not None and float(np.abs(trial - previous).sum()) > QUARTERLY_TURNOVER_CAP - TURNOVER_SLACK:
             high = line
             continue
         best = trial
@@ -574,19 +591,19 @@ def _respect_turnover(weights, previous, locked_out, sectors, zones, currencies)
     target = project_mandate(weights, sectors, zones, currencies, locked_out)
     if previous is None:
         return target
-    if float(np.abs(target - previous).sum()) <= QUARTERLY_TURNOVER_CAP - 2e-8:
+    if float(np.abs(target - previous).sum()) <= QUARTERLY_TURNOVER_CAP - TURNOVER_SLACK:
         return target
     # The caps are hard at the trade date, the turnover budget is a target. If the
     # book the market left cannot be reached inside the budget, the closest book that
     # respects the caps is kept, and monitoring reports the turnover above its cap.
     best = project_mandate(np.asarray(previous, dtype=float).copy(), sectors, zones, currencies, locked_out)
     low, high = 0.0, 1.0
-    for _ in range(24):
+    for _ in range(BLEND_STEPS):
         mid = (low + high) / 2
         mixed = (1 - mid) * previous + mid * target
         mixed[locked_out] = 0.0
         mixed = project_mandate(mixed, sectors, zones, currencies, locked_out)
-        if float(np.abs(mixed - previous).sum()) <= QUARTERLY_TURNOVER_CAP - 2e-8:
+        if float(np.abs(mixed - previous).sum()) <= QUARTERLY_TURNOVER_CAP - TURNOVER_SLACK:
             best = mixed
             low = mid
         else:
@@ -667,7 +684,7 @@ def minimum_volatility(asset_returns, sectors, zones, currencies, previous=None)
 
     solved = _solve(objective, gradient, equal, _mandate_bounds(count), constraints)
     weights = project_mandate(solved, sectors, zones, currencies)
-    if objective(weights) > objective(equal) + 1e-8:
+    if objective(weights) > objective(equal) + OBJECTIVE_TOLERANCE:
         raise RuntimeError("Minimum volatility is above the equal-weight variance on its sample.")
     preference = -np.diag(covariance)
     shaped, locked_out = _band_target(weights, preference, sectors, zones, currencies)
@@ -724,7 +741,7 @@ def maximum_sharpe(asset_returns, risk_free, sectors, zones, currencies, previou
         if value > best_sharpe:
             best_sharpe = value
             best_weights = candidate
-    if best_weights is None or best_sharpe + 1e-8 < sharpe_of(equal):
+    if best_weights is None or best_sharpe + OBJECTIVE_TOLERANCE < sharpe_of(equal):
         raise RuntimeError("Maximum Sharpe is below the equal-weight Sharpe on its sample.")
     shaped, locked_out = _band_target(best_weights, mean_excess, sectors, zones, currencies)
     held = _respect_turnover(shaped, previous, locked_out, sectors, zones, currencies)
@@ -954,7 +971,7 @@ def mandate_weights(asset_returns, risk_free, scored_months, membership):
                 invested = int(invested_weights.size)
                 if invested < MIN_POSITIONS or invested > MAX_POSITIONS:
                     raise RuntimeError(f"{strategy} {month} holds {invested} names.")
-                if float(invested_weights.min()) <= 1e-4:
+                if float(invested_weights.min()) <= MIN_LINE_WEIGHT:
                     raise RuntimeError(
                         f"{strategy} {month} smallest line is {float(invested_weights.min())}."
                     )

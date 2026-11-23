@@ -17,14 +17,13 @@ reports/executive/cas_d_investigation.md
 
 from __future__ import annotations
 
-from src.config import EXECUTIVE_REPORTS
-from src.reporting.commentary import MEMBERSHIP, QUALITY
+from src.config import EXECUTIVE_REPORTS, PROCESSED_MARKET, source_id
+from src.reporting.commentary import FUND_RETURNS, MEMBERSHIP, METRICS, QUALITY
 from src.reporting.number_check import AUTO_LABEL, Draft, fact, resolve
 
 
 CASES_FILE = EXECUTIVE_REPORTS / "cas_d_investigation.md"
-EXCLUSIONS = "data/02_processed/market/market_price_exclusions.csv"
-FUND_RETURNS = "data/06_performance/benchmark_monthly_return.csv"
+EXCLUSIONS = source_id(PROCESSED_MARKET / "market_price_exclusions.csv")
 FUND_MODULE = "py:src.performance.benchmark_return"
 
 
@@ -85,7 +84,7 @@ def _adjusted_close_window():
 
     excluded = pd.read_csv(PROJECT_ROOT / EXCLUSIONS)
     left_out = excluded.loc[excluded["reason"].isin(["non_positive_adj_close", "missing_adj_close"])]
-    start = str(pd.read_csv(PROJECT_ROOT / "data/04_portfolios/portfolio_metrics.csv")["window_start"].iloc[0])
+    start = str(pd.read_csv(PROJECT_ROOT / METRICS)["window_start"].iloc[0])
     touching = left_out.loc[left_out["timestamp"].astype(str).str.slice(0, 7) >= start]
     if left_out.empty or touching.empty:
         return "Toutes sont antérieures à la fenêtre de mesure et ne touchent aucun livre."

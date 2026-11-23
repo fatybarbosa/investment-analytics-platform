@@ -345,7 +345,7 @@ def build_deck(sections, figures, generated):
     deck.bullets(slide, flagged, size=13 if len(flagged) > 5 else 15)
 
     # Recommendations
-    slide = deck.slide("Recommandations", plain("diapositive", "Des points à instruire, liés aux limites du mandat. Pas de conseil d'investissement personnalisé."))
+    slide = deck.slide("Points à instruire", plain("diapositive", "Des points à instruire, liés aux limites du mandat. Pas de conseil d'investissement personnalisé."))
     deck.bullets(slide, points, size=15)
     deck.bullets(slide, [plain("diapositive", DISCLAIMER)], top=Inches(6.2), height=Inches(0.5), size=12)
 

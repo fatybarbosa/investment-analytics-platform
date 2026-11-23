@@ -12,6 +12,7 @@ import plotly.graph_objects as go
 from src.config import RISK_REPORTS
 from src.portfolio_monitoring.dashboard import FUND_LABEL, STRATEGY_COLORS, STRATEGY_LABELS
 from src.risk.build_risk import METRICS_OUTPUT, SUMMARY_FILE, TAIL_FILE, VAR_LEVEL
+from src.utils.files import replace_file
 
 
 DASHBOARD_FILE = RISK_REPORTS / "dashboard.html"
@@ -193,5 +194,5 @@ def write_dashboard():
     DASHBOARD_FILE.parent.mkdir(parents=True, exist_ok=True)
     temporary = DASHBOARD_FILE.with_suffix(".html.tmp")
     temporary.write_text(render_dashboard_html(), encoding="utf-8")
-    temporary.replace(DASHBOARD_FILE)
+    replace_file(temporary, DASHBOARD_FILE)
     return DASHBOARD_FILE

@@ -12,7 +12,19 @@ import sqlite3
 
 import pandas as pd
 
-from src.config import DATABASE_FILE, PROJECT_ROOT
+from src.config import (
+    DATABASE_FILE,
+    MONITORING_DATA,
+    PERFORMANCE_DATA,
+    PORTFOLIO_DATA,
+    PROJECT_ROOT,
+    RAW_DIR,
+    RISK_DATA,
+    STRESS_DATA,
+    UNIVERSE_DIR,
+    source_id,
+)
+from src.utils.files import replace_file
 
 
 DICTIONARY_FILE = PROJECT_ROOT / "documentation" / "DICTIONNAIRE_DONNEES.md"
@@ -21,13 +33,13 @@ FAILING_ROW_CONTROLS = ("12_controle_somme_des_poids.sql", "15_controle_rotation
 LABEL = "Généré automatiquement, à relire avant diffusion."
 
 GROUPS = (
-    ("Données brutes", "data/01_raw"),
-    ("Univers", "data/03_universe"),
-    ("Portefeuilles", "data/04_portfolios"),
-    ("Suivi", "data/05_monitoring"),
-    ("Performance", "data/06_performance"),
-    ("Risque", "data/07_risk"),
-    ("Résistance", "data/08_stress"),
+    ("Données brutes", source_id(RAW_DIR)),
+    ("Univers", source_id(UNIVERSE_DIR)),
+    ("Portefeuilles", source_id(PORTFOLIO_DATA)),
+    ("Suivi", source_id(MONITORING_DATA)),
+    ("Performance", source_id(PERFORMANCE_DATA)),
+    ("Risque", source_id(RISK_DATA)),
+    ("Résistance", source_id(STRESS_DATA)),
 )
 
 
@@ -128,11 +140,8 @@ def _statements(text):
 
 def execute_sql():
     """Run every statement file. Raise if the database is missing or a statement fails."""
-    from src.database.load_published import load_published_books
-
     if not DATABASE_FILE.exists():
         raise RuntimeError("The SQL files need the local database, and it is absent.")
-    load_published_books()
     scripts = sorted(SQL_DIR.glob("*.sql"))
     if not scripts:
         raise RuntimeError("No SQL file is published.")
@@ -191,7 +200,7 @@ def write_dictionary():
         raise RuntimeError("The dictionary does not say that the database is absent.")
     temporary = DICTIONARY_FILE.with_suffix(".md.tmp")
     temporary.write_text(text, encoding="utf-8")
-    temporary.replace(DICTIONARY_FILE)
+    replace_file(temporary, DICTIONARY_FILE)
     return {"dictionary": DICTIONARY_FILE, "sql": scripts}
 
 

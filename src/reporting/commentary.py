@@ -26,35 +26,47 @@ import json
 import numpy as np
 import pandas as pd
 
-from src.config import EXECUTIVE_REPORTS
+from src.config import (
+    CAP_TOLERANCE,
+    DATA_CONTROL_CENTER_FILE,
+    EXCEL_REPORTS,
+    EXECUTIVE_REPORTS,
+    MONITORING_DATA,
+    PERFORMANCE_DATA,
+    PORTFOLIO_DATA,
+    RISK_DATA,
+    STRESS_DATA,
+    source_id,
+)
 from src.reporting.number_check import AUTO_LABEL, Draft, fact, resolve
 
 
 COMMENT_MD = EXECUTIVE_REPORTS / "commentaires_automatises.md"
 COMMENT_JSON = EXECUTIVE_REPORTS / "commentaires_automatises.json"
 
-METRICS = "data/04_portfolios/portfolio_metrics.csv"
-MEMBERSHIP = "data/04_portfolios/portfolio_membership.csv"
-PERFORMANCE = "data/06_performance/performance_metrics.csv"
-EPISODES = "data/06_performance/drawdown_episode.csv"
-RISK = "data/07_risk/risk_by_strategy.csv"
-TAIL = "data/07_risk/var_tail.csv"
-CORRELATION = "data/07_risk/universe_correlation.csv"
-MATRIX = "data/07_risk/correlation_matrix.csv"
-STRESS = "data/08_stress/stress_results.csv"
-REPORT = "data/05_monitoring/monthly_report.csv"
-LIMITS = "data/05_monitoring/limit_watch.csv"
-TURNOVER = "data/05_monitoring/turnover.csv"
-HOLDINGS = "data/05_monitoring/allocation_by_holding.csv"
-PATH = "data/05_monitoring/portfolio_path.csv"
-QUALITY = "audit/data_control_center.xlsx"
-ANNEX = "reports/excel/annexe_reporting.xlsx"
-EXPORT = "reports/excel/power_bi_export.csv"
+METRICS = source_id(PORTFOLIO_DATA / "portfolio_metrics.csv")
+MEMBERSHIP = source_id(PORTFOLIO_DATA / "portfolio_membership.csv")
+PERFORMANCE = source_id(PERFORMANCE_DATA / "performance_metrics.csv")
+EPISODES = source_id(PERFORMANCE_DATA / "drawdown_episode.csv")
+RISK = source_id(RISK_DATA / "risk_by_strategy.csv")
+TAIL = source_id(RISK_DATA / "var_tail.csv")
+CORRELATION = source_id(RISK_DATA / "universe_correlation.csv")
+MATRIX = source_id(RISK_DATA / "correlation_matrix.csv")
+STRESS = source_id(STRESS_DATA / "stress_results.csv")
+REPORT = source_id(MONITORING_DATA / "monthly_report.csv")
+LIMITS = source_id(MONITORING_DATA / "limit_watch.csv")
+TURNOVER = source_id(MONITORING_DATA / "turnover.csv")
+HOLDINGS = source_id(MONITORING_DATA / "allocation_by_holding.csv")
+PATH = source_id(MONITORING_DATA / "portfolio_path.csv")
+FUND_RETURNS = source_id(PERFORMANCE_DATA / "benchmark_monthly_return.csv")
+QUALITY = source_id(DATA_CONTROL_CENTER_FILE)
+ANNEX = source_id(EXCEL_REPORTS / "annexe_reporting.xlsx")
+EXPORT = source_id(EXCEL_REPORTS / "power_bi_export.csv")
 CONFIG = "py:src.config"
 RISK_MODULE = "py:src.risk.build_risk"
 MONITORING_MODULE = "py:src.portfolio_monitoring.build_monitoring"
 STRESS_MODULE = "py:src.stress_testing.build_stress"
-FEASIBILITY = "data/05_monitoring/mandate_feasibility.csv"
+FEASIBILITY = source_id(MONITORING_DATA / "mandate_feasibility.csv")
 
 BOOKS = ("equal_weight", "minimum_volatility", "maximum_sharpe")
 FUND = "benchmark"
@@ -407,7 +419,7 @@ def _alerts():
 
     d = Draft()
     capacity = float(resolve(fact(FEASIBILITY, "capacity_ips", {"sector": "TOTAL"})))
-    infeasible = capacity < 1.0 - 1e-9
+    infeasible = capacity < 1.0 - CAP_TOLERANCE
     breach_item = fact(LIMITS, "sector_over_ips_cap", op="sum")
     feasibility_text = (
         f"Sur cette liste, un livre entièrement investi ne peut pas respecter ce plafond : au plus "
@@ -543,7 +555,7 @@ def _points():
             "suffirait à franchir la limite entre deux rééquilibrages."
         ), "point"))
     capacity = float(resolve(fact(FEASIBILITY, "capacity_ips", {"sector": "TOTAL"})))
-    if capacity < 1.0 - 1e-9:
+    if capacity < 1.0 - CAP_TOLERANCE:
         d = Draft()
         out.append(d.done("points", (
             f"Faire approuver ou refuser par le client le plafond de travail de secteur de {d.pct(config('SECTOR_WEIGHT_CAP'), 0)}, "

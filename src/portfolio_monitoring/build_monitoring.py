@@ -36,6 +36,7 @@ import numpy as np
 import pandas as pd
 
 from src.config import (
+    CAP_TOLERANCE,
     CURRENCY_WEIGHT_CAP,
     IPS_SECTOR_WEIGHT_CAP,
     ISSUER_WEIGHT_CAP,
@@ -84,7 +85,6 @@ UNCLASSIFIED = "Non classé"
 CANDIDATES_OUTPUT = "security_candidates.csv"
 WEIGHT_SUM_TOLERANCE = 1e-8
 METRIC_TOLERANCE = 1e-6
-CAP_TOLERANCE = 1e-8
 MISSING_LABELS = {"", "--", "nan", "none"}
 # Location strings published by the holdings file. A new country is
 # reported as unclassified instead of being forced into a zone.
@@ -199,8 +199,9 @@ TURNOVER_COLUMNS = (
     "trailing_annual_turnover",
     "over_annual_cap",
 )
-ANNUAL_TURNOVER_CAP = 4 * QUARTERLY_TURNOVER_CAP
 REBALANCE_MONTHS = (1, 4, 7, 10)
+QUARTERS_PER_YEAR = len(REBALANCE_MONTHS)
+ANNUAL_TURNOVER_CAP = QUARTERS_PER_YEAR * QUARTERLY_TURNOVER_CAP
 TOP10_COLUMNS = (
     "strategy",
     "rank",
@@ -595,8 +596,8 @@ def build_turnover(weights, asset_returns):
                         f"{strategy} rebalances in {month}, {gap} months after {previous_rebalance}."
                     )
             quarterly.append(change)
-            window = quarterly[-4:]
-            complete = len(window) == 4
+            window = quarterly[-QUARTERS_PER_YEAR:]
+            complete = len(window) == QUARTERS_PER_YEAR
             annual = float(sum(window)) if complete else np.nan
             rows.append(
                 {

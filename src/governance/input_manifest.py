@@ -24,6 +24,7 @@ import json
 
 from src.config import DATA_DIR, FX, MACRO, MARKET, BENCHMARK, ODD, PROJECT_ROOT
 from src.utils.logger import logger
+from src.utils.files import replace_file
 
 
 MANIFEST_FILE = DATA_DIR / "input_manifest.json"
@@ -70,6 +71,6 @@ def write_input_manifest(inputs=RAW_INPUTS, destination=MANIFEST_FILE):
     destination.parent.mkdir(parents=True, exist_ok=True)
     temporary = destination.with_suffix(".json.tmp")
     temporary.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    temporary.replace(destination)
+    replace_file(temporary, destination)
     logger.info("Input manifest written: %s inputs, %s", len(entries), destination)
     return destination

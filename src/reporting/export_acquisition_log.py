@@ -21,6 +21,7 @@ from src.config import ACQUISITION_LOG_FILE, DATABASE_FILE
 from src.database.schema import ACQUISITION_LOG_TABLE, initialize_database_schema
 from src.governance.source_registry import build_resolved_registry
 from src.utils.logger import logger
+from src.utils.files import replace_file
 
 SHEET_NAME = "Acquisition Log"
 TABLE_NAME = "AcquisitionLogTable"
@@ -330,7 +331,7 @@ def write_excel_atomically(dataframe):
         )
         format_workbook(temporary_path, len(dataframe))
         validate_generated_workbook(temporary_path, len(dataframe))
-        temporary_path.replace(ACQUISITION_LOG_FILE)
+        replace_file(temporary_path, ACQUISITION_LOG_FILE)
     except PermissionError as error:
         raise PermissionError(
             "The Acquisition Log workbook is open or locked. "

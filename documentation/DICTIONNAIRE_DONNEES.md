@@ -583,7 +583,7 @@ Lignes : 15.
 
 ## Base SQLite
 
-Fichier local `database/sdg_investment.db`. Tables : 29.
+Fichier local `database/sdg_investment.db`. Tables : 26.
 
 ### `acquisition_log`
 
@@ -902,48 +902,6 @@ Lignes : 120.
 | `status` |
 | `positive` |
 
-### `published_contributions`
-
-Lignes : 10440.
-
-| Colonne |
-|---|
-| `month` |
-| `strategy` |
-| `yahoo_symbol` |
-| `name` |
-| `sector` |
-| `weight` |
-| `asset_return` |
-| `month_contribution` |
-| `cumulative_contribution` |
-
-### `published_returns`
-
-Lignes : 360.
-
-| Colonne |
-|---|
-| `month` |
-| `strategy` |
-| `portfolio_return` |
-| `risk_free_return` |
-| `excess_return` |
-
-### `published_weights`
-
-Lignes : 10440.
-
-| Colonne |
-|---|
-| `strategy` |
-| `month` |
-| `yahoo_symbol` |
-| `ticker` |
-| `name` |
-| `listing_currency` |
-| `weight` |
-
 ### `quality_control_result`
 
 Lignes : 846.
@@ -1069,10 +1027,8 @@ Les fichiers de `sql/` s'exécutent sur la base locale. Ils posent une question 
 - `sql/07_seances_a_ecarter.sql`
 - `sql/08_fonds_contre_registre_odd.sql`
 - `sql/09_fonds_sans_referentiel.sql`
-- `sql/10_poids_des_livres.sql`
 - `sql/10_poids_par_secteur.sql`
 - `sql/11_contributeurs_detracteurs.sql`
-- `sql/11_contributeurs_par_titre.sql`
 - `sql/12_controle_somme_des_poids.sql`
 - `sql/13_richesse_chainee.sql`
 - `sql/14_mouvements_du_dernier_reequilibrage.sql`

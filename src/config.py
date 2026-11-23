@@ -51,6 +51,11 @@ VOLATILITY_SHOCK_MULTIPLIER = 1.5
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
+
+def source_id(path):
+    """The project-relative, forward-slash name under which a file is cited in the number check."""
+    return Path(path).relative_to(PROJECT_ROOT).as_posix()
+
 # ============================================================================
 # DOCUMENTATION
 # ============================================================================
@@ -251,6 +256,8 @@ CURRENCY_WEIGHT_CAP = 0.40
 MIN_POSITIONS = 25
 MAX_POSITIONS = 40
 QUARTERLY_TURNOVER_CAP = 0.125
+# A weight above a cap by less than this is on the cap, not over it.
+CAP_TOLERANCE = 1e-8
 # A weight at or below this floor is optimizer dust, not a line.
 # Monitoring uses the same floor when it counts invested names.
 POSITION_WEIGHT_FLOOR = 1e-8

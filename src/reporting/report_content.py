@@ -21,11 +21,14 @@ import pandas as pd
 from src.config import EXECUTIVE_REPORTS, PROJECT_ROOT
 from src.reporting.commentary import (
     BOOKS,
+    FUND_RETURNS,
     FUND,
     LABELS,
     LIMITS,
     PATH,
     PENDING,
+    RISK,
+    STRESS,
     QUALITY,
     SHOCK_LABELS,
     TAIL,
@@ -223,7 +226,7 @@ def _save(figure, name):
 def wealth_figure():
     """Cumulative wealth of the three books and of the fund, base 1."""
     path = pd.read_csv(PROJECT_ROOT / PATH)
-    fund = pd.read_csv(PROJECT_ROOT / "data/06_performance/benchmark_monthly_return.csv")
+    fund = pd.read_csv(PROJECT_ROOT / FUND_RETURNS)
     figure, axis = plt.subplots(figsize=(7.4, 3.0))
     _style(axis)
     fund_months = pd.to_datetime(fund["month"].astype(str) + "-01")
@@ -243,7 +246,7 @@ def wealth_figure():
 
 def stress_figure():
     """Terminal wealth by shock, one group per book. Illustrative shocks."""
-    frame = pd.read_csv(PROJECT_ROOT / "data/08_stress/stress_results.csv")
+    frame = pd.read_csv(PROJECT_ROOT / STRESS)
     shocks = ("aucun", "marche", "taux", "recession", "volatilite")
     shades = ("#898781", "#104281", "#256abf", "#5598e7", "#9ec5f4")
     figure, axis = plt.subplots(figsize=(7.4, 2.8))
@@ -266,7 +269,7 @@ def stress_figure():
 
 def tail_figure():
     """Monthly VaR and expected shortfall, one pair of bars per series."""
-    frame = pd.read_csv(PROJECT_ROOT / "data/07_risk/risk_by_strategy.csv").set_index("strategy")
+    frame = pd.read_csv(PROJECT_ROOT / RISK).set_index("strategy")
     series = BOOKS + (FUND,)
     figure, axis = plt.subplots(figsize=(7.4, 2.8))
     _style(axis)
