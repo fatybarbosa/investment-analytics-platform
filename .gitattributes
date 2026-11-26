@@ -7,3 +7,7 @@
 *.png binary
 *.ico binary
 *.docx binary
+
+# The dashboards are written by the pipeline. GitHub leaves generated files out
+# of its language statistics.
+reports/*/dashboard.html linguist-generated
