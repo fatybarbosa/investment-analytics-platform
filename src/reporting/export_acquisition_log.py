@@ -3,11 +3,14 @@ export_acquisition_log.py
 
 Generate a formatted Excel view of the authoritative SQLite acquisition log.
 SQLite remains the system of record. The Excel workbook is a reproducible
-report enriched with metadata from the resolved Source Registry.
+report enriched with metadata from the resolved Source Registry. The workbook
+is published, so it shows folders from the project root, never the folders of
+the machine that ran the pipeline.
 """
 
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from tempfile import NamedTemporaryFile
+import re
 import sqlite3
 
 import pandas as pd
@@ -17,7 +20,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.table import Table, TableStyleInfo
 
-from src.config import ACQUISITION_LOG_FILE, DATABASE_FILE
+from src.config import ACQUISITION_LOG_FILE, DATABASE_FILE, PROJECT_ROOT
 from src.database.schema import ACQUISITION_LOG_TABLE, initialize_database_schema
 from src.governance.source_registry import build_resolved_registry
 from src.utils.logger import logger
@@ -69,6 +72,29 @@ COLUMN_WIDTHS = {
     "Notes": 60,
     "Created At UTC": 22,
 }
+
+
+USER_FOLDER = re.compile(r"(?i)([A-Z]:[\\/]+Users[\\/]+)[^\\/'\"]+")
+
+
+def project_folder(value, root=PROJECT_ROOT):
+    """A storage folder written from the project root. Outside the project, its name only."""
+    if value is None or not str(value).strip():
+        return value
+    folder = PureWindowsPath(str(value))
+    try:
+        return folder.relative_to(PureWindowsPath(str(root))).as_posix()
+    except ValueError:
+        return folder.name
+
+
+def without_machine_path(value, root=PROJECT_ROOT):
+    """A note without the project folder or the user folder of the machine."""
+    if not isinstance(value, str):
+        return value
+    parts = [re.escape(part) for part in PureWindowsPath(str(root)).as_posix().split("/")]
+    inside = re.compile("(?i)" + r"[\\/]+".join(parts) + r"[\\/]*")
+    return USER_FOLDER.sub(r"\1user", inside.sub("", value))
 
 
 def read_acquisition_log():
@@ -193,6 +219,8 @@ def build_export_dataframe():
             enriched[column] = None
 
     export_data = enriched[EXPORT_COLUMNS].copy()
+    export_data["Storage Location"] = export_data["Storage Location"].map(project_folder)
+    export_data["Notes"] = export_data["Notes"].map(without_machine_path)
     for column in ("Execution Date UTC", "Created At UTC"):
         export_data[column] = (
             pd.to_datetime(export_data[column], errors="coerce", utc=True)

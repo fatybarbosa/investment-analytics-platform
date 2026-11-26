@@ -19,6 +19,8 @@ from __future__ import annotations
 
 import math
 import os
+import re
+import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -36,6 +38,7 @@ from src.config import (
     DATA_CONTROL_CENTER_FILE,
     EXCEL_REPORTS,
     IPS_SECTOR_WEIGHT_CAP,
+    PROJECT_AUTHOR,
     ISSUER_WEIGHT_CAP,
     MARKET_SHOCK_RETURN,
     MAX_POSITIONS,
@@ -79,6 +82,7 @@ from src.risk.build_risk import MATRIX_FILE, METRICS_OUTPUT as RISK_METRICS_FILE
 from src.stress_testing.build_stress import AGREEMENT as STRESS_AGREEMENT
 from src.stress_testing.build_stress import RESULTS_FILE, SHOCK_IDS
 from src.reporting.power_bi_export import COMPUTED_IN_DAX, EXPORT_FILE, NO_ANSWER, NOT_EXPORTED, read_export
+from src.utils.files import replace_file
 from src.utils.logger import logger
 
 
@@ -1501,6 +1505,36 @@ try {
         raise RuntimeError(completed.stderr or completed.stdout or "Excel did not calculate the workbook.")
 
 
+# Excel writes into a workbook the folder it saved it in and the name of the Office account.
+# The annex is published: the folder is removed and the project author is recorded.
+RECORDED_PERSON = re.compile(r"(<(dc:creator|cp:lastModifiedBy)\b[^>]*>)[^<]*(</\2>)")
+REFRESHED_BY = re.compile(r'\brefreshedBy="[^"]*"')
+SAVED_FOLDER = re.compile(
+    r"<mc:AlternateContent\b(?:(?!</mc:AlternateContent>).)*?<x15ac:absPath\b(?:(?!</mc:AlternateContent>).)*</mc:AlternateContent>",
+    re.S,
+)
+
+
+def remove_machine_traces(path):
+    """Rewrite the workbook without the saved folder and under the project author. Nothing else changes."""
+    path = Path(path)
+    temporary = path.with_name(path.name + ".tmp")
+    with zipfile.ZipFile(path) as source, zipfile.ZipFile(temporary, "w") as target:
+        for item in source.infolist():
+            data = source.read(item.filename)
+            if item.filename == "xl/workbook.xml":
+                text = SAVED_FOLDER.sub("", data.decode("utf-8"))
+                if "absPath" in text:
+                    raise RuntimeError(f"{path.name}: the folder recorded by Excel could not be removed.")
+                data = text.encode("utf-8")
+            elif item.filename == "docProps/core.xml":
+                data = RECORDED_PERSON.sub(rf"\g<1>{PROJECT_AUTHOR}\g<3>", data.decode("utf-8")).encode("utf-8")
+            elif item.filename.startswith("xl/pivotCache/pivotCacheDefinition"):
+                data = REFRESHED_BY.sub(f'refreshedBy="{PROJECT_AUTHOR}"', data.decode("utf-8")).encode("utf-8")
+            target.writestr(item, data)
+    replace_file(temporary, path)
+
+
 def _calculated_rows(path):
     calculated = load_workbook(path, data_only=True)
     worksheet = calculated["Reconciliation"]
@@ -1940,6 +1974,7 @@ def build_workbook():
         raise RuntimeError(f"Controls after refresh: weights {refreshed_controls}, source {refreshed_source}.")
     if any(row["cloture"] == "ouvert" for row in refreshed):
         raise RuntimeError("Refresh opened a reconciliation exception.")
+    remove_machine_traces(WORKBOOK_FILE)
     logger.info("Power Query drafts: %s", len(queries))
     return {
         "workbook": WORKBOOK_FILE,
