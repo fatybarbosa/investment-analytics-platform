@@ -14,18 +14,18 @@ minimum_volatility,2,9022.T,9022,CENTRAL JAPAN RAILWAY,0.05,Industrials,Asie-Pac
 minimum_volatility,3,DEMANT.CO,DEMANT,DEMANT,0.05,Health Care,Europe,DKK
 minimum_volatility,4,PSON.L,PSON,PEARSON PLC,0.05,Consumer Discretionary,Europe,GBP
 minimum_volatility,5,REC.MI,REC,RECORDATI INDUSTRIA CHIMICA E FARM,0.05,Health Care,Europe,EUR
-minimum_volatility,6,4507.T,4507,SHIONOGI,0.0498114697300495,Health Care,Asie-Pacifique,JPY
-minimum_volatility,7,DLR,DLR,DIGITAL REALTY TRUST REIT,0.0497862005238573,Real Estate,Amériques,USD
-minimum_volatility,8,C38U.SI,CICT,CAPITALAND INTEGRATED COMMERCIAL T,0.0496102892549274,Real Estate,Asie-Pacifique,SGD
-minimum_volatility,9,8951.T,8951,NIPPON BUILDING FUND REIT,0.0492991365583728,Real Estate,Asie-Pacifique,JPY
-minimum_volatility,10,SPSN.SW,SPSN,SWISS PRIME SITE AG,0.0487180194611134,Real Estate,Europe,CHF
+minimum_volatility,6,4507.T,4507,SHIONOGI,0.0498114742144548,Health Care,Asie-Pacifique,JPY
+minimum_volatility,7,DLR,DLR,DIGITAL REALTY TRUST REIT,0.0497862023453354,Real Estate,Amériques,USD
+minimum_volatility,8,C38U.SI,CICT,CAPITALAND INTEGRATED COMMERCIAL T,0.049610292275712,Real Estate,Asie-Pacifique,SGD
+minimum_volatility,9,8951.T,8951,NIPPON BUILDING FUND REIT,0.0492991440506519,Real Estate,Asie-Pacifique,JPY
+minimum_volatility,10,SPSN.SW,SPSN,SWISS PRIME SITE AG,0.0487180298622982,Real Estate,Europe,CHF
 maximum_sharpe,1,BMY,BMY,BRISTOL MYERS SQUIBB,0.05,Health Care,Amériques,USD
-maximum_sharpe,2,PSON.L,PSON,PEARSON PLC,0.0498509429008738,Consumer Discretionary,Europe,GBP
-maximum_sharpe,3,REC.MI,REC,RECORDATI INDUSTRIA CHIMICA E FARM,0.0498509429008738,Health Care,Europe,EUR
-maximum_sharpe,4,SALM.OL,SALM,SALMAR,0.0498509429008738,Consumer Staples,Europe,NOK
-maximum_sharpe,5,SOON.SW,SOON,SONOVA HOLDING AG,0.0498509429008738,Health Care,Europe,CHF
-maximum_sharpe,6,NRP.JO,NRP,NEPI ROCKCASTLE,0.0487235627608873,Real Estate,Moyen-Orient et Afrique,ZAR
-maximum_sharpe,7,4507.T,4507,SHIONOGI,0.0477427997749887,Health Care,Asie-Pacifique,JPY
-maximum_sharpe,8,SOBI.ST,SOBI,SWEDISH ORPHAN BIOVITRUM,0.0476463358096195,Health Care,Europe,SEK
-maximum_sharpe,9,DLR,DLR,DIGITAL REALTY TRUST REIT,0.0464982553693758,Real Estate,Amériques,USD
-maximum_sharpe,10,EQIX,EQIX,EQUINIX REIT,0.0462726942604428,Real Estate,Amériques,USD
+maximum_sharpe,2,PSON.L,PSON,PEARSON PLC,0.0498509456560593,Consumer Discretionary,Europe,GBP
+maximum_sharpe,3,REC.MI,REC,RECORDATI INDUSTRIA CHIMICA E FARM,0.0498509456560593,Health Care,Europe,EUR
+maximum_sharpe,4,SALM.OL,SALM,SALMAR,0.0498509456560593,Consumer Staples,Europe,NOK
+maximum_sharpe,5,SOON.SW,SOON,SONOVA HOLDING AG,0.0498509456560593,Health Care,Europe,CHF
+maximum_sharpe,6,NRP.JO,NRP,NEPI ROCKCASTLE,0.0487235623615388,Real Estate,Moyen-Orient et Afrique,ZAR
+maximum_sharpe,7,4507.T,4507,SHIONOGI,0.0477427997276751,Health Care,Asie-Pacifique,JPY
+maximum_sharpe,8,SOBI.ST,SOBI,SWEDISH ORPHAN BIOVITRUM,0.0476463385881957,Health Care,Europe,SEK
+maximum_sharpe,9,DLR,DLR,DIGITAL REALTY TRUST REIT,0.0464982540292906,Real Estate,Amériques,USD
+maximum_sharpe,10,EQIX,EQIX,EQUINIX REIT,0.0462726957465228,Real Estate,Amériques,USD

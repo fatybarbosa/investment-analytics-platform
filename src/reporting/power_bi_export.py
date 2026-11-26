@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import json
 import os
+import socket
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
@@ -82,6 +83,9 @@ NOT_EXPORTED = {
 NO_ANSWER = "Power BI Desktop n'a renvoyé aucune valeur pour cette mesure lors du dernier export."
 
 
+PORT_TIMEOUT_SECONDS = 1
+
+
 class PowerBiUnavailable(RuntimeError):
     """Desktop is closed, or its engine did not answer."""
 
@@ -96,11 +100,22 @@ def find_port():
             text = port_file.read_text(encoding="utf-16-le").strip().lstrip("\ufeff")
             if text.isdigit():
                 found.append((port_file.stat().st_mtime, int(text)))
-    if not found:
-        raise PowerBiUnavailable(
-            "No msmdsrv.port.txt under the Power BI Desktop workspace folders: Desktop is not open."
-        )
-    return max(found)[1]
+    # A closed or crashed session leaves its port file behind. The newest port
+    # that accepts a connection is the engine of an open report.
+    for _, port in sorted(found, reverse=True):
+        if _is_listening(port):
+            return port
+    raise PowerBiUnavailable(
+        "No listening engine under the Power BI Desktop workspace folders: Desktop is not open."
+    )
+
+
+def _is_listening(port):
+    try:
+        with socket.create_connection(("localhost", port), timeout=PORT_TIMEOUT_SECONDS):
+            return True
+    except OSError:
+        return False
 
 
 def _queries():
@@ -151,7 +166,9 @@ if ($package) { $candidates += (Join-Path $package.InstallLocation 'bin\Microsof
 $candidates += 'C:\Program Files\Microsoft Power BI Desktop\bin\Microsoft.PowerBI.AdomdClient.dll'
 $dll = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
 if (-not $dll) { throw 'Microsoft.PowerBI.AdomdClient.dll not found.' }
-Add-Type -Path $dll
+# LoadFrom, not Add-Type: Add-Type loads every type of the assembly and fails when
+# Desktop ships it without a dependency that the queries never use.
+[void][Reflection.Assembly]::LoadFrom($dll)
 $queries = Get-Content -Raw -Encoding UTF8 '__QUERIES__' | ConvertFrom-Json
 $connection = New-Object Microsoft.AnalysisServices.AdomdClient.AdomdConnection('Data Source=localhost:__PORT__')
 $connection.Open()

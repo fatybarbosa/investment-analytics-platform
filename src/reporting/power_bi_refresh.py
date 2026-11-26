@@ -43,7 +43,9 @@ if ($package) { $candidates += (Join-Path $package.InstallLocation 'bin\Microsof
 $candidates += 'C:\Program Files\Microsoft Power BI Desktop\bin\Microsoft.PowerBI.AdomdClient.dll'
 $dll = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
 if (-not $dll) { throw 'Microsoft.PowerBI.AdomdClient.dll not found.' }
-Add-Type -Path $dll
+# LoadFrom, not Add-Type: Add-Type loads every type of the assembly and fails when
+# Desktop ships it without a dependency that the queries never use.
+[void][Reflection.Assembly]::LoadFrom($dll)
 $connection = New-Object Microsoft.AnalysisServices.AdomdClient.AdomdConnection('Data Source=localhost:__PORT__')
 $connection.Open()
 function Get-Refreshes($connection) {

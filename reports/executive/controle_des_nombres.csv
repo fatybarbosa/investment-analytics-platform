@@ -127,11 +127,11 @@ commentaires (phrase par phrase),alertes #23,"18,6 %",data/05_monitoring/turnov
 commentaires (phrase par phrase),alertes #24,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
 commentaires (phrase par phrase),alertes #24,6,audit/data_control_center.xlsx[Quality Issues] | count issue_id
 commentaires (phrase par phrase),alertes #24,54,audit/data_control_center.xlsx[Quality Controls] | count control_id
-commentaires (phrase par phrase),alertes #24,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261123-112656-797390-ISS-004
-commentaires (phrase par phrase),alertes #24,120,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261123-112656-797390-ISS-004
-commentaires (phrase par phrase),alertes #24,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261123-112656-797390-ISS-004
-commentaires (phrase par phrase),alertes #25,651 424,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261123-112656-797390-ISS-005
-commentaires (phrase par phrase),alertes #25,662 294,audit/data_control_center.xlsx[Quality History] | last records_checked
+commentaires (phrase par phrase),alertes #24,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-084954-994951-ISS-004
+commentaires (phrase par phrase),alertes #24,120,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-084954-994951-ISS-004
+commentaires (phrase par phrase),alertes #24,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-084954-994951-ISS-004
+commentaires (phrase par phrase),alertes #25,651 748,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-084954-994951-ISS-005
+commentaires (phrase par phrase),alertes #25,662 618,audit/data_control_center.xlsx[Quality History] | last records_checked
 commentaires (phrase par phrase),alertes #25,11,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-005, dataset_id=DS-002"
 commentaires (phrase par phrase),alertes #25,120,"audit/data_control_center.xlsx[Quality Issues] | cell records_checked | control_id=QC-005, dataset_id=DS-002"
 commentaires (phrase par phrase),alertes #25,"9,17 %","audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | control_id=QC-005, dataset_id=DS-002"
@@ -143,7 +143,7 @@ commentaires (phrase par phrase),alertes #26,94,reports/excel/annexe_reporting.x
 commentaires (phrase par phrase),points #28,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
 commentaires (phrase par phrase),points #28,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
 commentaires (phrase par phrase),points #30,8 %,py:src.config | cell TRACKING_ERROR_TARGET
-commentaires (phrase par phrase),points #31,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261123-112656-797390-ISS-004
+commentaires (phrase par phrase),points #31,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-084954-994951-ISS-004
 commentaires_automatises.md,commentaires_automatises.md,2016-11,data/04_portfolios/portfolio_metrics.csv | cell window_start | strategy=equal_weight
 commentaires_automatises.md,commentaires_automatises.md,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
 commentaires_automatises.md,commentaires_automatises.md,2020-03,"data/07_risk/var_tail.csv | cell month | rank=1, strategy=equal_weight"
@@ -272,14 +272,14 @@ commentaires_automatises.md,commentaires_automatises.md,"18,6 %",data/05_monito
 commentaires_automatises.md,commentaires_automatises.md,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
 commentaires_automatises.md,commentaires_automatises.md,6,data/07_risk/var_tail.csv | count rank | strategy=equal_weight
 commentaires_automatises.md,commentaires_automatises.md,54,audit/data_control_center.xlsx[Quality Controls] | count control_id
-commentaires_automatises.md,commentaires_automatises.md,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261123-112656-797390-ISS-004
+commentaires_automatises.md,commentaires_automatises.md,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-084954-994951-ISS-004
 commentaires_automatises.md,commentaires_automatises.md,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-commentaires_automatises.md,commentaires_automatises.md,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261123-112656-797390-ISS-004
-commentaires_automatises.md,commentaires_automatises.md,651 424,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261123-112656-797390-ISS-005
-commentaires_automatises.md,commentaires_automatises.md,662 294,audit/data_control_center.xlsx[Quality History] | last records_checked
-commentaires_automatises.md,commentaires_automatises.md,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261123-112656-797390-ISS-004
+commentaires_automatises.md,commentaires_automatises.md,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-084954-994951-ISS-004
+commentaires_automatises.md,commentaires_automatises.md,651 748,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-084954-994951-ISS-005
+commentaires_automatises.md,commentaires_automatises.md,662 618,audit/data_control_center.xlsx[Quality History] | last records_checked
+commentaires_automatises.md,commentaires_automatises.md,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-084954-994951-ISS-004
 commentaires_automatises.md,commentaires_automatises.md,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-commentaires_automatises.md,commentaires_automatises.md,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261123-112656-797390-ISS-004
+commentaires_automatises.md,commentaires_automatises.md,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-084954-994951-ISS-004
 commentaires_automatises.md,commentaires_automatises.md,101,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut | statut=OK
 commentaires_automatises.md,commentaires_automatises.md,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 commentaires_automatises.md,commentaires_automatises.md,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
@@ -288,7 +288,7 @@ commentaires_automatises.md,commentaires_automatises.md,94,reports/excel/annexe_
 commentaires_automatises.md,commentaires_automatises.md,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
 commentaires_automatises.md,commentaires_automatises.md,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
 commentaires_automatises.md,commentaires_automatises.md,8 %,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
-commentaires_automatises.md,commentaires_automatises.md,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261123-112656-797390-ISS-004
+commentaires_automatises.md,commentaires_automatises.md,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-084954-994951-ISS-004
 rapport_executif.pdf,rapport_executif.pdf,2016-11,data/04_portfolios/portfolio_metrics.csv | cell window_start | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,2020-03,"data/07_risk/var_tail.csv | cell month | rank=1, strategy=equal_weight"
@@ -423,14 +423,14 @@ rapport_executif.pdf,rapport_executif.pdf,"-11,71 %","data/07_risk/var_tail.csv 
 rapport_executif.pdf,rapport_executif.pdf,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
 rapport_executif.pdf,rapport_executif.pdf,6,data/07_risk/var_tail.csv | count rank | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,54,audit/data_control_center.xlsx[Quality Controls] | count control_id
-rapport_executif.pdf,rapport_executif.pdf,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261123-112656-797390-ISS-004
+rapport_executif.pdf,rapport_executif.pdf,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-084954-994951-ISS-004
 rapport_executif.pdf,rapport_executif.pdf,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-rapport_executif.pdf,rapport_executif.pdf,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261123-112656-797390-ISS-004
-rapport_executif.pdf,rapport_executif.pdf,651 424,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261123-112656-797390-ISS-005
-rapport_executif.pdf,rapport_executif.pdf,662 294,audit/data_control_center.xlsx[Quality History] | last records_checked
-rapport_executif.pdf,rapport_executif.pdf,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261123-112656-797390-ISS-004
+rapport_executif.pdf,rapport_executif.pdf,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-084954-994951-ISS-004
+rapport_executif.pdf,rapport_executif.pdf,651 748,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-084954-994951-ISS-005
+rapport_executif.pdf,rapport_executif.pdf,662 618,audit/data_control_center.xlsx[Quality History] | last records_checked
+rapport_executif.pdf,rapport_executif.pdf,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-084954-994951-ISS-004
 rapport_executif.pdf,rapport_executif.pdf,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-rapport_executif.pdf,rapport_executif.pdf,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261123-112656-797390-ISS-004
+rapport_executif.pdf,rapport_executif.pdf,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-084954-994951-ISS-004
 rapport_executif.pdf,rapport_executif.pdf,"99,97 %",audit/data_control_center.xlsx[Quality Dashboard] | cell value | metric=Valeurs manquantes
 rapport_executif.pdf,rapport_executif.pdf,"100,00 %",audit/data_control_center.xlsx[Quality Dashboard] | cell value | metric=Doublons
 rapport_executif.pdf,rapport_executif.pdf,"99,86 %",audit/data_control_center.xlsx[Quality Dashboard] | cell value | metric=Valeurs aberrantes
@@ -444,7 +444,7 @@ rapport_executif.pdf,rapport_executif.pdf,101,reports/excel/annexe_reporting.xls
 rapport_executif.pdf,rapport_executif.pdf,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,1,data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=equal_weight
-rapport_executif.pdf,rapport_executif.pdf,4e-15,reports/excel/annexe_reporting.xlsx[Reconciliation] | maxabs ecart
+rapport_executif.pdf,rapport_executif.pdf,8e-15,reports/excel/annexe_reporting.xlsx[Reconciliation] | maxabs ecart
 rapport_executif.pdf,rapport_executif.pdf,1e-8,py:src.portfolio_monitoring.build_monitoring | cell CONTRIBUTION_TOLERANCE
 rapport_executif.pdf,rapport_executif.pdf,102,reports/excel/annexe_reporting.xlsx[Reconciliation] | count indicateur
 rapport_executif.pdf,rapport_executif.pdf,123,data/05_monitoring/limit_watch.csv | count month | rebalance_month=1
@@ -489,7 +489,7 @@ rapport_executif.pdf,rapport_executif.pdf,4,data/05_monitoring/turnover.csv | su
 rapport_executif.pdf,rapport_executif.pdf,1,data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
-rapport_executif.pdf,rapport_executif.pdf,9,audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261123-112656-797390-ISS-004
+rapport_executif.pdf,rapport_executif.pdf,9,audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-084954-994951-ISS-004
 rapport_executif.pdf,rapport_executif.pdf,20,data/05_monitoring/turnover.csv | sum over_annual_cap | strategy=maximum_sharpe
 rapport_executif.pdf,rapport_executif.pdf,"12,5 %",py:src.config | cell QUARTERLY_TURNOVER_CAP
 rapport_executif.pdf,rapport_executif.pdf,"18,6 %",data/05_monitoring/turnover.csv | max gross_turnover
@@ -505,7 +505,7 @@ rapport_executif.pdf,rapport_executif.pdf,13,data/04_portfolios/portfolio_member
 rapport_executif.pdf,rapport_executif.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
 rapport_executif.pdf,rapport_executif.pdf,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
 rapport_executif.pdf,rapport_executif.pdf,8 %,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
-rapport_executif.pdf,rapport_executif.pdf,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261123-112656-797390-ISS-004
+rapport_executif.pdf,rapport_executif.pdf,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-084954-994951-ISS-004
 presentation_management.pptx,presentation_management.pptx,2016-11,data/04_portfolios/portfolio_metrics.csv | cell window_start | strategy=equal_weight
 presentation_management.pptx,presentation_management.pptx,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
 presentation_management.pptx,presentation_management.pptx,2021-08,data/06_performance/drawdown_episode.csv | cell peak_month | strategy=equal_weight
@@ -603,14 +603,14 @@ presentation_management.pptx,presentation_management.pptx,"100,00 %",audit/data
 presentation_management.pptx,presentation_management.pptx,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
 presentation_management.pptx,presentation_management.pptx,6,py:src.config | cell RECESSION_SHOCK_MONTHS
 presentation_management.pptx,presentation_management.pptx,54,audit/data_control_center.xlsx[Quality Controls] | count control_id
-presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261123-112656-797390-ISS-004
+presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-084954-994951-ISS-004
 presentation_management.pptx,presentation_management.pptx,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-presentation_management.pptx,presentation_management.pptx,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261123-112656-797390-ISS-004
-presentation_management.pptx,presentation_management.pptx,651 424,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261123-112656-797390-ISS-005
-presentation_management.pptx,presentation_management.pptx,662 294,audit/data_control_center.xlsx[Quality History] | last records_checked
-presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261123-112656-797390-ISS-004
+presentation_management.pptx,presentation_management.pptx,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-084954-994951-ISS-004
+presentation_management.pptx,presentation_management.pptx,651 748,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-084954-994951-ISS-005
+presentation_management.pptx,presentation_management.pptx,662 618,audit/data_control_center.xlsx[Quality History] | last records_checked
+presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-084954-994951-ISS-004
 presentation_management.pptx,presentation_management.pptx,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-presentation_management.pptx,presentation_management.pptx,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261123-112656-797390-ISS-004
+presentation_management.pptx,presentation_management.pptx,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-084954-994951-ISS-004
 presentation_management.pptx,presentation_management.pptx,101,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut | statut=OK
 presentation_management.pptx,presentation_management.pptx,102,reports/excel/annexe_reporting.xlsx[Reconciliation] | count indicateur
 presentation_management.pptx,presentation_management.pptx,101,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut | statut=OK
@@ -622,7 +622,7 @@ presentation_management.pptx,presentation_management.pptx,101,reports/excel/anne
 presentation_management.pptx,presentation_management.pptx,0,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
 presentation_management.pptx,presentation_management.pptx,0,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
 presentation_management.pptx,presentation_management.pptx,1,data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=equal_weight
-presentation_management.pptx,presentation_management.pptx,4e-15,reports/excel/annexe_reporting.xlsx[Reconciliation] | maxabs ecart
+presentation_management.pptx,presentation_management.pptx,8e-15,reports/excel/annexe_reporting.xlsx[Reconciliation] | maxabs ecart
 presentation_management.pptx,presentation_management.pptx,1e-8,py:src.portfolio_monitoring.build_monitoring | cell CONTRIBUTION_TOLERANCE
 presentation_management.pptx,presentation_management.pptx,102,reports/excel/annexe_reporting.xlsx[Reconciliation] | count indicateur
 presentation_management.pptx,presentation_management.pptx,237,data/05_monitoring/limit_watch.csv | count month | rebalance_month=0
@@ -655,20 +655,20 @@ presentation_management.pptx,presentation_management.pptx,4,data/05_monitoring/t
 presentation_management.pptx,presentation_management.pptx,1,data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=equal_weight
 presentation_management.pptx,presentation_management.pptx,0,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
 presentation_management.pptx,presentation_management.pptx,0,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-presentation_management.pptx,presentation_management.pptx,9,audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261123-112656-797390-ISS-004
+presentation_management.pptx,presentation_management.pptx,9,audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-084954-994951-ISS-004
 presentation_management.pptx,presentation_management.pptx,20,data/05_monitoring/turnover.csv | sum over_annual_cap | strategy=maximum_sharpe
 presentation_management.pptx,presentation_management.pptx,"12,5 %",py:src.config | cell QUARTERLY_TURNOVER_CAP
 presentation_management.pptx,presentation_management.pptx,"18,6 %",data/05_monitoring/turnover.csv | max gross_turnover
 presentation_management.pptx,presentation_management.pptx,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
 presentation_management.pptx,presentation_management.pptx,6,py:src.config | cell RECESSION_SHOCK_MONTHS
 presentation_management.pptx,presentation_management.pptx,54,audit/data_control_center.xlsx[Quality Controls] | count control_id
-presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261123-112656-797390-ISS-004
+presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-084954-994951-ISS-004
 presentation_management.pptx,presentation_management.pptx,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-presentation_management.pptx,presentation_management.pptx,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261123-112656-797390-ISS-004
+presentation_management.pptx,presentation_management.pptx,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-084954-994951-ISS-004
 presentation_management.pptx,presentation_management.pptx,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
 presentation_management.pptx,presentation_management.pptx,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
 presentation_management.pptx,presentation_management.pptx,8 %,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
-presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261123-112656-797390-ISS-004
+presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-084954-994951-ISS-004
 rapport_client.pdf,rapport_client.pdf,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
 rapport_client.pdf,rapport_client.pdf,2016-11,data/04_portfolios/portfolio_metrics.csv | cell window_start | strategy=equal_weight
 rapport_client.pdf,rapport_client.pdf,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
@@ -1064,13 +1064,13 @@ cas_d_investigation.md,cas_d_investigation.md,6,"data/04_portfolios/portfolio_me
 cas_d_investigation.md,cas_d_investigation.md,1,"data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=no_snb_series, listing_currency=ILS"
 cas_d_investigation.md,cas_d_investigation.md,3,"data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=no_snb_series, listing_currency=TWD"
 cas_d_investigation.md,cas_d_investigation.md,3,"data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=no_snb_series, listing_currency=TWD"
-cas_d_investigation.md,cas_d_investigation.md,651 424,"audit/data_control_center.xlsx[Quality Issues] | cell records_checked | control_id=QC-003, dataset_id=DS-003"
-cas_d_investigation.md,cas_d_investigation.md,1 747,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-003, dataset_id=DS-003"
-cas_d_investigation.md,cas_d_investigation.md,1 124,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-001, dataset_id=DS-003"
-cas_d_investigation.md,cas_d_investigation.md,1 747,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-003, dataset_id=DS-003"
-cas_d_investigation.md,cas_d_investigation.md,1 124,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-001, dataset_id=DS-003"
-cas_d_investigation.md,cas_d_investigation.md,50 937,data/02_processed/market/market_price_exclusions.csv | count symbol | reason=no_snb_series
-cas_d_investigation.md,cas_d_investigation.md,7 088,data/02_processed/market/market_price_exclusions.csv | count symbol | reason=missing_monthly_fx
+cas_d_investigation.md,cas_d_investigation.md,651 748,"audit/data_control_center.xlsx[Quality Issues] | cell records_checked | control_id=QC-003, dataset_id=DS-003"
+cas_d_investigation.md,cas_d_investigation.md,1 748,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-003, dataset_id=DS-003"
+cas_d_investigation.md,cas_d_investigation.md,1 159,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-001, dataset_id=DS-003"
+cas_d_investigation.md,cas_d_investigation.md,1 748,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-003, dataset_id=DS-003"
+cas_d_investigation.md,cas_d_investigation.md,1 159,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-001, dataset_id=DS-003"
+cas_d_investigation.md,cas_d_investigation.md,50 959,data/02_processed/market/market_price_exclusions.csv | count symbol | reason=no_snb_series
+cas_d_investigation.md,cas_d_investigation.md,7 348,data/02_processed/market/market_price_exclusions.csv | count symbol | reason=missing_monthly_fx
 cas_d_investigation.md,cas_d_investigation.md,964,data/02_processed/market/market_price_exclusions.csv | count symbol | reason=non_positive_adj_close
 cas_d_investigation.md,cas_d_investigation.md,0,data/02_processed/market/market_price_exclusions.csv | count symbol | reason=missing_adj_close
 cas_d_investigation.md,cas_d_investigation.md,6,"data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | history_reason=no_snb_series, listing_currency=INR"

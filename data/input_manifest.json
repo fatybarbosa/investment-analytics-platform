@@ -16,9 +16,9 @@
       "sha256": "ae42386e5e5aab02f448a3f03c4aff069fd15914db0a42846de151fe6f51487d"
     },
     "data/01_raw/market/market_prices.csv": {
-      "bytes": 100152025,
-      "lines": 651425,
-      "sha256": "cb7c90ae5bcc72e18ec193aeeffe4c85257c8837b335a88b6bd06d5f4ef09495"
+      "bytes": 100200759,
+      "lines": 651749,
+      "sha256": "c46e2e6432053bc2b179a1b94fcc2d617fca12bf0a0014d3bb45d3c01d5cbf06"
     },
     "data/01_raw/odd/odd_assessment.csv": {
       "bytes": 227509,
