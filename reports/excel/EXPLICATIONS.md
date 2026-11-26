@@ -4,7 +4,7 @@
 
 Le recalcul part des rendements mensuels. Il ne lit pas les indicateurs déjà écrits par Python.
 
-Ces rendements mensuels sont ceux du pipeline : rendement total en CHF, avec le cours ajusté des dividendes converti au cours BNS de fin de mois, et des poids qui dérivent entre deux rééquilibrages trimestriels. Excel ne refait pas cette étape. Il ne peut donc pas détecter une erreur de base de rendement ou de dérive : il vérifie que les indicateurs sont bien calculés à partir de ces rendements.
+Ces rendements mensuels sont ceux du pipeline : rendement total en CHF, avec les dividendes déclarés réinvestis au jour de détachement, au cours BNS de fin de mois, et des poids qui dérivent entre deux rééquilibrages trimestriels. Excel ne refait pas cette étape. Il ne peut donc pas détecter une erreur de base de rendement ou de dérive : il vérifie que les indicateurs sont bien calculés à partir de ces rendements.
 
 Le rendement chaîné est le produit des `1 + r`, moins un. Le rendement annualisé est ce produit élevé à la puissance `12 / T`, moins un. `T` est le nombre de mois. L'annualisation n'utilise pas 252.
 
@@ -14,7 +14,7 @@ Le Sharpe est la moyenne de l'excédent sur le SARON, divisée par l'écart-type
 
 Le Sortino met au numérateur la même moyenne d'excédent. Au dénominateur, chaque mois au-dessus du SARON contribue 0 et chaque mois en dessous contribue le carré de l'excédent. Le diviseur reste `T - 1`, puis on annualise par la racine de 12.
 
-Le drawdown est la richesse divisée par son maximum courant, moins un. Le drawdown maximal est le minimum de cette série. La richesse part de `1 + r` au premier mois.
+Le drawdown est la richesse divisée par son plus haut déjà atteint, moins un. La mise de départ, une unité, est le premier plus haut : un livre qui commence en baisse est déjà en drawdown. La richesse vaut `1 + r` à la fin du premier mois. Le drawdown maximal est le minimum de cette série.
 
 La VaR historique à 95 % est le rendement du rang `k = plafond(0,05 × T)`, après tri du pire vers le meilleur. À rendement égal, le mois le plus ancien vient d'abord. L'expected shortfall est la moyenne des rangs 1 à k. Ce ne sont pas des rendements annualisés et ce n'est pas une loi normale.
 
@@ -40,7 +40,7 @@ Lignes Power BI en attente d'export : 0. Lignes Power BI passées OK par la form
 
 ## Export Power BI
 
-`export_power_bi` contient 101 valeurs lues dans Power BI Desktop le 2026-11-26 07:49:11 UTC, sur le moteur localhost:64591 (Analysis Services 17.0.97.16, ADOMD.NET). Les données du modèle avaient été actualisées dans Desktop entre 2026-11-26T07:49:03 → 2026-11-26T07:49:08 UTC.
+`export_power_bi` contient 101 valeurs lues dans Power BI Desktop le 2026-11-26 09:40:34 UTC, sur le moteur localhost:54165 (Analysis Services 17.0.97.16, ADOMD.NET). Les données du modèle avaient été actualisées dans Desktop entre 2026-11-26T09:40:19 → 2026-11-26T09:40:30 UTC.
 
 Méthode. Pendant qu'un rapport est ouvert, Desktop fait tourner un moteur Analysis Services local. `python -m src.reporting.power_bi_export` lit son port dans le dossier de travail de Desktop, s'y connecte avec ADOMD.NET et envoie une requête DAX `EVALUATE` par ligne : la mesure du modèle, filtrée sur le livre, le choc ou le dernier mois. La requête de chaque ligne est écrite dans `power_bi_export.csv`. Le rapport n'est ni modifié ni enregistré.
 

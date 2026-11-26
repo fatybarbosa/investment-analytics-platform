@@ -1,13 +1,13 @@
 {
   "mention": "Généré automatiquement, à relire avant diffusion.",
-  "genere_le": "2026-11-26 07:51 UTC",
-  "perimetre": "Portefeuilles hypothétiques construits rétrospectivement sur des données publiques : ils n'ont jamais été détenus. Les cours, les cours de change et le SARON sont des données réelles et publiques. Pas de données de conservation et pas de frais. Les livres sont mesurés en rendement total brut : dividendes réinvestis par le cours ajusté, avant frais et avant impôt à la source. Le fonds est mesuré par le rendement de sa valeur liquidative, net de ses frais : la comparaison avantage donc les livres.",
+  "genere_le": "2026-11-26 09:45 UTC",
+  "perimetre": "Portefeuilles hypothétiques construits rétrospectivement sur des données publiques : ils n'ont jamais été détenus. Les cours, les cours de change et le SARON sont des données réelles et publiques. Pas de données de conservation et pas de frais. Les livres sont mesurés en rendement total brut : dividendes déclarés réinvestis au jour de détachement, avant frais et avant impôt à la source. Le fonds est mesuré par le rendement de sa valeur liquidative, net de ses frais : la comparaison avantage donc les livres.",
   "avertissement": "Ces points sont des constats et des alertes liés aux limites écrites du mandat. Ce ne sont pas des recommandations d'investissement personnalisées.",
   "sections": {
     "faits": [
       {
         "type": "constat",
-        "texte": "La fenêtre couvre 120 mois, de 2016-11 à 2026-10. Les trois livres, hypothétiques et construits rétrospectivement sur des données publiques, partagent la même liste de 29 titres : ce sont les titres au statut Eligible du registre ODD qui ont un historique complet en CHF, sur 120 titres examinés.",
+        "texte": "La fenêtre couvre 120 mois, de 2016-11 à 2026-10. Les trois livres, hypothétiques et construits rétrospectivement sur des données publiques, partagent la même liste de 28 titres : ce sont les titres au statut Eligible du registre ODD qui ont un historique complet en CHF, sur 120 titres examinés.",
         "sources": [
           "data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight",
           "data/04_portfolios/portfolio_metrics.csv | cell window_start | strategy=equal_weight",
@@ -18,7 +18,7 @@
       },
       {
         "type": "constat",
-        "texte": "Rendement annualisé en CHF : Équipondéré 7,51 %, Volatilité minimale 6,24 %, Sharpe maximal 6,09 %, contre 6,08 % pour le fonds iShares, rendement de la valeur liquidative converti en CHF. Les trois livres dépassent le fonds sur la fenêtre, le livre Équipondéré le plus nettement. Les livres sont mesurés en rendement total brut : dividendes réinvestis par le cours ajusté, avant frais et avant impôt à la source. Le fonds est mesuré par le rendement de sa valeur liquidative, net de ses frais : la comparaison avantage donc les livres.",
+        "texte": "Rendement annualisé en CHF : Équipondéré 7,97 %, Volatilité minimale 6,31 %, Sharpe maximal 6,25 %, contre 6,08 % pour le fonds iShares, rendement de la valeur liquidative converti en CHF. Les trois livres dépassent le fonds sur la fenêtre, le livre Équipondéré le plus nettement. Les livres sont mesurés en rendement total brut : dividendes déclarés réinvestis au jour de détachement, avant frais et avant impôt à la source. Le fonds est mesuré par le rendement de sa valeur liquidative, net de ses frais : la comparaison avantage donc les livres.",
         "sources": [
           "data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight",
           "data/06_performance/performance_metrics.csv | cell annualized_return | strategy=minimum_volatility",
@@ -28,7 +28,7 @@
       },
       {
         "type": "constat",
-        "texte": "Ratio de Sharpe contre le SARON : Équipondéré 0,66, Volatilité minimale 0,58, Sharpe maximal 0,55, fonds 0,52. Le livre Équipondéré a le Sharpe le plus élevé des trois livres.",
+        "texte": "Ratio de Sharpe contre le SARON : Équipondéré 0,69, Volatilité minimale 0,59, Sharpe maximal 0,57, fonds 0,52. Le livre Équipondéré a le Sharpe le plus élevé des trois livres.",
         "sources": [
           "data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=equal_weight",
           "data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=minimum_volatility",
@@ -38,7 +38,7 @@
       },
       {
         "type": "constat",
-        "texte": "Richesse finale pour une unité investie au début de la fenêtre, sans choc : Équipondéré 2,06, Volatilité minimale 1,83, Sharpe maximal 1,81.",
+        "texte": "Richesse finale pour une unité investie au début de la fenêtre, sans choc : Équipondéré 2,15, Volatilité minimale 1,84, Sharpe maximal 1,83.",
         "sources": [
           "data/08_stress/stress_results.csv | cell terminal_wealth | shock=aucun, strategy=equal_weight",
           "data/08_stress/stress_results.csv | cell terminal_wealth | shock=aucun, strategy=minimum_volatility",
@@ -60,7 +60,7 @@
     "risques": [
       {
         "type": "constat",
-        "texte": "Volatilité annualisée : Équipondéré 12,31 %, Volatilité minimale 11,80 %, Sharpe maximal 12,31 %, fonds 13,24 %.",
+        "texte": "Volatilité annualisée : Équipondéré 12,28 %, Volatilité minimale 11,76 %, Sharpe maximal 12,14 %, fonds 13,24 %.",
         "sources": [
           "data/07_risk/risk_by_strategy.csv | cell annualized_volatility | strategy=equal_weight",
           "data/07_risk/risk_by_strategy.csv | cell annualized_volatility | strategy=minimum_volatility",
@@ -70,7 +70,7 @@
       },
       {
         "type": "constat",
-        "texte": "Perte mensuelle historique, lue sur les 5 % de mois les plus défavorables : Équipondéré VaR -5,35 % et expected shortfall -7,80 %; Volatilité minimale VaR -6,04 % et expected shortfall -7,51 %; Sharpe maximal VaR -5,56 % et expected shortfall -8,03 %; Fonds iShares (CHF) VaR -5,50 % et expected shortfall -7,42 %. Ce sont des rendements mensuels observés, sans loi normale et sans annualisation.",
+        "texte": "Perte mensuelle historique, lue sur les 5 % de mois les plus défavorables : Équipondéré VaR -5,49 % et expected shortfall -7,86 %; Volatilité minimale VaR -5,56 % et expected shortfall -7,62 %; Sharpe maximal VaR -5,89 % et expected shortfall -8,17 %; Fonds iShares (CHF) VaR -5,50 % et expected shortfall -7,42 %. Ce sont des rendements mensuels observés, sans loi normale et sans annualisation.",
         "sources": [
           "data/07_risk/risk_by_strategy.csv | cell var_95 | strategy=equal_weight",
           "data/07_risk/risk_by_strategy.csv | cell expected_shortfall_95 | strategy=equal_weight",
@@ -93,7 +93,7 @@
       },
       {
         "type": "constat",
-        "texte": "Pire mois de la fenêtre : Équipondéré -11,47 % en 2020-03, Volatilité minimale -10,72 % en 2020-03, Sharpe maximal -11,71 % en 2022-09.",
+        "texte": "Pire mois de la fenêtre : Équipondéré -11,89 % en 2020-03, Volatilité minimale -11,33 % en 2020-03, Sharpe maximal -11,89 % en 2022-09.",
         "sources": [
           "data/07_risk/var_tail.csv | cell portfolio_return | rank=1, strategy=equal_weight",
           "data/07_risk/var_tail.csv | cell month | rank=1, strategy=equal_weight",
@@ -105,7 +105,7 @@
       },
       {
         "type": "constat",
-        "texte": "Drawdown maximal : Équipondéré -23,63 %, du sommet de 2021-08 au creux de 2023-10; Volatilité minimale -22,81 %, du sommet de 2021-08 au creux de 2023-10; Sharpe maximal -28,62 %, du sommet de 2021-08 au creux de 2023-10. À la fin de la fenêtre, le sommet n'est pas retrouvé pour : Équipondéré, Volatilité minimale, Sharpe maximal.",
+        "texte": "Drawdown maximal : Équipondéré -22,90 %, du sommet de 2021-08 au creux de 2023-10; Volatilité minimale -23,14 %, du sommet de 2021-08 au creux de 2023-10; Sharpe maximal -27,42 %, du sommet de 2021-08 au creux de 2023-10. À la fin de la fenêtre, le sommet n'est pas retrouvé pour : Volatilité minimale, Sharpe maximal.",
         "sources": [
           "data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=equal_weight",
           "data/06_performance/drawdown_episode.csv | cell peak_month | strategy=equal_weight",
@@ -120,7 +120,7 @@
       },
       {
         "type": "constat",
-        "texte": "Corrélation : la moyenne des paires de la liste est de 0,17 sur 29 titres. La paire la plus liée est COVIVIO SA et GECINA SA, à 0,77. Une corrélation moyenne basse ne protège pas dans un mois de baisse générale : les pires mois des trois livres sont proches.",
+        "texte": "Corrélation : la moyenne des paires de la liste est de 0,16 sur 28 titres. La paire la plus liée est COVIVIO SA et GECINA SA, à 0,77. Une corrélation moyenne basse ne protège pas dans un mois de baisse générale : les pires mois des trois livres sont proches.",
         "sources": [
           "data/07_risk/universe_correlation.csv | last average_correlation",
           "data/07_risk/universe_correlation.csv | last names",
@@ -129,7 +129,7 @@
       },
       {
         "type": "constat",
-        "texte": "Concentration au mois de 2026-10 : Équipondéré 34,48 % sur les 10 premières lignes, 29,0 lignes effectives, premier secteur Health Care à 34,48 %; Volatilité minimale 49,72 % sur les 10 premières lignes, 22,9 lignes effectives, premier secteur Health Care à 39,80 %; Sharpe maximal 48,63 % sur les 10 premières lignes, 23,3 lignes effectives, premier secteur Health Care à 39,72 %.",
+        "texte": "Concentration au mois de 2026-10 : Équipondéré 35,71 % sur les 10 premières lignes, 28,0 lignes effectives, premier secteur Health Care à 35,71 %; Volatilité minimale 49,78 % sur les 10 premières lignes, 22,7 lignes effectives, premier secteur Health Care à 40,00 %; Sharpe maximal 49,18 % sur les 10 premières lignes, 22,6 lignes effectives, premier secteur Health Care à 39,19 %.",
         "sources": [
           "data/05_monitoring/monthly_report.csv | cell top_10_weight | strategy=equal_weight",
           "data/05_monitoring/monthly_report.csv | cell effective_holdings | strategy=equal_weight",
@@ -146,7 +146,7 @@
       },
       {
         "type": "constat",
-        "texte": "Tests de résistance, illustratifs : richesse finale la plus basse des quatre chocs, pour une unité investie. Équipondéré 1,57 avec le choc récession, contre 2,06 sans choc; Volatilité minimale 1,44 avec le choc récession, contre 1,83 sans choc; Sharpe maximal 1,40 avec le choc récession, contre 1,81 sans choc. Les chocs sont des paramètres écrits à l'avance, appliqués aux rendements déjà publiés. Ce ne sont pas des prévisions.",
+        "texte": "Tests de résistance, illustratifs : richesse finale la plus basse des quatre chocs, pour une unité investie. Équipondéré 1,64 avec le choc récession, contre 2,15 sans choc; Volatilité minimale 1,45 avec le choc récession, contre 1,84 sans choc; Sharpe maximal 1,43 avec le choc récession, contre 1,83 sans choc. Les chocs sont des paramètres écrits à l'avance, appliqués aux rendements déjà publiés. Ce ne sont pas des prévisions.",
         "sources": [
           "data/08_stress/stress_results.csv | cell terminal_wealth | shock=recession, strategy=equal_weight",
           "data/08_stress/stress_results.csv | cell terminal_wealth | shock=aucun, strategy=equal_weight",
@@ -158,7 +158,7 @@
       },
       {
         "type": "constat",
-        "texte": "Le choc de marché (-20 % sur le dernier mois) est plus sévère que le pire mois réellement observé (-11,71 %, livre Sharpe maximal). Le choc de taux ne change pas le rendement des actions : il ne modifie que le taux sans risque, donc le ratio de Sharpe. Ce n'est pas un test de sensibilité des titres aux taux. Aucun scénario daté n'est rejoué en dehors des pires mois observés ci-dessus.",
+        "texte": "Le choc de marché (-20 % sur le dernier mois) est plus sévère que le pire mois réellement observé (-11,89 %, livre Sharpe maximal). Le choc de taux ne change pas le rendement des actions : il ne modifie que le taux sans risque, donc le ratio de Sharpe. Ce n'est pas un test de sensibilité des titres aux taux. Aucun scénario daté n'est rejoué en dehors des pires mois observés ci-dessus.",
         "sources": [
           "py:src.config | cell MARKET_SHOCK_RETURN",
           "data/07_risk/var_tail.csv | cell portfolio_return | rank=1, strategy=maximum_sharpe"
@@ -196,7 +196,7 @@
       },
       {
         "type": "alerte",
-        "texte": "Entre deux décisions, les poids dérivent avec le marché et un livre ne se corrige qu'au rééquilibrage suivant. Dépassements passifs, en mois-livres sur 237 : émetteur 161, secteur (plafond de travail) 30, zone 5, devise 0. Le plus gros poids d'un titre atteint 6,97 % pour un plafond de 5 %. Le mandat ne dit pas si un dépassement passif est toléré jusqu'au prochain rééquilibrage : la décision est à prendre.",
+        "texte": "Entre deux décisions, les poids dérivent avec le marché et un livre ne se corrige qu'au rééquilibrage suivant. Dépassements passifs, en mois-livres sur 237 : émetteur 163, secteur (plafond de travail) 52, zone 2, devise 0. Le plus gros poids d'un titre atteint 7,11 % pour un plafond de 5 %. Le mandat ne dit pas si un dépassement passif est toléré jusqu'au prochain rééquilibrage : la décision est à prendre.",
         "sources": [
           "data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=0",
           "data/05_monitoring/limit_watch.csv | sum sector_over_cap | rebalance_month=0",
@@ -209,7 +209,7 @@
       },
       {
         "type": "alerte",
-        "texte": "Plafond de secteur écrit dans le mandat : 20 %. Il est dépassé dans 360 mois-livres sur 360. Sur cette liste, un livre entièrement investi ne peut pas respecter ce plafond : au plus 85 % du livre peut être placé sous le plafond d'émetteur de 5 % et ce plafond de secteur. Les livres sont donc construits avec un plafond de travail de 40 %, qui n'a pas été approuvé par le client. C'est un écart ouvert entre le mandat et la construction, pas une conformité.",
+        "texte": "Plafond de secteur écrit dans le mandat : 20 %. Il est dépassé dans 360 mois-livres sur 360. Sur cette liste, un livre entièrement investi ne peut pas respecter ce plafond : au plus 80 % du livre peut être placé sous le plafond d'émetteur de 5 % et ce plafond de secteur. Les livres sont donc construits avec un plafond de travail de 40 %, qui n'a pas été approuvé par le client. C'est un écart ouvert entre le mandat et la construction, pas une conformité.",
         "sources": [
           "data/05_monitoring/mandate_feasibility.csv | cell capacity_ips | sector=TOTAL",
           "py:src.config | cell ISSUER_WEIGHT_CAP",
@@ -221,7 +221,7 @@
       },
       {
         "type": "alerte",
-        "texte": "Volatilité minimale : le premier secteur (Health Care) pèse 39,80 % pour un plafond de travail de 40 %. Le poids dépasse 95 % du plafond, seuil de vigilance du rapport et non limite du mandat.",
+        "texte": "Volatilité minimale : le premier secteur (Health Care) pèse 40,00 % pour un plafond de travail de 40 %. Le poids dépasse 95 % du plafond, seuil de vigilance du rapport et non limite du mandat.",
         "sources": [
           "data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility",
           "py:src.config | cell SECTOR_WEIGHT_CAP",
@@ -230,7 +230,7 @@
       },
       {
         "type": "alerte",
-        "texte": "Sharpe maximal : le premier secteur (Health Care) pèse 39,72 % pour un plafond de travail de 40 %. Le poids dépasse 95 % du plafond, seuil de vigilance du rapport et non limite du mandat.",
+        "texte": "Sharpe maximal : le premier secteur (Health Care) pèse 39,19 % pour un plafond de travail de 40 %. Le poids dépasse 95 % du plafond, seuil de vigilance du rapport et non limite du mandat.",
         "sources": [
           "data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=maximum_sharpe",
           "py:src.config | cell SECTOR_WEIGHT_CAP",
@@ -239,7 +239,7 @@
       },
       {
         "type": "alerte",
-        "texte": "Sharpe maximal : la première zone (Europe) pèse 50,00 % pour un plafond de 50 %. Le poids dépasse 95 % du plafond, seuil de vigilance du rapport et non limite du mandat.",
+        "texte": "Sharpe maximal : la première zone (Europe) pèse 49,96 % pour un plafond de 50 %. Le poids dépasse 95 % du plafond, seuil de vigilance du rapport et non limite du mandat.",
         "sources": [
           "data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=maximum_sharpe",
           "py:src.config | cell ZONE_WEIGHT_CAP",
@@ -248,7 +248,7 @@
       },
       {
         "type": "alerte",
-        "texte": "Écart de suivi mesuré contre le fonds : Équipondéré 7,78 %, Volatilité minimale 8,34 %, Sharpe maximal 8,59 %, pour une cible ex ante de 8 % dans la politique d'investissement. Au-dessus de la cible : Volatilité minimale, Sharpe maximal. La cible n'est pas appliquée aux poids publiés : c'est une mesure après coup.",
+        "texte": "Écart de suivi mesuré contre le fonds : Équipondéré 7,75 %, Volatilité minimale 8,34 %, Sharpe maximal 8,41 %, pour une cible ex ante de 8 % dans la politique d'investissement. Au-dessus de la cible : Volatilité minimale, Sharpe maximal. La cible n'est pas appliquée aux poids publiés : c'est une mesure après coup.",
         "sources": [
           "data/06_performance/performance_metrics.csv | cell tracking_error | strategy=equal_weight",
           "data/06_performance/performance_metrics.csv | cell tracking_error | strategy=minimum_volatility",
@@ -258,7 +258,7 @@
       },
       {
         "type": "alerte",
-        "texte": "Rotation brute, mesurée contre le livre que le marché a laissé, dérive comprise : Équipondéré : plafond trimestriel dépassé 4 fois, plafond annuel dépassé 1 fois; Volatilité minimale : plafond trimestriel dépassé 0 fois, plafond annuel dépassé 0 fois; Sharpe maximal : plafond trimestriel dépassé 9 fois, plafond annuel dépassé 20 fois. Plafonds : 12,5 % par trimestre. La rotation la plus forte observée est de 18,6 %. À la date de transaction, les plafonds de poids priment sur le budget de rotation : quand les deux ne tiennent pas ensemble, la rotation dépasse.",
+        "texte": "Rotation brute, mesurée contre le livre que le marché a laissé, dérive comprise : Équipondéré : plafond trimestriel dépassé 7 fois, plafond annuel dépassé 3 fois; Volatilité minimale : plafond trimestriel dépassé 1 fois, plafond annuel dépassé 2 fois; Sharpe maximal : plafond trimestriel dépassé 7 fois, plafond annuel dépassé 21 fois. Plafonds : 12,5 % par trimestre. La rotation la plus forte observée est de 20,0 %. À la date de transaction, les plafonds de poids priment sur le budget de rotation : quand les deux ne tiennent pas ensemble, la rotation dépasse.",
         "sources": [
           "data/05_monitoring/turnover.csv | sum over_quarterly_cap | strategy=equal_weight",
           "data/05_monitoring/turnover.csv | sum over_annual_cap | strategy=equal_weight",
@@ -277,16 +277,16 @@
           "audit/data_control_center.xlsx[Quality History] | last global_quality_score",
           "audit/data_control_center.xlsx[Quality Issues] | count issue_id",
           "audit/data_control_center.xlsx[Quality Controls] | count control_id",
-          "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-084954-994951-ISS-004",
-          "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-084954-994951-ISS-004",
-          "audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-084954-994951-ISS-004"
+          "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-104200-240439-ISS-004",
+          "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-104200-240439-ISS-004",
+          "audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-104200-240439-ISS-004"
         ]
       },
       {
         "type": "constat",
         "texte": "Le score de qualité est pondéré par les enregistrements : 651 748 lignes de cours sur 662 618 enregistrements contrôlés. Il masque donc les défauts qui touchent peu de lignes mais des titres entiers : le contrôle de cohérence des devises signale 11 titres sur 120 (9,17 %) sans série de change.",
         "sources": [
-          "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-084954-994951-ISS-005",
+          "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-104200-240439-ISS-005",
           "audit/data_control_center.xlsx[Quality History] | last records_checked",
           "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-005, dataset_id=DS-002",
           "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | control_id=QC-005, dataset_id=DS-002",
@@ -335,7 +335,7 @@
         "type": "point",
         "texte": "Traiter l'anomalie de gravité MEDIUM du contrôle qualité : cohérence des devises, 11 titres de la table securities_master sans série de change. Ces titres ne peuvent pas être convertis en CHF et restent hors des livres.",
         "sources": [
-          "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-084954-994951-ISS-004"
+          "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-104200-240439-ISS-004"
         ]
       },
       {

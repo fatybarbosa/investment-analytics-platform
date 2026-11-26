@@ -28,6 +28,8 @@ Registre des sources
   → dictionnaire de données et requêtes SQL exécutées, dont les contrôles sur les tables des livres
 ```
 
+`python -m src.pipeline.full_refresh` enchaîne le tout sur la machine de travail : les données, puis Power BI Desktop ouvert, actualisé, exporté et refermé sans enregistrer, puis l'annexe et les rapports. Une tâche mensuelle reconstruit les données seules (`scripts/monthly_refresh.cmd`).
+
 La commande s'arrête quand :
 
 - un jeu dû ne peut pas être acquis et qu'un jeu en dépend ;
@@ -57,7 +59,8 @@ Elle ne s'arrête pas pour un avertissement qualité : l'écart est enregistré,
 - La relecture humaine des livrables avant diffusion. Chaque texte porte la mention qui le rappelle.
 - La décision sur un écart. Le pipeline l'écrit, il ne le tranche pas.
 - La lecture des rapports de société pour le registre ODD. Elle reste manuelle, et sa source est nommée ligne par ligne.
-- L'ouverture de Power BI Desktop et l'actualisation du modèle. Le pipeline n'enregistre pas le rapport.
+- La mise en forme du rapport Power BI. La commande complète actualise le modèle et exporte les mesures, mais n'enregistre jamais le rapport.
+- Le versionnement. Aucune commande ne commite ni ne publie.
 
 ## Le même raisonnement dans Excel
 

@@ -24,11 +24,20 @@ import pandas as pd
 
 from src.acquisition.acquisition_logger import log_preparation
 from src.config import (
+    CAPITAL_RETURNS_FILE,
     DATABASE_FILE,
     ELIGIBLE_UNIVERSE,
     PROCESSED_MACRO,
     PROCESSED_MARKET,
     REPORTING_CURRENCY,
+)
+from src.quality.corporate_actions import (
+    ABOVE_LIMIT,
+    CHECK_COLUMNS,
+    add_capital_returns,
+    dividend_factor,
+    find_corporate_actions,
+    ordered_bars,
 )
 from src.quality.quality_checks import ohlc_bar_flags, snb_quote_table
 from src.quality.quality_config import BLANK_TOKENS
@@ -40,6 +49,7 @@ FAILED_STATUS = "Failed"
 
 MARKET_PRICES_CHF = PROCESSED_MARKET / "market_prices_chf.csv"
 MARKET_PRICE_EXCLUSIONS = PROCESSED_MARKET / "market_price_exclusions.csv"
+CORPORATE_ACTIONS_FILE = PROCESSED_MARKET / "corporate_action_check.csv"
 SARON_TREATED = PROCESSED_MACRO / "saron.csv"
 CHF_UNIVERSE = ELIGIBLE_UNIVERSE / "chf_portfolio_universe.csv"
 
@@ -78,7 +88,10 @@ PRICE_COLUMNS = (
     "chf_per_unit",
     "close_chf",
     "adj_close",
-    "adj_close_chf",
+    "dividends",
+    "dividend_factor",
+    "tr_close_chf",
+    "dividend_check",
 )
 EXCLUSION_COLUMNS = (
     "symbol",
@@ -196,13 +209,6 @@ def price_defect(prices):
     reason = reason.mask(outside, "outside_high_low")
     reason = reason.mask(negative, "negative_price")
     reason = reason.mask(missing_close, "missing_close")
-    # The adjusted close carries the dividends. A bar without a usable one
-    # cannot give a total return, so it is left out. The original close
-    # reasons keep their priority, and nothing is filled.
-    if "adj_close" in prices.columns:
-        adjusted = prices["adj_close"]
-        reason = reason.mask(reason.eq("") & adjusted.isna(), "missing_adj_close")
-        reason = reason.mask(reason.eq("") & adjusted.le(0), "non_positive_adj_close")
     return reason
 
 
@@ -214,14 +220,20 @@ def snb_quotes(fx_rates):
     return quotes
 
 
-def treat_market_prices(prices, master, fx_rates):
-    """Drop unusable bars and convert the remaining close to CHF."""
-    bars = prices.loc[:, ["symbol", "timestamp", "open", "high", "low", "close", "adj_close", "volume"]].copy()
-    bars["symbol"] = bars["symbol"].astype(str)
-    bars["timestamp"] = bars["timestamp"].astype(str).str.slice(0, 10)
-    for column in ("open", "high", "low", "close", "adj_close", "volume"):
+def treat_market_prices(prices, master, fx_rates, capital_returns):
+    """Drop unusable bars, rebuild the total-return level and convert it to CHF."""
+    columns = ["symbol", "timestamp", "open", "high", "low", "close", "adj_close", "volume", "dividends", "stock_splits"]
+    bars = ordered_bars(prices.loc[:, columns]).reset_index(drop=True)
+    for column in ("open", "high", "low", "volume"):
         bars[column] = pd.to_numeric(bars[column], errors="coerce")
     bars["price_reason"] = price_defect(bars)
+    usable = bars["price_reason"].astype("string").eq("")
+    # The dividend is reinvested before any bar is dropped, so that a dividend
+    # paid on an unusable bar is not lost.
+    bars, covered = add_capital_returns(bars, capital_returns)
+    bars["dividend_factor"] = dividend_factor(bars, usable)
+    actions = find_corporate_actions(bars, usable, covered)
+    flagged = actions.loc[actions["check"].eq(ABOVE_LIMIT), ["symbol", "timestamp"]]
 
     identity = master.loc[:, ["yahoo_symbol", "listing_currency"]].copy()
     identity["yahoo_symbol"] = identity["yahoo_symbol"].astype(str).str.strip()
@@ -285,13 +297,18 @@ def treat_market_prices(prices, master, fx_rates):
     if (
         bars.loc[kept, "chf_per_unit"].isna().any()
         or bars.loc[kept, "close"].isna().any()
-        or bars.loc[kept, "adj_close"].isna().any()
     ):
-        raise RuntimeError("A kept price bar has no close, no adjusted close or no CHF rate.")
+        raise RuntimeError("A kept price bar has no close or no CHF rate.")
     conversion = bars.loc[kept, "chf_per_unit"] / bars.loc[kept, "quote_scale"]
     bars.loc[kept, "close_chf"] = bars.loc[kept, "close"] * conversion
-    # Total-return level in CHF: the adjusted close folds the dividends in.
-    bars.loc[kept, "adj_close_chf"] = bars.loc[kept, "adj_close"] * conversion
+    # Total-return level in CHF: the close with the declared dividends reinvested.
+    bars.loc[kept, "tr_close_chf"] = bars.loc[kept, "close_chf"] * bars.loc[kept, "dividend_factor"]
+    # A dividend above the limit marks the first kept bar on or after its date.
+    bars["dividend_check"] = 0
+    for symbol, day in flagged.itertuples(index=False):
+        later = bars.index[kept & bars["symbol"].eq(symbol) & bars["timestamp"].ge(day)]
+        if len(later):
+            bars.loc[later[0], "dividend_check"] = 1
 
     clean = bars.loc[kept, list(PRICE_COLUMNS)].sort_values(
         ["symbol", "timestamp"],
@@ -302,7 +319,7 @@ def treat_market_prices(prices, master, fx_rates):
         kind="mergesort",
     )
     excluded["listing_currency"] = excluded["listing_currency"].fillna("")
-    return clean.reset_index(drop=True), excluded.reset_index(drop=True), published
+    return clean.reset_index(drop=True), excluded.reset_index(drop=True), published, actions
 
 
 def build_chf_universe(master, published_currencies, clean_prices):
@@ -399,7 +416,8 @@ def build_quality_treatment():
         fx_rates = read_table(connection, "fx_rates")
         saron = read_table(connection, "saron")
 
-    clean_prices, exclusions, published = treat_market_prices(prices, master, fx_rates)
+    capital_returns = pd.read_csv(CAPITAL_RETURNS_FILE, dtype={"symbol": str, "ex_date": str})
+    clean_prices, exclusions, published, actions = treat_market_prices(prices, master, fx_rates, capital_returns)
     universe = build_chf_universe(master, published, clean_prices)
     saron_treated = treat_saron(saron)
 
@@ -420,6 +438,12 @@ def build_quality_treatment():
             MARKET_PRICE_EXCLUSIONS,
             EXCLUSION_COLUMNS,
             exclusions["reason"].value_counts().to_dict(),
+        ),
+        "corporate_action_check": publish_output(
+            actions,
+            CORPORATE_ACTIONS_FILE,
+            CHECK_COLUMNS,
+            actions["check"].value_counts().to_dict(),
         ),
         "saron": publish_output(
             saron_treated,

@@ -282,7 +282,8 @@ def _bars(figure, metrics, measures, row, percent):
                 continue
             number = float(value)
             y_values.append(number)
-            text.append(f"{number * 100:.1f} %".replace(".", ",") if percent else f"{number:.2f}".replace(".", ","))
+            shown = round(number * 100, 1) + 0.0 if percent else round(number, 2) + 0.0
+            text.append(f"{shown:.1f} %".replace(".", ",") if percent else f"{shown:.2f}".replace(".", ","))
         figure.add_trace(
             go.Bar(
                 x=[title for _column, title in measures],

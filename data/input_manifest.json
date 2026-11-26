@@ -5,6 +5,11 @@
       "lines": 53700,
       "sha256": "00967b0ac77a021393772732fc3d4c5bc877c50e2b1eae069b17db803f849aa2"
     },
+    "data/01_raw/corporate_actions/capital_returns.csv": {
+      "bytes": 397,
+      "lines": 2,
+      "sha256": "f3ce268b4b4b158db1ffac9b6ba5e7a24601dc482d139dfee6f5b293af75b573"
+    },
     "data/01_raw/fx/fx_rates.csv": {
       "bytes": 1263762,
       "lines": 7579,

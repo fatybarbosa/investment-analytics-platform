@@ -2,7 +2,7 @@
 
 **Généré automatiquement, à relire avant diffusion.**
 
-Produit par le pipeline le 2026-11-26 07:51 UTC. Chaque nombre est relu dans un fichier du pipeline. Les cas décrivent ce que le pipeline a fait d'un défaut : il l'écarte et l'écrit, il ne le corrige pas en silence.
+Produit par le pipeline le 2026-11-26 09:45 UTC. Chaque nombre est relu dans un fichier du pipeline. Les cas décrivent ce que le pipeline a fait d'un défaut : il l'écarte et l'écrit, il ne le corrige pas en silence.
 
 ## Titres sans série de change
 
@@ -13,11 +13,18 @@ Produit par le pipeline le 2026-11-26 07:51 UTC. Chaque nombre est relu dans un 
 
 ## Clôtures manquantes et cours hors fourchette
 
-- Symptôme. Sur 651 748 séances de cours, 1 748 ont une clôture hors de la fourchette plus haut / plus bas ou négative, et 1 159 n'ont pas de clôture.
+- Symptôme. Sur 651 748 séances de cours, 1 748 ont une clôture hors de la fourchette plus haut / plus bas ou négative, et 1 159 ont un champ obligatoire vide.
 - Cause. Les séances viennent d'une source gratuite, avec des barres incomplètes ou incohérentes sur certaines places. Une clôture hors fourchette ne peut pas être vraie en même temps que son plus haut et son plus bas.
-- Décision. Chaque séance fautive est retirée de la série en CHF et inscrite dans le fichier des exclusions avec sa raison : 1 748 séances hors fourchette et 1 159 sans clôture, les mêmes nombres que le contrôle. Aucune valeur n'est interpolée. Le même fichier garde 50 959 séances sans série de change et 7 348 séances sans taux de fin de mois.
-- Cours ajusté. Le rendement des livres est un rendement total : il utilise le cours ajusté des dividendes, converti en CHF comme le cours de clôture. 964 séances ont un cours ajusté nul ou négatif et 0 n'en ont pas : elles sont écartées, sans valeur reconstituée. Toutes sont antérieures à la fenêtre de mesure et ne touchent aucun livre.
+- Décision. Chaque séance fautive est retirée de la série en CHF et inscrite dans le fichier des exclusions avec sa raison : 1 748 séances hors fourchette et 1 159 sans clôture. Aucune valeur n'est interpolée. Le même fichier garde 50 959 séances sans série de change et 7 821 séances sans taux de fin de mois.
 - Trace. Le contrôle reste en avertissement sur la table des cours. Le fichier des exclusions est relu par cette note à chaque génération.
+
+## Dividendes et opérations sur titres
+
+- Symptôme. Le cours ajusté du fournisseur ne reprend pas des dividendes déclarés. Titres éligibles concernés, avec le nombre de dividendes ignorés sur tout l'historique : 9901.HK 4, ENLT.TA 1, LAND.L 101, NRP.JO 38, PSON.L 67. Des dividendes dépassent aussi 10 % du cours précédent : SCA-B.ST 18.
+- Cause. L'ajustement du fournisseur n'est pas le même d'une place à l'autre. Pour un titre scindé, le cours passé a été retraité et le dividende ne l'a pas été : les deux ne sont plus sur la même base.
+- Versement absent des données, ajouté depuis la publication de la société. LAND.L : 60 pence par ancienne action, avec un regroupement de 16 actions en 15. Le montant est ramené à la base des cours et la source est écrite dans le registre.
+- Décision. Le rendement total est reconstruit de la même façon pour tous les titres : le cours de clôture, avec chaque dividende déclaré réinvesti au cours du jour de détachement. Le cours ajusté reste dans le fichier et ne mesure plus aucun rendement. Sort des livres, avec le motif dividend_not_comparable : SCA-B.ST. Une opération sur titres que le cours ne reflète pas est signalée et n'est pas corrigée : FIBRAPL14.MX.
+- Trace. Les versements déclarés sont dans data/01_raw/corporate_actions/capital_returns.csv. Chaque anomalie est une ligne de data/02_processed/market/corporate_action_check.csv, avec la séance et le cours de référence. Le contrôle des valeurs aberrantes compte les dividendes au-dessus de la limite.
 
 ## Unité du rendement publié du fonds
 

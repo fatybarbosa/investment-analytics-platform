@@ -187,16 +187,6 @@ VALUE_POSITION_COLUMN = "value_position"
 DATE_COLUMN = "date"
 VALUE_COLUMN = "value"
 
-BASE_COLUMNS = (
-    CUBE_ID_COLUMN,
-    SERIES_KEY_COLUMN,
-    FREQUENCY_COLUMN,
-    SCALE_COLUMN,
-    UNIT_COLUMN,
-    VALUE_POSITION_COLUMN,
-    DATE_COLUMN,
-    VALUE_COLUMN,
-)
 
 
 # ============================================================================

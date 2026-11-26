@@ -11,7 +11,7 @@ The decision of a quarter is fixed from the previous ESTIMATION_MONTHS
 returns only. The book then trades once, at the start of the quarter, and
 drifts with the market for the three months: no trade is made inside a
 quarter. The returns are total returns, with dividends folded in through
-the adjusted close. The turnover budget is measured against the drifted
+the close with its dividends reinvested. The turnover budget is measured against the drifted
 book, not against the previous decision.
 Issuer, sector, zone and listing-currency caps are applied at each decision.
 Between two decisions a weight can pass a cap by drift alone. Monitoring
@@ -159,18 +159,22 @@ def write_csv_atomically(dataframe, output_path, columns):
     temporary.replace(output_path)
 
 
-# Returns are total returns: the adjusted close folds the dividends in, and
-# the price is converted at the SNB rate of the month. The plain close stays
-# in the file for audit. It is not used to measure a return.
-RETURN_LEVEL = "adj_close_chf"
+# Returns are total returns: the close with each declared dividend reinvested
+# at the ex-date, converted at the SNB rate of the month. The plain close and
+# the provider's adjusted close stay in the file for audit. Neither is used to
+# measure a return.
+RETURN_LEVEL = "tr_close_chf"
+PRICE_INPUT_COLUMNS = ("symbol", "timestamp", "close_chf", RETURN_LEVEL, "dividend_check")
 
 
 def month_end_levels(prices):
     """Keep the last usable CHF level of each symbol and month."""
-    levels = prices.loc[:, ["symbol", "timestamp", "close_chf", RETURN_LEVEL]].copy()
+    levels = prices.loc[:, list(PRICE_INPUT_COLUMNS)].copy()
     levels["timestamp"] = pd.to_datetime(levels["timestamp"])
     levels["month"] = levels["timestamp"].dt.to_period("M")
     levels = levels.sort_values(["symbol", "timestamp"])
+    # A flagged dividend belongs to its month, whichever bar of the month carries it.
+    levels["dividend_check"] = levels.groupby(["symbol", "month"])["dividend_check"].transform("max")
     return levels.groupby(["symbol", "month"], as_index=False).tail(1)
 
 
@@ -236,6 +240,9 @@ def shared_membership(universe, levels, price_months):
         elif positive_months < required:
             decision = "excluded"
             reason = "incomplete_monthly_history"
+        elif history.loc[history["month"] > price_months[0], "dividend_check"].any():
+            decision = "excluded"
+            reason = "dividend_not_comparable"
         else:
             decision = "included"
             reason = ""
@@ -267,7 +274,7 @@ def shared_monthly_returns(levels, membership, return_months, price_months):
     wide = levels.pivot(index="month", columns="symbol", values=RETURN_LEVEL)
     wide = wide.reindex(index=price_months, columns=list(included))
     if wide.isna().any().any() or (wide <= 0).any().any():
-        raise RuntimeError("The shared window contains a missing or non-positive adjusted close.")
+        raise RuntimeError("The shared window contains a missing or non-positive total-return level.")
     returns = wide.pct_change().iloc[1:].copy()
     returns.index = returns.index.astype(str)
     expected = pd.Index(return_months.astype(str))
@@ -799,7 +806,7 @@ def measure_strategy(strategy, returns, risk_free, last_weights):
     if growth <= 0:
         raise RuntimeError("Portfolio wealth is not positive.")
     wealth = (1 + returns).cumprod()
-    drawdown = wealth / wealth.cummax() - 1
+    drawdown = wealth / wealth.cummax().clip(lower=1.0) - 1
     volatility = float(excess.std(ddof=1))
     return {
         "strategy": strategy,
@@ -1054,7 +1061,7 @@ def attach_odd_status(membership):
 
 def load_construction_inputs():
     """Read the treated CHF prices, the eligible universe, and SARON."""
-    prices = pd.read_csv(MARKET_PRICES_CHF, usecols=["symbol", "timestamp", "close_chf", RETURN_LEVEL])
+    prices = pd.read_csv(MARKET_PRICES_CHF, usecols=list(PRICE_INPUT_COLUMNS))
     universe = pd.read_csv(CHF_UNIVERSE, dtype=str, keep_default_na=False)
     saron = pd.read_csv(SARON_TREATED, dtype=str, keep_default_na=False)
     if universe["yahoo_symbol"].duplicated().any():

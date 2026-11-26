@@ -52,7 +52,7 @@ ticker,name,exchange,listing_currency,yahoo_symbol,chf_status,exclusion_reason,c
 9868,XPENG CLASS A INC,Hong Kong Exchanges And Clearing Ltd,HKD,9868.HK,included,,1308
 9901,NEW ORIENTAL EDUCATION & TECHNOLOG,Hong Kong Exchanges And Clearing Ltd,HKD,9901.HK,included,,1468
 ALNY,ALNYLAM PHARMACEUTICALS,NASDAQ,USD,ALNY,included,,5641
-ANA,ACCIONA,Bolsa De Madrid,EUR,ANA.MC,included,,6745
+ANA,ACCIONA,Bolsa De Madrid,EUR,ANA.MC,included,,6885
 ARGX,ARGENX,Nyse Euronext - Euronext Brussels,EUR,ARGX.BR,included,,3151
 BMY,BRISTOL MYERS SQUIBB,NYSE,USD,BMY,included,,13696
 CICT,CAPITALAND INTEGRATED COMMERCIAL T,Singapore Exchange,SGD,C38U.SI,included,,4768
@@ -94,7 +94,7 @@ NRP,NEPI ROCKCASTLE,Johannesburg Stock Exchange,ZAR,NRP.JO,included,,3908
 NVDA,NVIDIA,NASDAQ,USD,NVDA,included,,6987
 ORSTED,ORSTED A/S,Omx Nordic Exchange Copenhagen A/S,DKK,ORSTED.CO,included,,2601
 PSON,PEARSON PLC,London Stock Exchange,GBP,PSON.L,included,,9790
-REC,RECORDATI INDUSTRIA CHIMICA E FARM,Borsa Italiana,EUR,REC.MI,included,,6765
+REC,RECORDATI INDUSTRIA CHIMICA E FARM,Borsa Italiana,EUR,REC.MI,included,,7116
 REGN,REGENERON PHARMACEUTICALS,NASDAQ,USD,REGN,included,,8961
 RIVN,RIVIAN AUTOMOTIVE CLASS A,NASDAQ,USD,RIVN,included,,1248
 SALM,SALMAR,Oslo Bors Asa,NOK,SALM.OL,included,,4888

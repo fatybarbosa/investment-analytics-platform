@@ -200,7 +200,8 @@ def _annualized_return(returns):
 
 def _drawdown(returns):
     wealth = (1 + returns).cumprod()
-    drawdown = wealth / wealth.cummax() - 1
+    # The invested unit is the first high-water mark: a fall below it is a drawdown.
+    drawdown = wealth / wealth.cummax().clip(lower=1.0) - 1
     return wealth, drawdown
 
 
@@ -384,7 +385,7 @@ def build_drawdown_episodes(path):
         drawdown = block["drawdown"].to_numpy(dtype=float)
         months = block["month"].astype(str).tolist()
         trough = int(np.argmin(drawdown))
-        peak_level = float(wealth[: trough + 1].max())
+        peak_level = max(1.0, float(wealth[: trough + 1].max()))
         peaks = [
             index
             for index in range(trough + 1)
@@ -398,7 +399,7 @@ def build_drawdown_episodes(path):
         rows.append(
             {
                 "strategy": strategy,
-                "peak_month": months[peaks[-1]],
+                "peak_month": months[peaks[-1]] if peaks else str(pd.Period(months[0], freq="M") - 1),
                 "trough_month": months[trough],
                 "maximum_drawdown": float(drawdown[trough]),
                 "recovered_month": recovered,

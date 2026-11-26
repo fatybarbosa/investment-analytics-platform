@@ -160,6 +160,13 @@ def test_drawdown_is_the_fall_from_the_running_peak():
     assert drawdown.iloc[0] == 0.0
 
 
+def test_a_book_that_starts_below_the_invested_unit_is_already_in_drawdown():
+    _wealth, drawdown = _drawdown(pd.Series([-0.10, 0.05, 0.10], index=months(3)))
+    assert drawdown.iloc[0] == pytest.approx(-0.10)
+    assert drawdown.iloc[1] == pytest.approx(0.945 - 1)
+    assert drawdown.iloc[2] == 0.0
+
+
 def test_sortino_counts_only_months_below_the_risk_free_rate():
     excess = pd.Series([0.01, -0.02, 0.03, -0.01], index=months(4))
     ratio, below = _sortino(excess)

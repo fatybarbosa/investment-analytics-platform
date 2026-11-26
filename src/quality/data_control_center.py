@@ -73,8 +73,6 @@ EXPECTED_SHEETS = [
     HISTORY_SHEET,
 ]
 
-PASS_THRESHOLD = 95.0
-WARNING_THRESHOLD = 80.0
 
 KPI_CHART_ANCHOR = "A16"
 KPI_CHART_WIDTH = 28
@@ -259,66 +257,6 @@ def validate_controls(
 # ============================================================================
 # DASHBOARD
 # ============================================================================
-
-
-def build_dashboard_summary(
-    quality_results: dict,
-    run_id: str,
-    execution_date: str,
-) -> pd.DataFrame:
-    """
-    Construit la synthèse exécutive du Data Control Center.
-    """
-
-    return pd.DataFrame(
-        [
-            {
-                "run_id": run_id,
-                "execution_date": execution_date,
-                "datasets_checked":
-                    quality_results["datasets_checked"],
-                "records_checked":
-                    quality_results[
-                        "records_checked"
-                    ],
-                "global_quality_score":
-                    quality_results[
-                        "global_quality_score"
-                    ],
-                "global_quality_grade":
-                    quality_results[
-                        "global_quality_grade"
-                    ],
-                "global_status":
-                    quality_results[
-                        "global_quality_status"
-                    ],
-            }
-        ]
-    )
-
-
-def build_dashboard_metrics(
-    quality_results: dict,
-) -> pd.DataFrame:
-    """
-    Construit la table des indicateurs affichée dans le dashboard.
-    """
-
-    metrics = quality_results[
-        "metrics"
-    ].copy()
-
-    metrics = metrics[
-        [
-            "metric",
-            "value",
-            "status",
-            "threshold",
-        ]
-    ]
-
-    return metrics
 
 
 # ============================================================================

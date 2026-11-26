@@ -73,12 +73,7 @@ from src.utils.logger import logger
 
 SOURCE_KEY = "Source ID"
 PROVIDER_KEY = "Provider"
-SOURCE_URL_KEY = "URL"
-RELIABILITY_KEY = "Reliability"
-SOURCE_STATUS_KEY = "Status"
 
-BACKUP_SOURCE_KEY = "Backup Source"
-COMMENTS_KEY = "Comments"
 
 
 # ============================================================================
@@ -872,32 +867,6 @@ def get_load_enabled_datasets(
     )
 
 
-def get_quality_enabled_datasets(
-    registry: pd.DataFrame | None = None,
-) -> pd.DataFrame:
-    """
-    Return active Datasets enabled for quality processing.
-    """
-
-    return filter_enabled_datasets(
-        QUALITY_ENABLED_KEY,
-        registry=registry,
-    )
-
-
-def get_chronology_enabled_datasets(
-    registry: pd.DataFrame | None = None,
-) -> pd.DataFrame:
-    """
-    Return active Datasets enabled for chronology processing.
-    """
-
-    return filter_enabled_datasets(
-        CHRONOLOGY_ENABLED_KEY,
-        registry=registry,
-    )
-
-
 # ============================================================================
 # PRODUCTION METHOD SELECTION
 # ============================================================================
@@ -1058,88 +1027,6 @@ def get_preparation_enabled_datasets(
 # CONNECTOR SELECTION
 # ============================================================================
 
-def get_datasets_by_connector(
-    connector: Any,
-    *,
-    production_method: Any | None = None,
-    active_only: bool = True,
-    registry: pd.DataFrame | None = None,
-) -> pd.DataFrame:
-    """
-    Return Datasets associated with one technical Connector.
-
-    The function contains no knowledge of available connector names.
-    Connector discovery and implementation resolution belong to
-    src.acquisition.connectors.resolver.
-    """
-
-    requested_connector = (
-        normalize_lookup_value(
-            connector,
-            CONNECTOR_KEY,
-        )
-    )
-
-    if production_method is None:
-
-        resolved = resolve_registry_input(
-            registry
-        )
-
-        if active_only:
-
-            resolved = (
-                resolved[
-                    resolved[
-                        ACTIVE_KEY
-                    ]
-                ]
-                .copy(
-                    deep=True
-                )
-            )
-
-    else:
-
-        resolved = (
-            get_datasets_by_production_method(
-                production_method,
-                active_only=active_only,
-                registry=registry,
-            )
-        )
-
-    mask = (
-        normalized_casefold_series(
-            resolved[
-                CONNECTOR_KEY
-            ]
-        )
-        .eq(
-            requested_connector.casefold()
-        )
-    )
-
-    selected = (
-        resolved[
-            mask
-        ]
-        .copy(
-            deep=True
-        )
-        .reset_index(
-            drop=True
-        )
-    )
-
-    logger.info(
-        "Datasets selected for "
-        "Connector %s: %s",
-        requested_connector,
-        len(selected),
-    )
-
-    return selected
 
 
 # ============================================================================
@@ -1254,49 +1141,6 @@ def get_dataset_by_output_file(
         "output_file",
     )
 
-
-def get_dataset_configuration(
-    *,
-    dataset_id: Any | None = None,
-    output_file: Any | None = None,
-    registry: pd.DataFrame | None = None,
-) -> dict[str, Any]:
-    """
-    Return one resolved Dataset configuration as a dictionary.
-
-    Exactly one lookup argument must be supplied.
-    """
-
-    lookup_count = sum(
-        value is not None
-        for value in (
-            dataset_id,
-            output_file,
-        )
-    )
-
-    if lookup_count != 1:
-
-        raise ValueError(
-            "Provide exactly one lookup: "
-            "dataset_id or output_file."
-        )
-
-    if dataset_id is not None:
-
-        row = get_dataset_by_id(
-            dataset_id,
-            registry=registry,
-        )
-
-    else:
-
-        row = get_dataset_by_output_file(
-            output_file,
-            registry=registry,
-        )
-
-    return row.to_dict()
 
 # ============================================================================
 # EXECUTION CONFIGURATION
@@ -1456,34 +1300,6 @@ def get_parameters(
     return parameters.copy()
 
 
-def get_production_method(
-    configuration: dict[str, Any],
-) -> str:
-    """
-    Return the normalized Production Method.
-    """
-
-    validate_configuration_mapping(
-        configuration
-    )
-
-    if (
-        PRODUCTION_METHOD_KEY
-        not in configuration
-    ):
-
-        raise KeyError(
-            "Production Method is missing "
-            "from Dataset configuration."
-        )
-
-    return normalize_production_method_lookup(
-        configuration[
-            PRODUCTION_METHOD_KEY
-        ]
-    )
-
-
 # ============================================================================
 # DATASET DEPENDENCIES
 # ============================================================================
@@ -1595,224 +1411,6 @@ def get_input_dataset_configurations(
         in input_datasets
     ]
 
-
-def get_dependency_graph(
-    dataset_id: Any,
-    registry: pd.DataFrame | None = None,
-) -> dict[str, list[str]]:
-    """
-    Return the reachable upstream dependency graph.
-
-    The result maps every visited Dataset ID to its direct
-    upstream Dataset IDs.
-
-    Example
-    -------
-    For:
-
-        DS-003 -> DS-002
-        DS-002 -> DS-001
-        DS-001 -> DS-000
-
-    the result is conceptually:
-
-        {
-            "DS-003": ["DS-002"],
-            "DS-002": ["DS-001"],
-            "DS-001": ["DS-000"],
-            "DS-000": [],
-        }
-
-    Circular dependencies should already be rejected by
-    validate_source_registry.py. Runtime cycle detection remains
-    as defense in depth for externally supplied registries.
-    """
-
-    resolved = resolve_registry_input(
-        registry
-    )
-
-    root = get_dataset_by_id(
-        dataset_id,
-        registry=resolved,
-    )
-
-    root_id = normalize_lookup_value(
-        root[
-            DATASET_KEY
-        ],
-        DATASET_KEY,
-    )
-
-    graph: dict[
-        str,
-        list[str],
-    ] = {}
-
-    visiting = set()
-    visited = set()
-
-    def visit(
-        current_dataset_id: str,
-    ) -> None:
-
-        current_key = (
-            current_dataset_id.casefold()
-        )
-
-        if current_key in visiting:
-
-            raise RuntimeError(
-                "Circular Dataset dependency "
-                "encountered while resolving: "
-                f"{current_dataset_id}"
-            )
-
-        if current_key in visited:
-            return
-
-        visiting.add(
-            current_key
-        )
-
-        input_ids = get_input_dataset_ids(
-            current_dataset_id,
-            registry=resolved,
-        )
-
-        graph[
-            current_dataset_id
-        ] = input_ids.copy()
-
-        for input_dataset_id in input_ids:
-
-            get_dataset_by_id(
-                input_dataset_id,
-                registry=resolved,
-            )
-
-            visit(
-                input_dataset_id
-            )
-
-        visiting.remove(
-            current_key
-        )
-
-        visited.add(
-            current_key
-        )
-
-    visit(
-        root_id
-    )
-
-    return graph
-
-
-def get_dependency_order(
-    dataset_id: Any,
-    registry: pd.DataFrame | None = None,
-) -> list[str]:
-    """
-    Return all transitive upstream Dataset IDs in dependency-first order.
-
-    Each Dataset ID appears exactly once.
-
-    The requested Dataset itself is not included.
-
-    Example
-    -------
-    For:
-
-        DS-003 -> DS-002
-        DS-002 -> DS-001
-        DS-001 -> DS-000
-
-    the result is:
-
-        ["DS-000", "DS-001", "DS-002"]
-
-    This ordering is suitable for dependency-aware orchestration.
-    """
-
-    resolved = resolve_registry_input(
-        registry
-    )
-
-    root = get_dataset_by_id(
-        dataset_id,
-        registry=resolved,
-    )
-
-    root_id = normalize_lookup_value(
-        root[
-            DATASET_KEY
-        ],
-        DATASET_KEY,
-    )
-
-    ordered = []
-    visited = set()
-    visiting = set()
-
-    def visit(
-        current_dataset_id: str,
-    ) -> None:
-        """
-        Recursively visit upstream dependencies.
-        """
-
-        current_key = (
-            current_dataset_id
-            .casefold()
-        )
-
-        if current_key in visiting:
-
-            raise RuntimeError(
-                "Circular Dataset dependency "
-                "encountered while resolving: "
-                f"{current_dataset_id}"
-            )
-
-        if current_key in visited:
-            return
-
-        visiting.add(
-            current_key
-        )
-
-        input_ids = get_input_dataset_ids(
-            current_dataset_id,
-            registry=resolved,
-        )
-
-        for input_dataset_id in input_ids:
-
-            visit(
-                input_dataset_id
-            )
-
-        visiting.remove(
-            current_key
-        )
-
-        visited.add(
-            current_key
-        )
-
-        if current_key != root_id.casefold():
-
-            ordered.append(
-                current_dataset_id
-            )
-
-    visit(
-        root_id
-    )
-
-    return ordered
 
 # ============================================================================
 # DATASET PATHS
@@ -1972,38 +1570,6 @@ def get_dataset_path(
         configuration
     )
 
-
-def get_input_dataset_paths(
-    dataset_id: Any,
-    registry: pd.DataFrame | None = None,
-) -> list:
-    """
-    Return absolute paths of all direct upstream Datasets.
-
-    The path order matches Input Dataset IDs declared in the
-    Source Registry.
-
-    Returns an empty list when no upstream Dataset exists.
-    """
-
-    resolved = resolve_registry_input(
-        registry
-    )
-
-    configurations = (
-        get_input_dataset_configurations(
-            dataset_id,
-            registry=resolved,
-        )
-    )
-
-    return [
-        build_dataset_absolute_path(
-            configuration
-        )
-        for configuration
-        in configurations
-    ]
 
 # ============================================================================
 # MAIN

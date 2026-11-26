@@ -453,61 +453,6 @@ def register_dataset(connection, configuration, table_name, row_count):
         )
 
 
-def refresh_dataset_catalog():
-    """Align the catalog with the registry, the files, and the acquisition log."""
-    logger.info("Dataset catalog refresh started")
-    initialize_database_schema()
-    configurations = get_load_enabled_datasets()
-    connection = sqlite3.connect(DATABASE_FILE)
-    connection.execute("PRAGMA busy_timeout = 30000")
-    refreshed = []
-    try:
-        now = utc_timestamp()
-        for _, configuration in configurations.iterrows():
-            config = configuration.to_dict()
-            dataset_id = config.get("Dataset ID")
-            current = connection.execute(
-                """
-                SELECT updated_at, last_database_load_date
-                FROM dataset_registry
-                WHERE dataset_id = ?
-                """,
-                (dataset_id,),
-            ).fetchone()
-            if current is None:
-                continue
-            load_date = current[1] or current[0]
-            fields = catalog_fields(connection, config, now, load_date)
-            fields.update(
-                {
-                    "dataset_name": config.get("Dataset Name"),
-                    "source_id": config.get("Source ID"),
-                    "active": int(bool(config.get("Active"))),
-                    "load_enabled": int(bool(config.get("Load Enabled"))),
-                    "quality_enabled": int(bool(config.get("Quality Enabled"))),
-                    "chronology_enabled": int(bool(config.get("Chronology Enabled"))),
-                    "output_file_name": config.get("Output File Name"),
-                    "output_file": config.get("Output File Name"),
-                    "updated_at": now,
-                }
-            )
-            assignments = ", ".join(f"{quote_identifier(column)}=?" for column in fields)
-            connection.execute(
-                f"UPDATE dataset_registry SET {assignments} WHERE dataset_id=?",
-                (*fields.values(), dataset_id),
-            )
-            refreshed.append(str(dataset_id))
-        connection.commit()
-    except Exception:
-        connection.rollback()
-        logger.exception("Dataset catalog refresh failed")
-        raise
-    finally:
-        connection.close()
-    logger.info("Dataset catalog refreshed: %s", ", ".join(refreshed))
-    return refreshed
-
-
 def load_one_dataset(connection, configuration):
     """Read, stage, verify, publish, and register one configured dataset."""
     table_name = str(configuration["Derived Table Name"]).strip()

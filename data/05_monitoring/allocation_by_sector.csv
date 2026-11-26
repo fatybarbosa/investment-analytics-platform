@@ -1,23 +1,20 @@
 strategy,sector,weight,names
-equal_weight,Health Care,0.344827586206896,10
-equal_weight,Real Estate,0.344827586206896,10
-equal_weight,Industrials,0.1034482758620688,3
-equal_weight,Consumer Staples,0.0689655172413792,2
-equal_weight,Consumer Discretionary,0.0344827586206896,1
-equal_weight,Information Technology,0.0344827586206896,1
-equal_weight,Materials,0.0344827586206896,1
-equal_weight,Utilities,0.0344827586206896,1
-minimum_volatility,Health Care,0.3980068879556864,9
-minimum_volatility,Real Estate,0.3107648843912442,9
-minimum_volatility,Industrials,0.1089343481137259,3
+equal_weight,Health Care,0.357142857142857,10
+equal_weight,Real Estate,0.357142857142857,10
+equal_weight,Industrials,0.1071428571428571,3
+equal_weight,Consumer Staples,0.0714285714285714,2
+equal_weight,Consumer Discretionary,0.0357142857142857,1
+equal_weight,Information Technology,0.0357142857142857,1
+equal_weight,Utilities,0.0357142857142857,1
+minimum_volatility,Health Care,0.3999999999999997,9
+minimum_volatility,Real Estate,0.3161677280739913,9
+minimum_volatility,Industrials,0.1106135289171196,3
 minimum_volatility,Consumer Discretionary,0.05,1
-minimum_volatility,Consumer Staples,0.0486188679833938,1
-minimum_volatility,Information Technology,0.0425422351097625,1
-minimum_volatility,Utilities,0.0301993091751807,1
-minimum_volatility,Materials,0.0109334672710055,1
-maximum_sharpe,Health Care,0.397165157503988,9
-maximum_sharpe,Real Estate,0.3591755841322425,10
-maximum_sharpe,Industrials,0.1253719061893118,3
-maximum_sharpe,Consumer Discretionary,0.0498509456560593,1
-maximum_sharpe,Consumer Staples,0.0498509456560593,1
-maximum_sharpe,Materials,0.0185854608623377,1
+minimum_volatility,Consumer Staples,0.0490133030225168,1
+minimum_volatility,Information Technology,0.0429392999458987,1
+minimum_volatility,Utilities,0.031266140040473,1
+maximum_sharpe,Health Care,0.391880490429831,9
+maximum_sharpe,Real Estate,0.3660424927977821,10
+maximum_sharpe,Industrials,0.1364172426610729,3
+maximum_sharpe,Consumer Staples,0.0556597741113129,2
+maximum_sharpe,Consumer Discretionary,0.05,1

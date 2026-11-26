@@ -112,7 +112,7 @@ table RendementActif
 			        "@drawdown",
 			            VAR MoisCourant = [@mois]
 			            RETURN
-			                [@richesse] / MAXX ( FILTER ( Richesse, [@mois] <= MoisCourant ), [@richesse] ) - 1
+			                [@richesse] / MAX ( 1, MAXX ( FILTER ( Richesse, [@mois] <= MoisCourant ), [@richesse] ) ) - 1
 			    )
 			RETURN
 			    IF (

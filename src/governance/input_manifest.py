@@ -22,7 +22,7 @@ from __future__ import annotations
 import hashlib
 import json
 
-from src.config import DATA_DIR, FX, MACRO, MARKET, BENCHMARK, ODD, PROJECT_ROOT
+from src.config import CAPITAL_RETURNS_FILE, DATA_DIR, FX, MACRO, MARKET, BENCHMARK, ODD, PROJECT_ROOT
 from src.utils.logger import logger
 from src.utils.files import replace_file
 
@@ -33,6 +33,7 @@ RAW_INPUTS = (
     FX / "fx_rates.csv",
     MACRO / "saron.csv",
     BENCHMARK / "benchmark_holdings.xls",
+    CAPITAL_RETURNS_FILE,
     ODD / "odd_assessment.csv",
 )
 CHUNK = 1024 * 1024

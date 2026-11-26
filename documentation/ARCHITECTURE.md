@@ -22,7 +22,7 @@ Suivi, performance, risque, chocs
 Pages HTML, annexe Excel, modèle Power BI, rapport PDF, présentation
 ```
 
-Une commande enchaîne cet ordre : `python -m src.pipeline.refresh`. Un jeu qui échoue à l'acquisition n'arrête pas les autres. La commande s'arrête si un contrôle de réconciliation reste ouvert, ou si un nombre d'un texte n'est pas dans un fichier.
+Une commande enchaîne cet ordre : `python -m src.pipeline.refresh`. `python -m src.pipeline.full_refresh` y ajoute l'ouverture de Power BI Desktop, l'actualisation du modèle et l'export des mesures avant l'annexe. Un jeu qui échoue à l'acquisition n'arrête pas les autres. La commande s'arrête si un contrôle de réconciliation reste ouvert, ou si un nombre d'un texte n'est pas dans un fichier.
 
 ## Les dossiers
 
@@ -39,7 +39,9 @@ Une commande enchaîne cet ordre : `python -m src.pipeline.refresh`. Un jeu qui 
 | `src/stress_testing` | Quatre chocs illustratifs, paramètres écrits dans `src/config.py` |
 | `src/quality` | Centre de contrôle |
 | `src/reporting` | Annexe Excel, rapport, présentation, dictionnaire, export Power BI |
-| `src/pipeline` | L'ordre ci-dessus |
+| `src/pipeline` | L'ordre ci-dessus, et le passage complet avec Power BI |
+| `src/utils` | Journal et remplacement de fichiers |
+| `scripts` | Reconstruction mensuelle des données par le planificateur Windows |
 | `dashboards/powerbi` | Rapport Power BI. Les données ne sont pas dans le fichier : chaque ouverture demande Actualiser |
 | `documentation` | Le récit de chaque phase |
 | `sql` | Requêtes de contrôle sur la base locale |

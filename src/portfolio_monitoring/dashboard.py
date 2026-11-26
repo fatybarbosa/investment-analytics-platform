@@ -310,7 +310,7 @@ def _fund_path():
     fund["month"] = pd.to_datetime(fund["month"])
     fund = fund.sort_values("month", kind="mergesort")
     wealth = (1 + fund["benchmark_return_chf"].astype(float)).cumprod()
-    return fund["month"], wealth, wealth / wealth.cummax() - 1
+    return fund["month"], wealth, wealth / wealth.cummax().clip(lower=1.0) - 1
 
 
 def path_figure(path):
@@ -567,7 +567,7 @@ et n'ont pas été détenus. Le fonds iShares est une série réelle, le rendeme
 Il figure sur le placement de 1 CHF et sur le drawdown. Il n'a pas de poids dans ces livres,
 donc il n'est pas sur les graphiques d'allocation, de lignes, de rotation ni de concentration.
 Le poids d'un trimestre est fixé avec les soixante mois de rendements déjà observés,
-puis tenu pendant les trois mois du trimestre.
+puis dérive avec le marché pendant les trois mois du trimestre.
 Les plafonds de l'IPS sont {ISSUER_WEIGHT_CAP * 100:.0f} % par émetteur,
 {SECTOR_WEIGHT_CAP * 100:.0f} % par secteur, {ZONE_WEIGHT_CAP * 100:.0f} % par zone
 et {CURRENCY_WEIGHT_CAP * 100:.0f} % par devise de cotation.

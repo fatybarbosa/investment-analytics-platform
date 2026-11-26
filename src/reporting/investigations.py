@@ -17,13 +17,15 @@ reports/executive/cas_d_investigation.md
 
 from __future__ import annotations
 
-from src.config import EXECUTIVE_REPORTS, PROCESSED_MARKET, source_id
-from src.reporting.commentary import FUND_RETURNS, MEMBERSHIP, METRICS, QUALITY
+from src.config import CAPITAL_RETURNS_FILE, EXECUTIVE_REPORTS, PROCESSED_MARKET, source_id
+from src.reporting.commentary import FUND_RETURNS, MEMBERSHIP, QUALITY, config
 from src.reporting.number_check import AUTO_LABEL, Draft, fact, resolve
 
 
 CASES_FILE = EXECUTIVE_REPORTS / "cas_d_investigation.md"
 EXCLUSIONS = source_id(PROCESSED_MARKET / "market_price_exclusions.csv")
+ACTIONS = source_id(PROCESSED_MARKET / "corporate_action_check.csv")
+CAPITAL = source_id(CAPITAL_RETURNS_FILE)
 FUND_MODULE = "py:src.performance.benchmark_return"
 
 
@@ -76,28 +78,13 @@ def d2_decision():
     ))
 
 
-def _adjusted_close_window():
-    """Say whether the left-out adjusted-close bars touch the measured window. Read from the files."""
-    import pandas as pd
-
-    from src.config import PROJECT_ROOT
-
-    excluded = pd.read_csv(PROJECT_ROOT / EXCLUSIONS)
-    left_out = excluded.loc[excluded["reason"].isin(["non_positive_adj_close", "missing_adj_close"])]
-    start = str(pd.read_csv(PROJECT_ROOT / METRICS)["window_start"].iloc[0])
-    touching = left_out.loc[left_out["timestamp"].astype(str).str.slice(0, 7) >= start]
-    if left_out.empty or touching.empty:
-        return "Toutes sont antérieures à la fenêtre de mesure et ne touchent aucun livre."
-    return "Certaines tombent dans la fenêtre de mesure : un titre concerné peut sortir des livres, ce que le fichier d'appartenance enregistre."
-
-
 def _case_prices():
     d = Draft()
     return [
         d.done("cas cours", (
             f"Symptôme. Sur {d.count(issue('DS-003', 'QC-003', 'records_checked'))} séances de cours, "
-            f"{d.count(issue('DS-003', 'QC-003', 'issue_count'))} ont une clôture hors de la fourchette plus haut / plus bas ou négative, "
-            f"et {d.count(issue('DS-003', 'QC-001', 'issue_count'))} n'ont pas de clôture."
+            f"{d.count(exclusions('outside_high_low'))} ont une clôture hors de la fourchette plus haut / plus bas ou négative, "
+            f"et {d.count(issue('DS-003', 'QC-001', 'issue_count'))} ont un champ obligatoire vide."
         )),
         plain_case(
             "Cause. Les séances viennent d'une source gratuite, avec des barres incomplètes ou incohérentes sur certaines places. "
@@ -105,19 +92,83 @@ def _case_prices():
         ),
         d.done("cas cours", (
             f"Décision. Chaque séance fautive est retirée de la série en CHF et inscrite dans le fichier des exclusions avec sa raison : "
-            f"{d.count(exclusions('outside_high_low'))} séances hors fourchette et {d.count(exclusions('missing_close'))} sans clôture, "
-            f"les mêmes nombres que le contrôle. Aucune valeur n'est interpolée. "
+            f"{d.count(exclusions('outside_high_low'))} séances hors fourchette et {d.count(exclusions('missing_close'))} sans clôture. "
+            f"Aucune valeur n'est interpolée. "
             f"Le même fichier garde {d.count(exclusions('no_snb_series'))} séances sans série de change et "
             f"{d.count(exclusions('missing_monthly_fx'))} séances sans taux de fin de mois."
-        )),
-        d.done("cas cours", (
-            "Cours ajusté. Le rendement des livres est un rendement total : il utilise le cours ajusté des dividendes, converti en CHF comme le cours de clôture. "
-            f"{d.count(exclusions('non_positive_adj_close'))} séances ont un cours ajusté nul ou négatif et {d.count(exclusions('missing_adj_close'))} n'en ont pas : "
-            f"elles sont écartées, sans valeur reconstituée. {_adjusted_close_window()}"
         )),
         plain_case(
             "Trace. Le contrôle reste en avertissement sur la table des cours. "
             "Le fichier des exclusions est relu par cette note à chaque génération."
+        ),
+    ]
+
+
+def _flagged(check, reason=None):
+    """Names behind one corporate-action check, read from the check file and the membership."""
+    import pandas as pd
+
+    from src.config import PROJECT_ROOT
+
+    actions = pd.read_csv(PROJECT_ROOT / ACTIONS)
+    names = sorted(actions.loc[actions["check"].eq(check), "symbol"].astype(str).unique())
+    members = pd.read_csv(PROJECT_ROOT / MEMBERSHIP)
+    known = members.set_index("yahoo_symbol")
+    if reason is not None:
+        return [s for s in names if s in known.index and str(known.loc[s, "reason"]) == reason]
+    eligible = set(members.loc[members["odd_status"].eq("Eligible"), "yahoo_symbol"])
+    return [s for s in names if s in eligible]
+
+
+def pd_register():
+    """The declared returns of capital."""
+    import pandas as pd
+
+    return pd.read_csv(CAPITAL_RETURNS_FILE, dtype={"symbol": str})
+
+
+def _case_dividends():
+    d = Draft()
+    ignored = _flagged("adjusted_close_without_dividend")
+    dropped = _flagged("dividend_above_limit", "dividend_not_comparable")
+    splits = _flagged("split_not_adjusted")
+    listed = lambda names: ", ".join(d.label(name) for name in names) if names else "aucun"
+
+    def rows(check, symbol):
+        return d.count(fact(ACTIONS, "symbol", {"check": check, "symbol": symbol}, op="count"))
+
+    per_name = ", ".join(f"{d.label(s)} {rows('adjusted_close_without_dividend', s)}" for s in ignored) or "aucun"
+    above = ", ".join(f"{d.label(s)} {rows('dividend_above_limit', s)}" for s in dropped) or "aucun"
+    declared = pd_register()
+    added = " ".join(
+        f"{d.label(row.symbol)} : {d.count(fact(CAPITAL, 'cash_per_old_share', {'symbol': row.symbol}))} pence par ancienne action, "
+        f"avec un regroupement de {d.count(fact(CAPITAL, 'old_shares', {'symbol': row.symbol}))} actions en "
+        f"{d.count(fact(CAPITAL, 'new_shares', {'symbol': row.symbol}))}."
+        for row in declared.itertuples(index=False)
+    )
+    return [
+        d.done("cas dividendes", (
+            f"Symptôme. Le cours ajusté du fournisseur ne reprend pas des dividendes déclarés. Titres éligibles concernés, "
+            f"avec le nombre de dividendes ignorés sur tout l'historique : {per_name}. "
+            f"Des dividendes dépassent aussi {d.pct(config('DIVIDEND_YIELD_LIMIT'), 0)} du cours précédent : {above}."
+        )),
+        plain_case(
+            "Cause. L'ajustement du fournisseur n'est pas le même d'une place à l'autre. Pour un titre scindé, le cours passé a été "
+            "retraité et le dividende ne l'a pas été : les deux ne sont plus sur la même base."
+        ),
+        d.done("cas dividendes", (
+            f"Versement absent des données, ajouté depuis la publication de la société. {added} Le montant est ramené à la base "
+            "des cours et la source est écrite dans le registre."
+        )),
+        d.done("cas dividendes", (
+            "Décision. Le rendement total est reconstruit de la même façon pour tous les titres : le cours de clôture, avec chaque "
+            "dividende déclaré réinvesti au cours du jour de détachement. Le cours ajusté reste dans le fichier et ne mesure plus "
+            f"aucun rendement. Sort des livres, avec le motif dividend_not_comparable : {listed(dropped)}. "
+            f"Une opération sur titres que le cours ne reflète pas est signalée et n'est pas corrigée : {listed(splits)}."
+        )),
+        plain_case(
+            "Trace. Les versements déclarés sont dans data/01_raw/corporate_actions/capital_returns.csv. Chaque anomalie est une ligne "
+            "de data/02_processed/market/corporate_action_check.csv, avec la séance et le cours de référence. Le contrôle des valeurs aberrantes compte les dividendes au-dessus de la limite."
         ),
     ]
 
@@ -186,6 +237,7 @@ def plain_case(text):
 CASES = (
     ("Titres sans série de change", _case_fx),
     ("Clôtures manquantes et cours hors fourchette", _case_prices),
+    ("Dividendes et opérations sur titres", _case_dividends),
     ("Unité du rendement publié du fonds", _case_fund_unit),
     ("Historiques incomplets", _case_history),
 )

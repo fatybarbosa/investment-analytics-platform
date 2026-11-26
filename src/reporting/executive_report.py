@@ -61,8 +61,9 @@ def plain(section, text):
 
 
 class Report:
-    def __init__(self, generated):
+    def __init__(self, generated, document_title="Rapport exécutif"):
         self.generated = generated
+        self.document_title = document_title
         self.story = []
         self.statements = []
         self.footers = []
@@ -79,7 +80,7 @@ class Report:
 
     def para(self, statement, style=BODY):
         self.keep(statement)
-        self.story.append(Paragraph(_escape(statement.text), style))
+        self.story.append(KeepTogether([Paragraph(_escape(statement.text), style)]))
 
     def bullets(self, statements):
         for statement in statements:
@@ -138,7 +139,7 @@ class Report:
             rightMargin=18 * mm,
             topMargin=14 * mm,
             bottomMargin=16 * mm,
-            title="Rapport exécutif",
+            title=self.document_title,
             author="Pipeline du projet (généré automatiquement)",
         )
         frame = Frame(document.leftMargin, document.bottomMargin, document.width, document.height, id="main", leftPadding=0, rightPadding=0, topPadding=0, bottomPadding=0)
@@ -189,7 +190,7 @@ def build_report(sections, figures, generated):
         "iShares MSCI Global Sustainable Development Goals, dont le rendement publié est converti en CHF."
     )))
     report.para(plain("périmètre", (
-        "Données. Sources publiques seulement : feuille de positions et rendement publiés par iShares, cours de clôture Yahoo Finance, "
+        "Données. Sources publiques seulement : feuille de positions et rendement publiés par iShares, cours de clôture et dividendes déclarés de Yahoo Finance, "
         "change et SARON de la Banque nationale suisse, registre d'éligibilité ODD saisi à partir des rapports des sociétés."
     )))
     report.para(plain("périmètre", (

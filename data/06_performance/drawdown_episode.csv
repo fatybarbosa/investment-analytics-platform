@@ -1,4 +1,4 @@
 strategy,peak_month,trough_month,maximum_drawdown,recovered_month
-equal_weight,2021-08,2023-10,-0.2362522329147021,
-minimum_volatility,2021-08,2023-10,-0.2280526157871396,
-maximum_sharpe,2021-08,2023-10,-0.2862292731894402,
+equal_weight,2021-08,2023-10,-0.2289631450173705,2026-10
+minimum_volatility,2021-08,2023-10,-0.2313626308149861,
+maximum_sharpe,2021-08,2023-10,-0.2741667782294371,

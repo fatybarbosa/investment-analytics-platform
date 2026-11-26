@@ -39,7 +39,7 @@ Le client du mandat est CLIENT001. Le gérant suit les mêmes livres. Les deux r
 | Positions réellement détenues | Absentes. Les livres sont hypothétiques. |
 | Transactions entre deux dates | Absentes. Les mouvements publiés sont des changements de poids, pas des ordres. |
 | Rapprochement de la valeur du portefeuille contre le dépositaire | Impossible sans relevé. Le rapprochement existant porte sur les formules : Python, Excel, Power BI. |
-| Frais et impôts | Absents. Les livres sont mesurés en rendement total brut (dividendes réinvestis par le cours ajusté). Le fonds est net de ses frais. |
+| Frais et impôts | Absents. Les livres sont mesurés en rendement total brut (dividendes déclarés réinvestis au jour de détachement). Le fonds est net de ses frais. |
 | Identifiants ISIN | Absents. L'identité d'un titre est le ticker et la place de cotation. |
 
 ## Comment une demande entre dans le projet

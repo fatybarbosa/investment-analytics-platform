@@ -574,7 +574,7 @@ def _recalcul(workbook, inputs):
             peak_column = _series_column(series_index, "peak")
             peak_letter = get_column_letter(peak_column)
             if offset == 0:
-                worksheet.cell(row, peak_column, f"={wealth_letter}{row}")
+                worksheet.cell(row, peak_column, f"=MAX(1,{wealth_letter}{row})")
             else:
                 worksheet.cell(row, peak_column, f"=MAX({peak_letter}{row - 1},{wealth_letter}{row})")
             worksheet.cell(
@@ -728,10 +728,10 @@ def _stress(workbook, inputs, recalcul):
                 worksheet.cell(row, 7, f"=E{row}-F{row}")
                 if month_index == 0:
                     worksheet.cell(row, 8, f"=1+E{row}")
-                    worksheet.cell(row, 9, f"=H{row}")
+                    worksheet.cell(row, 9, f"=MAX(1,H{row})")
                 else:
                     worksheet.cell(row, 8, f'=IF(OR(A{row}<>A{row - 1},B{row}<>B{row - 1}),1+E{row},H{row - 1}*(1+E{row}))')
-                    worksheet.cell(row, 9, f'=IF(OR(A{row}<>A{row - 1},B{row}<>B{row - 1}),H{row},MAX(I{row - 1},H{row}))')
+                    worksheet.cell(row, 9, f'=IF(OR(A{row}<>A{row - 1},B{row}<>B{row - 1}),MAX(1,H{row}),MAX(I{row - 1},H{row}))')
                 worksheet.cell(row, 10, f"=H{row}/I{row}-1")
                 row += 1
             blocks[(strategy, shock)] = (first, row - 1)
@@ -1607,7 +1607,7 @@ def _write_explanations(rows):
 
 Le recalcul part des rendements mensuels. Il ne lit pas les indicateurs déjà écrits par Python.
 
-Ces rendements mensuels sont ceux du pipeline : rendement total en CHF, avec le cours ajusté des dividendes converti au cours BNS de fin de mois, et des poids qui dérivent entre deux rééquilibrages trimestriels. Excel ne refait pas cette étape. Il ne peut donc pas détecter une erreur de base de rendement ou de dérive : il vérifie que les indicateurs sont bien calculés à partir de ces rendements.
+Ces rendements mensuels sont ceux du pipeline : rendement total en CHF, avec les dividendes déclarés réinvestis au jour de détachement, au cours BNS de fin de mois, et des poids qui dérivent entre deux rééquilibrages trimestriels. Excel ne refait pas cette étape. Il ne peut donc pas détecter une erreur de base de rendement ou de dérive : il vérifie que les indicateurs sont bien calculés à partir de ces rendements.
 
 Le rendement chaîné est le produit des `1 + r`, moins un. Le rendement annualisé est ce produit élevé à la puissance `12 / T`, moins un. `T` est le nombre de mois. L'annualisation n'utilise pas 252.
 
@@ -1617,7 +1617,7 @@ Le Sharpe est la moyenne de l'excédent sur le SARON, divisée par l'écart-type
 
 Le Sortino met au numérateur la même moyenne d'excédent. Au dénominateur, chaque mois au-dessus du SARON contribue 0 et chaque mois en dessous contribue le carré de l'excédent. Le diviseur reste `T - 1`, puis on annualise par la racine de 12.
 
-Le drawdown est la richesse divisée par son maximum courant, moins un. Le drawdown maximal est le minimum de cette série. La richesse part de `1 + r` au premier mois.
+Le drawdown est la richesse divisée par son plus haut déjà atteint, moins un. La mise de départ, une unité, est le premier plus haut : un livre qui commence en baisse est déjà en drawdown. La richesse vaut `1 + r` à la fin du premier mois. Le drawdown maximal est le minimum de cette série.
 
 La VaR historique à 95 % est le rendement du rang `k = plafond(0,05 × T)`, après tri du pire vers le meilleur. À rendement égal, le mois le plus ancien vient d'abord. L'expected shortfall est la moyenne des rangs 1 à k. Ce ne sont pas des rendements annualisés et ce n'est pas une loi normale.
 

@@ -198,7 +198,7 @@ def movements(book):
 # --------------------------------------------------------------------------
 
 def _start(title, generated, needs):
-    rep = Report(generated)
+    rep = Report(generated, document_title=title)
     rep.title(title)
     rep.story.append(_label_paragraph(generated))
     rep.para(_scope(needs))

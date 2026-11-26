@@ -5,8 +5,7 @@ Configuration centrale du projet Investment Analytics Platform.
 
 Ce fichier centralise :
 
-- les informations générales du projet ;
-- les paramètres globaux ;
+- la devise de reporting et les paramètres globaux ;
 - les chemins utilisés dans le projet.
 
 Toute modification de structure ou de chemin doit être réalisée ici.
@@ -15,24 +14,14 @@ Toute modification de structure ou de chemin doit être réalisée ici.
 from pathlib import Path
 
 # ============================================================================
-# PROJECT INFORMATION
+# REPORTING
 # ============================================================================
-
-PROJECT_NAME = "Investment Analytics Platform"
-
-VERSION = "2.0"
 
 REPORTING_CURRENCY = "CHF"
 
 # ============================================================================
 # ANALYSIS PARAMETERS
 # ============================================================================
-
-# Définis ultérieurement après Data Quality
-# et la construction de l'univers investissable.
-
-START_DATE = None
-END_DATE = None
 
 # Annualisation des séries mensuelles. Il n'y a pas de série quotidienne publiée.
 
@@ -57,12 +46,6 @@ def source_id(path):
     return Path(path).relative_to(PROJECT_ROOT).as_posix()
 
 # ============================================================================
-# DOCUMENTATION
-# ============================================================================
-
-DOCUMENTATION_DIR = PROJECT_ROOT / "documentation"
-
-# ============================================================================
 # DATA
 # ============================================================================
 
@@ -81,23 +64,22 @@ MARKET = RAW_DIR / "market"
 MACRO = RAW_DIR / "macro"
 FX = RAW_DIR / "fx"
 ODD = RAW_DIR / "odd"
+# Cash returned to holders that the market data does not carry, written by hand
+# from the company's own publication, one row per operation with its source.
+CAPITAL_RETURNS_FILE = RAW_DIR / "corporate_actions" / "capital_returns.csv"
 
 # ---------------------------------------------------------------------------
 # PROCESSED DATASETS
 # ---------------------------------------------------------------------------
 
-PROCESSED_SECURITIES = PROCESSED_DIR / "securities"
 PROCESSED_MARKET = PROCESSED_DIR / "market"
 PROCESSED_MACRO = PROCESSED_DIR / "macro"
-PROCESSED_ODD = PROCESSED_DIR / "odd"
 
 # ---------------------------------------------------------------------------
 # UNIVERSE DATASETS
 # ---------------------------------------------------------------------------
 
-CANDIDATE_UNIVERSE = UNIVERSE_DIR / "candidate"
 ELIGIBLE_UNIVERSE = UNIVERSE_DIR / "eligible"
-EXCLUDED_UNIVERSE = UNIVERSE_DIR / "excluded"
 
 # ---------------------------------------------------------------------------
 # PORTFOLIO DATASETS
@@ -118,34 +100,6 @@ DATABASE_DIR = PROJECT_ROOT / "database"
 DATABASE_FILE = DATABASE_DIR / "sdg_investment.db"
 
 # ============================================================================
-# SOURCE CODE
-# ============================================================================
-
-SRC_DIR = PROJECT_ROOT / "src"
-
-PREPARATION = SRC_DIR / "preparation"
-ACQUISITION = SRC_DIR / "acquisition"
-QUALITY = SRC_DIR / "quality"
-
-PORTFOLIO_CONSTRUCTION = (
-    SRC_DIR / "portfolio_construction"
-)
-
-PORTFOLIO_MONITORING = (
-    SRC_DIR / "portfolio_monitoring"
-)
-
-PERFORMANCE = SRC_DIR / "performance"
-
-RISK = SRC_DIR / "risk"
-
-STRESS_TESTING = (
-    SRC_DIR / "stress_testing"
-)
-
-REPORTING = SRC_DIR / "reporting"
-
-# ============================================================================
 # REPORTS
 # ============================================================================
 
@@ -155,7 +109,6 @@ DASHBOARDS_DIR = PROJECT_ROOT / "dashboards"
 
 POWERBI = DASHBOARDS_DIR / "powerbi"
 
-PORTFOLIO_REPORTS = REPORTS_DIR / "portfolio"
 MONITORING_REPORTS = REPORTS_DIR / "monitoring"
 PERFORMANCE_REPORTS = REPORTS_DIR / "performance"
 RISK_REPORTS = REPORTS_DIR / "risk"
@@ -200,36 +153,6 @@ LOGS_DIR = PROJECT_ROOT / "logs"
 TECHNICAL_LOG = LOGS_DIR / "technical.log"
 
 # ============================================================================
-# TESTS
-# ============================================================================
-
-TESTS_DIR = PROJECT_ROOT / "tests"
-
-ACQUISITION_TESTS = (
-    TESTS_DIR / "acquisition"
-)
-
-QUALITY_TESTS = (
-    TESTS_DIR / "quality"
-)
-
-PORTFOLIO_TESTS = (
-    TESTS_DIR / "portfolio"
-)
-
-MONITORING_TESTS = (
-    TESTS_DIR / "monitoring"
-)
-
-PERFORMANCE_TESTS = (
-    TESTS_DIR / "performance"
-)
-
-RISK_TESTS = (
-    TESTS_DIR / "risk"
-)
-
-# ============================================================================
 # MARKET DATA
 # ============================================================================
 
@@ -237,6 +160,16 @@ MARKET_HISTORY_YEARS = 10
 # Months of past returns used to set the next quarter's weights.
 # Five years is the risk horizon. The month being scored is excluded.
 ESTIMATION_MONTHS = 60
+# Dividends. A single dividend above this share of the close is not on the same
+# basis as the price: a name with one inside the measured window leaves the books.
+# The largest regular or special dividend of the other eligible names is under 9%.
+DIVIDEND_YIELD_LIMIT = 0.10
+# A split is recorded as not adjusted when the price moves by its factor and the
+# factor is further than this from one.
+SPLIT_MINIMUM_MOVE = 0.03
+# The adjusted close is recorded as ignoring a dividend when it applies less than
+# this share of it.
+ADJUSTED_DIVIDEND_SHARE = 0.3
 # CLIENT001 IPS limits for a long-only equity mandate.
 # Issuer 5%, sector 20%, region 50%, listing currency 40%.
 # The written sector limit of the IPS is 20%. On the Eligible names with a

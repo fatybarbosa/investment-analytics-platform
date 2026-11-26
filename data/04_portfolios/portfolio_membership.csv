@@ -76,6 +76,7 @@ ORSTED.CO,ORSTED,ORSTED A/S,Omx Nordic Exchange Copenhagen A/S,DKK,excluded,inco
 REGN,REGN,REGENERON PHARMACEUTICALS,NASDAQ,USD,included,,Indeterminate,excluded,Indeterminate,181,181
 RIVN,RIVN,RIVIAN AUTOMOTIVE CLASS A,NASDAQ,USD,excluded,incomplete_monthly_history,Indeterminate,excluded,Indeterminate,60,181
 SAP.TO,SAP,SAPUTO,Toronto Stock Exchange,CAD,included,,Not_Eligible,excluded,Not_Eligible,181,181
+SCA-B.ST,SCA B,SVENSKA CELLULOSA B,Nasdaq Omx Nordic,SEK,excluded,dividend_not_comparable,Eligible,excluded,dividend_not_comparable,181,181
 SCG.AX,SCG,SCENTRE GROUP,Asx - All Markets,AUD,included,,Indeterminate,excluded,Indeterminate,181,181
 SGRO.L,SGRO,SEGRO REIT PLC,London Stock Exchange,GBP,included,,Not_Eligible,excluded,Not_Eligible,181,181
 SIGMAFA.MX,SIGMAFA,ALFA A,Bolsa Mexicana De Valores,MXN,included,,Indeterminate,excluded,Indeterminate,181,181
@@ -113,7 +114,6 @@ NRP.JO,NRP,NEPI ROCKCASTLE,Johannesburg Stock Exchange,ZAR,included,,Eligible,in
 PSON.L,PSON,PEARSON PLC,London Stock Exchange,GBP,included,,Eligible,included,,181,181
 REC.MI,REC,RECORDATI INDUSTRIA CHIMICA E FARM,Borsa Italiana,EUR,included,,Eligible,included,,181,181
 SALM.OL,SALM,SALMAR,Oslo Bors Asa,NOK,included,,Eligible,included,,181,181
-SCA-B.ST,SCA B,SVENSKA CELLULOSA B,Nasdaq Omx Nordic,SEK,included,,Eligible,included,,181,181
 SOBI.ST,SOBI,SWEDISH ORPHAN BIOVITRUM,Nasdaq Omx Nordic,SEK,included,,Eligible,included,,181,181
 SOON.SW,SOON,SONOVA HOLDING AG,SIX Swiss Exchange,CHF,included,,Eligible,included,,181,181
 SPSN.SW,SPSN,SWISS PRIME SITE AG,SIX Swiss Exchange,CHF,included,,Eligible,included,,181,181

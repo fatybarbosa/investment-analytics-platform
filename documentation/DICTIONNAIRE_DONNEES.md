@@ -8,6 +8,21 @@ Les rapports de société utilisés pour l'éligibilité restent hors du dépôt
 
 ## Données brutes
 
+### `data/01_raw/corporate_actions/capital_returns.csv`
+
+Lignes : 1.
+
+| Colonne |
+|---|
+| `symbol` |
+| `ex_date` |
+| `cash_per_old_share` |
+| `new_shares` |
+| `old_shares` |
+| `price_unit` |
+| `source_url` |
+| `source_note` |
+
 ### `data/01_raw/fx/fx_rates.csv`
 
 Lignes : 7578.
@@ -170,7 +185,7 @@ Lignes : 360.
 
 ### `data/04_portfolios/portfolio_weights.csv`
 
-Lignes : 10440.
+Lignes : 10080.
 
 | Colonne |
 |---|
@@ -186,7 +201,7 @@ Lignes : 10440.
 
 ### `data/05_monitoring/allocation_by_holding.csv`
 
-Lignes : 87.
+Lignes : 84.
 
 | Colonne |
 |---|
@@ -204,7 +219,7 @@ Lignes : 87.
 
 ### `data/05_monitoring/allocation_by_sector.csv`
 
-Lignes : 22.
+Lignes : 19.
 
 | Colonne |
 |---|
@@ -270,7 +285,7 @@ Lignes : 34.
 
 ### `data/05_monitoring/holding_contribution.csv`
 
-Lignes : 10440.
+Lignes : 10080.
 
 | Colonne |
 |---|
@@ -311,7 +326,7 @@ Lignes : 360.
 
 ### `data/05_monitoring/mandate_feasibility.csv`
 
-Lignes : 9.
+Lignes : 8.
 
 | Colonne |
 |---|
@@ -361,7 +376,7 @@ Lignes : 480.
 
 ### `data/05_monitoring/sector_contribution.csv`
 
-Lignes : 2880.
+Lignes : 2520.
 
 | Colonne |
 |---|
@@ -402,7 +417,7 @@ Lignes : 120.
 
 ### `data/05_monitoring/weight_changes.csv`
 
-Lignes : 3225.
+Lignes : 3180.
 
 | Colonne |
 |---|
@@ -479,7 +494,7 @@ Lignes : 4.
 
 ### `data/07_risk/correlation_matrix.csv`
 
-Lignes : 29.
+Lignes : 28.
 
 | Colonne |
 |---|
@@ -507,7 +522,6 @@ Lignes : 29.
 | `PSON.L` |
 | `REC.MI` |
 | `SALM.OL` |
-| `SCA-B.ST` |
 | `SOBI.ST` |
 | `SOON.SW` |
 | `SPSN.SW` |
@@ -587,7 +601,7 @@ Fichier local `database/sdg_investment.db`. Tables : 26.
 
 ### `acquisition_log`
 
-Lignes : 185.
+Lignes : 224.
 
 | Colonne |
 |---|
@@ -660,7 +674,7 @@ Lignes : 127.
 
 ### `book_contributions`
 
-Lignes : 10440.
+Lignes : 10080.
 
 | Colonne |
 |---|
@@ -676,7 +690,7 @@ Lignes : 10440.
 
 ### `book_holdings`
 
-Lignes : 87.
+Lignes : 84.
 
 | Colonne |
 |---|
@@ -776,7 +790,7 @@ Lignes : 120.
 
 ### `book_weight_changes`
 
-Lignes : 3225.
+Lignes : 3180.
 
 | Colonne |
 |---|
@@ -790,7 +804,7 @@ Lignes : 3225.
 
 ### `book_weights`
 
-Lignes : 10440.
+Lignes : 10080.
 
 | Colonne |
 |---|
@@ -904,7 +918,7 @@ Lignes : 120.
 
 ### `quality_control_result`
 
-Lignes : 1332.
+Lignes : 1710.
 
 | Colonne |
 |---|
@@ -923,7 +937,7 @@ Lignes : 1332.
 
 ### `quality_metric_result`
 
-Lignes : 1188.
+Lignes : 1524.
 
 | Colonne |
 |---|
@@ -943,7 +957,7 @@ Lignes : 1188.
 
 ### `quality_run`
 
-Lignes : 32.
+Lignes : 39.
 
 | Colonne |
 |---|

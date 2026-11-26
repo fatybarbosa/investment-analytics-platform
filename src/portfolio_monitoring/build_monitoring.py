@@ -744,16 +744,6 @@ def largest_group(table, strategy, key):
     return str(row[key]), float(row["weight"])
 
 
-def exposure_weight(exposure, strategy, label):
-    matched = exposure.loc[
-        exposure["strategy"].eq(strategy) & exposure["exposure"].eq(label),
-        "weight",
-    ]
-    if len(matched) != 1:
-        raise RuntimeError(f"{strategy} has no {label} exposure row.")
-    return float(matched.iloc[0])
-
-
 def build_monthly_report(concentration, sectors, zones, exposure):
     rows = []
     for strategy in STRATEGY_IDS:
@@ -856,7 +846,7 @@ def build_time_series(classified, weight_history, asset_returns):
                     "strategy": strategy,
                     "portfolio_return": total.to_numpy(),
                     "cumulative_wealth": wealth.to_numpy(),
-                    "drawdown": (wealth / wealth.cummax() - 1).to_numpy(),
+                    "drawdown": (wealth / wealth.cummax().clip(lower=1.0) - 1).to_numpy(),
                 }
             )
         )
@@ -902,7 +892,7 @@ def build_time_series(classified, weight_history, asset_returns):
                 "strategy": "benchmark",
                 "portfolio_return": fund_return.to_numpy(),
                 "cumulative_wealth": fund_wealth.to_numpy(),
-                "drawdown": (fund_wealth / fund_wealth.cummax() - 1).to_numpy(),
+                "drawdown": (fund_wealth / fund_wealth.cummax().clip(lower=1.0) - 1).to_numpy(),
             }
         )
     )

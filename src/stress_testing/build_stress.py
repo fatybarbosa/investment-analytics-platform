@@ -110,7 +110,7 @@ def _measure(returns, risk_free):
     if not np.isfinite(growth) or growth <= 0:
         raise RuntimeError("Stressed wealth is not positive.")
     wealth = (1 + returns).cumprod()
-    drawdown = wealth / wealth.cummax() - 1
+    drawdown = wealth / wealth.cummax().clip(lower=1.0) - 1
     volatility = float(excess.std(ddof=1))
     if not np.isfinite(volatility) or volatility == 0:
         raise RuntimeError("Stressed excess volatility is zero.")

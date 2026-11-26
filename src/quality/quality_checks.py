@@ -19,8 +19,9 @@ import sqlite3
 
 import pandas as pd
 
-from src.config import DATABASE_FILE, REPORTING_CURRENCY
+from src.config import DATABASE_FILE, DIVIDEND_YIELD_LIMIT, REPORTING_CURRENCY
 from src.preparation.exchange_mapping import get_listing_currency
+from src.quality.corporate_actions import ABOVE_LIMIT, find_corporate_actions, ordered_bars
 from src.quality.quality_config import (
     BLANK_TOKENS,
     CONTROL_IDS,
@@ -206,10 +207,20 @@ def check_outliers(dataframe, rules) -> tuple[bool, int, str]:
         for column in ("open", "high", "low", "close", "volume"):
             prices[column] = pd.to_numeric(prices[column], errors="coerce")
         outside, negative = ohlc_bar_flags(prices)
-        issues = int((outside | negative).sum())
+        bad_bars = int((outside | negative).sum())
+        dividends = 0
+        if {"dividends", "stock_splits", "adj_close"} <= set(prices.columns):
+            bars = ordered_bars(prices)
+            usable = ~(outside | negative | bars["close"].isna().reindex(prices.index))
+            actions = find_corporate_actions(bars, usable)
+            dividends = int(actions["check"].eq(ABOVE_LIMIT).sum())
+        issues = bad_bars + dividends
         if issues == 0:
-            return True, 0, "Aucun cours négatif ni barre incohérente."
-        return True, issues, f"{issues} barre(s) ont un cours négatif ou hors de la fourchette high-low."
+            return True, 0, "Aucun cours négatif, ni barre incohérente, ni dividende hors limite."
+        detail = f"{bad_bars} barre(s) ont un cours négatif ou hors de la fourchette high-low"
+        if dividends:
+            detail += f" ; {dividends} dividende(s) dépassent {DIVIDEND_YIELD_LIMIT:.0%} du cours précédent"
+        return True, issues, detail + "."
 
     if kind == "positive_value":
         values = pd.to_numeric(dataframe["value"], errors="coerce")

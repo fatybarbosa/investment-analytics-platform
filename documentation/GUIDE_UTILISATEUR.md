@@ -62,6 +62,8 @@ Les pages Power BI sont : Portfolio Overview, Suivi, Performance Analytics, Risk
 
 ## Ouvrir Power BI, puis exporter les mesures
 
+`python -m src.pipeline.full_refresh` fait ces étapes sans clic. Pour les faire à la main :
+
 1. Ouvrir Power BI Desktop.
 2. Fichier, Ouvrir, puis `dashboards/powerbi/Investment Analytics.pbip`.
 3. Régler le paramètre `ProjectRoot` sur le dossier du clone (Transformer les données, Gérer les paramètres), puis Actualiser. Les données ne sont pas dans le fichier : elles sont relues dans les CSV du projet. Le dépôt garde une valeur neutre pour ce paramètre.

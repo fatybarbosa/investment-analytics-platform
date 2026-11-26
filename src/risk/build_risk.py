@@ -37,6 +37,7 @@ from src.portfolio_construction.build_portfolios import (
     MEMBERSHIP_FILE,
     METRICS_FILE,
     MONTHLY_RETURNS_FILE,
+    PRICE_INPUT_COLUMNS,
     RETURN_LEVEL,
     STRATEGY_IDS,
     month_end_levels,
@@ -193,7 +194,7 @@ def shared_returns(prices, symbols, months):
     wide = levels.pivot(index="month", columns="symbol", values=RETURN_LEVEL)
     wide = wide.reindex(index=needed, columns=list(symbols))
     if wide.isna().any().any() or (wide <= 0).any().any():
-        raise RuntimeError("An included name is missing a month-end CHF adjusted close.")
+        raise RuntimeError("An included name is missing a month-end CHF total-return level.")
     returns = wide.pct_change().iloc[1:].copy()
     returns.index = returns.index.astype(str)
     if list(returns.index) != [str(month) for month in months]:
@@ -258,7 +259,7 @@ def build_risk():
     membership = pd.read_csv(MEMBERSHIP_FILE, dtype={"yahoo_symbol": str})
     prices = pd.read_csv(
         MARKET_PRICES_CHF,
-        usecols=["symbol", "timestamp", "close_chf", RETURN_LEVEL],
+        usecols=list(PRICE_INPUT_COLUMNS),
     )
     asset_returns = shared_returns(prices, included_symbols(membership), months)
     summary, matrix = correlation_tables(asset_returns)

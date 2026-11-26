@@ -61,11 +61,9 @@ PATH = source_id(MONITORING_DATA / "portfolio_path.csv")
 FUND_RETURNS = source_id(PERFORMANCE_DATA / "benchmark_monthly_return.csv")
 QUALITY = source_id(DATA_CONTROL_CENTER_FILE)
 ANNEX = source_id(EXCEL_REPORTS / "annexe_reporting.xlsx")
-EXPORT = source_id(EXCEL_REPORTS / "power_bi_export.csv")
 CONFIG = "py:src.config"
 RISK_MODULE = "py:src.risk.build_risk"
 MONITORING_MODULE = "py:src.portfolio_monitoring.build_monitoring"
-STRESS_MODULE = "py:src.stress_testing.build_stress"
 FEASIBILITY = source_id(MONITORING_DATA / "mandate_feasibility.csv")
 
 BOOKS = ("equal_weight", "minimum_volatility", "maximum_sharpe")
@@ -92,7 +90,7 @@ DISCLAIMER = (
 PORTFOLIO_LABEL = "Portefeuilles hypothétiques construits rétrospectivement sur des données publiques"
 REAL_DATA_NOTE = "Les cours, les cours de change et le SARON sont des données réelles et publiques."
 BASIS_NOTE = (
-    "Les livres sont mesurés en rendement total brut : dividendes réinvestis par le cours ajusté, avant frais et avant impôt à la source. "
+    "Les livres sont mesurés en rendement total brut : dividendes déclarés réinvestis au jour de détachement, avant frais et avant impôt à la source. "
     "Le fonds est mesuré par le rendement de sa valeur liquidative, net de ses frais : la comparaison avantage donc les livres."
 )
 SCOPE_NOTE = (

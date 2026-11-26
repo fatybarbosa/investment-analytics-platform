@@ -4,7 +4,7 @@ Plateforme d'analyse d'un mandat discrétionnaire fictif, en francs suisses. Ell
 
 **Autrice :** Faty Barbosa
 
-CLIENT001 est un cas d'école. Aucun compte n'est ouvert. Les trois livres sont des portefeuilles hypothétiques construits rétrospectivement : ils n'ont pas été détenus. Les cours, les changes, le SARON et le rendement publié du fonds iShares sont des données réelles et publiques. Il n'y a pas de relevé de dépositaire, pas de frais, pas de flux. Le rendement des livres est un rendement total brut : dividendes réinvestis par le cours ajusté, avant frais et avant impôt à la source. Le rendement du fonds est celui de sa valeur liquidative publiée par iShares, net de ses frais, converti en francs.
+CLIENT001 est un cas d'école. Aucun compte n'est ouvert. Les trois livres sont des portefeuilles hypothétiques construits rétrospectivement : ils n'ont pas été détenus. Les cours, les changes, le SARON et le rendement publié du fonds iShares sont des données réelles et publiques. Il n'y a pas de relevé de dépositaire, pas de frais, pas de flux. Le rendement des livres est un rendement total brut : dividendes déclarés réinvestis au jour de détachement, avant frais et avant impôt à la source. Le rendement du fonds est celui de sa valeur liquidative publiée par iShares, net de ses frais, converti en francs.
 
 Les textes constatent et alertent par rapport aux limites écrites du mandat. Ils ne formulent pas de recommandation d'investissement.
 
@@ -24,7 +24,7 @@ English summary: [README_EN.md](README_EN.md). Les rapports sont en français.
 | Le processus manuel que la commande remplace | [documentation/AUTOMATISATION_AVANT_APRES.md](documentation/AUTOMATISATION_AVANT_APRES.md) |
 | Le rapport pour un comité | [reports/executive/rapport_executif.pdf](reports/executive/rapport_executif.pdf) |
 | Rapport de CLIENT001, et rapport du gérant | [reports/client/](reports/client/) |
-| Quatre défauts de données, instruits | [reports/executive/cas_d_investigation.md](reports/executive/cas_d_investigation.md) |
+| Cinq défauts de données, instruits | [reports/executive/cas_d_investigation.md](reports/executive/cas_d_investigation.md) |
 | La présentation | [reports/management/presentation_management.pptx](reports/management/presentation_management.pptx) |
 | L'annexe qui rapproche Python, Excel et Power BI | [reports/excel/EXPLICATIONS.md](reports/excel/EXPLICATIONS.md) |
 
@@ -38,6 +38,14 @@ Windows, Python 3.12. Le détail, les prérequis et l'ordre des commandes sont d
 python -m src.pipeline.refresh
 python -m pytest tests
 ```
+
+Le passage complet en une commande, avec l'actualisation et l'export Power BI :
+
+```bash
+python -m src.pipeline.full_refresh
+```
+
+Elle demande Excel et Power BI Desktop, et ne commite rien : les textes se relisent avant d'être versionnés. La reconstruction mensuelle des données est décrite dans le guide.
 
 Sans Excel ni Windows, `python -m src.pipeline.refresh --skip-office` reconstruit tout sauf l'annexe Excel et les rapports, qui lisent l'annexe. Les prix bruts (Yahoo Finance) ne sont pas versionnés : `data/input_manifest.json` garde l'empreinte des entrées du dernier passage, pour qu'un écart entre deux passages puisse être rattaché à un changement des données.
 
