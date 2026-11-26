@@ -5,8 +5,9 @@ CLIENT001 is the only client. One report is written for that client.
 The other is written for the manager who follows the same books.
 Both read the same files.
 
-Client report : sector, region, currency and the written limits.
-Performance, risk and stress stay in the executive report.
+Client report : the recommendations, then sector, region, currency and
+the written limits. The performance, risk and stress tables stay in the
+executive report.
 Nothing at security level.
 
 Manager report : the ten largest lines, the names that contributed most
@@ -33,6 +34,7 @@ from src.reporting import report_content as content
 from src.reporting.commentary import (
     BASIS_NOTE,
     BOOKS,
+    DISCLAIMER,
     LABELS,
     MONTHS,
     pick,
@@ -61,7 +63,7 @@ TOP_LINES = 5
 NOT_HELD = "–"
 
 PENSION_NEEDS = (
-    "Rapport remis à CLIENT001 : la répartition par secteur, zone et devise, et la situation face à chaque limite écrite. "
+    "Rapport remis à CLIENT001 : les recommandations, la répartition par secteur, zone et devise, et la situation face à chaque limite écrite. "
     "La performance, le risque et les tests de résistance sont dans le rapport exécutif. "
     "CLIENT001 ne reçoit pas le détail des lignes."
 )
@@ -214,6 +216,10 @@ def _label_paragraph(generated):
 
 def build_allocation_report(sections, _figures, generated):
     rep = _start("Rapport de CLIENT001", generated, PENSION_NEEDS)
+
+    rep.heading("Recommandations")
+    rep.bullets(sections["recommandations"])
+    rep.para(plain("avertissement", DISCLAIMER), SMALL)
 
     rep.heading("Limites du mandat et situation au mois de rapport")
     rep.table(content.limits_table(), widths=[36 * mm, 24 * mm, 22 * mm, 34 * mm, 34 * mm, 24 * mm])

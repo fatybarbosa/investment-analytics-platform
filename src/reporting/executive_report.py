@@ -43,11 +43,11 @@ RULE = colors.HexColor("#c3c2b7")
 BAND = colors.HexColor("#eef3f8")
 ALERT = colors.HexColor("#9C5700")
 
-BODY = ParagraphStyle("body", fontName="Helvetica", fontSize=8.0, leading=10.0, textColor=INK, alignment=TA_LEFT, spaceAfter=2.0)
-BULLET = ParagraphStyle("bullet", parent=BODY, leftIndent=9, bulletIndent=1, spaceAfter=1.8)
+BODY = ParagraphStyle("body", fontName="Helvetica", fontSize=7.8, leading=9.5, textColor=INK, alignment=TA_LEFT, spaceAfter=1.8)
+BULLET = ParagraphStyle("bullet", parent=BODY, leftIndent=9, bulletIndent=1, spaceAfter=1.3)
 SMALL = ParagraphStyle("small", parent=BODY, fontSize=7.3, leading=9.2, textColor=SECONDARY)
 H1 = ParagraphStyle("h1", fontName="Helvetica-Bold", fontSize=15, leading=18, textColor=NAVY, spaceAfter=2)
-H2 = ParagraphStyle("h2", fontName="Helvetica-Bold", fontSize=10.2, leading=12.5, textColor=NAVY, spaceBefore=5, spaceAfter=2.5)
+H2 = ParagraphStyle("h2", fontName="Helvetica-Bold", fontSize=10.2, leading=12.5, textColor=NAVY, spaceBefore=4, spaceAfter=2.2, keepWithNext=1)
 LABEL = ParagraphStyle("label", fontName="Helvetica-Oblique", fontSize=8.3, leading=10.5, textColor=ALERT, spaceAfter=3)
 CELL = ParagraphStyle("cell", fontName="Helvetica", fontSize=7.4, leading=9, textColor=INK)
 CELL_HEAD = ParagraphStyle("cellhead", parent=CELL, fontName="Helvetica-Bold", textColor=colors.white)
@@ -180,7 +180,9 @@ def _escape(text):
 def build_report(sections, figures, generated):
     """Write the PDF. Return the file, its statements and its structural strings."""
     report = Report(generated)
-    facts, risks, alerts, points = (sections[name] for name in ("faits", "risques", "alertes", "points"))
+    facts, risks, advice, alerts, points = (
+        sections[name] for name in ("faits", "risques", "recommandations", "alertes", "points")
+    )
 
     report.title("Rapport exécutif : trois portefeuilles ODD en CHF")
     report.story.append(Paragraph(f"{AUTO_LABEL} Produit par le pipeline le {generated}.", LABEL))
@@ -199,14 +201,23 @@ def build_report(sections, figures, generated):
     )))
 
     report.heading("Faits marquants")
-    report.bullets(facts)
+    # The Sharpe ratios, the final wealth and the control count are in the tables below.
+    report.bullets(pick(facts, "fenetre") + pick(facts, "rendement"))
+
+    report.heading("Recommandations")
+    report.bullets(advice)
+    report.para(plain("avertissement", DISCLAIMER), SMALL)
+    report.figure(figures["link"], (
+        "Chaque point est un mois : en abscisse le rendement du fonds, en ordonnée celui du livre, en CHF. "
+        "Sur la diagonale en pointillé, les deux rendent autant. La droite ajustée a pour pente le bêta."
+    ), width=122 * mm)
 
     report.heading("Performance contre le fonds iShares, en CHF")
     report.table(content.performance_table(), widths=[34 * mm, 22 * mm, 19 * mm, 15 * mm, 15 * mm, 24 * mm, 21 * mm, 24 * mm])
     report.figure(figures["wealth"], (
         "Richesse cumulée pour une unité investie au début de la fenêtre. Le fonds est en pointillé. "
         "Rendements totaux : livres bruts de frais et d'impôt à la source, fonds net de ses frais."
-    ))
+    ), width=115 * mm)
 
     report.heading("Risque : VaR, expected shortfall, corrélation")
     report.table(content.risk_table(), widths=[36 * mm, 29 * mm, 25 * mm, 33 * mm, 21 * mm, 30 * mm])
@@ -217,13 +228,12 @@ def build_report(sections, figures, generated):
 
     report.heading("Tests de résistance (illustratifs)")
     report.table(content.shock_definitions(), widths=[24 * mm, 150 * mm])
-    report.para(plain("chocs", "Richesse finale pour une unité investie, par livre et par choc :"), SMALL)
+    report.para(plain("chocs", (
+        "Richesse finale pour une unité investie, par livre et par choc. Les chocs sont des paramètres écrits à l'avance, "
+        "pas des prévisions :"
+    )), SMALL)
     report.table(content.stress_table(), widths=[36 * mm, 24 * mm, 24 * mm, 24 * mm, 24 * mm, 24 * mm])
-    report.bullets(pick(risks, "chocs") + pick(risks, "chocs_limites"))
-    report.figure(figures["stress"], (
-        "Richesse finale par livre et par choc. La ligne pointillée est la mise de départ. "
-        "Le choc de taux ne change pas la richesse : il ne modifie que le taux sans risque."
-    ), width=118 * mm)
+    report.bullets(pick(risks, "chocs_limites"))
 
     report.heading("Qualité des données")
     report.bullets(pick(alerts, "qualite") + pick(alerts, "qualite_ponderation"))
@@ -255,7 +265,6 @@ def build_report(sections, figures, generated):
 
     report.heading("Points à instruire")
     report.bullets(points)
-    report.para(plain("avertissement", DISCLAIMER), SMALL)
 
     EXECUTIVE_REPORTS.mkdir(parents=True, exist_ok=True)
     report.save(REPORT_FILE)

@@ -19,6 +19,7 @@ from src.config import (
     MONITORING_DATA,
     MONITORING_REPORTS,
     QUARTERLY_TURNOVER_CAP,
+    IPS_SECTOR_WEIGHT_CAP,
     SECTOR_WEIGHT_CAP,
     ZONE_WEIGHT_CAP,
 )
@@ -427,7 +428,7 @@ def effective_figure(history):
 
 
 def sector_limit_figure(limits):
-    """Largest sector weight of every month, with the IPS sector cap."""
+    """Largest sector weight of every month, with the working cap and the cap written in the IPS."""
     dated = as_dates(limits)
     figure = px.line(
         dated,
@@ -441,7 +442,14 @@ def sector_limit_figure(limits):
         y=SECTOR_WEIGHT_CAP,
         line_dash="dash",
         line_color="#666666",
-        annotation_text=f"plafond {SECTOR_WEIGHT_CAP * 100:.0f} %",
+        annotation_text=f"plafond de travail {SECTOR_WEIGHT_CAP * 100:.0f} %, non approuvé",
+    )
+    figure.add_hline(
+        y=IPS_SECTOR_WEIGHT_CAP,
+        line_dash="dot",
+        line_color="#d03b3b",
+        annotation_text=f"plafond écrit dans l'IPS {IPS_SECTOR_WEIGHT_CAP * 100:.0f} %",
+        annotation_position="bottom right",
     )
     figure.update_yaxes(tickformat=".0%", title="Poids", rangemode="tozero")
     figure.update_xaxes(type="date", title="")
@@ -568,9 +576,11 @@ Il figure sur le placement de 1 CHF et sur le drawdown. Il n'a pas de poids dans
 donc il n'est pas sur les graphiques d'allocation, de lignes, de rotation ni de concentration.
 Le poids d'un trimestre est fixé avec les soixante mois de rendements déjà observés,
 puis dérive avec le marché pendant les trois mois du trimestre.
-Les plafonds de l'IPS sont {ISSUER_WEIGHT_CAP * 100:.0f} % par émetteur,
+Les plafonds de construction sont {ISSUER_WEIGHT_CAP * 100:.0f} % par émetteur,
 {SECTOR_WEIGHT_CAP * 100:.0f} % par secteur, {ZONE_WEIGHT_CAP * 100:.0f} % par zone
 et {CURRENCY_WEIGHT_CAP * 100:.0f} % par devise de cotation.
+L'IPS écrit {IPS_SECTOR_WEIGHT_CAP * 100:.0f} % par secteur : la liste de titres ne le permet pas, et les
+{SECTOR_WEIGHT_CAP * 100:.0f} % sont un plafond de travail que le client n'a pas approuvé.
 Le premier graphique suit un placement de 1 CHF et son drawdown.
 Le deuxième cumule les contributions mensuelles par secteur ; ce cumul n'est pas
 une performance composée.

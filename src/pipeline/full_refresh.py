@@ -12,11 +12,9 @@ Order
 4. Full pass: `refresh`, which rebuilds the Excel annex, reconciles Python,
    Excel and Power BI, and writes the reports. It stops if a reconciliation line
    stays open or a number of a text is not in a pipeline file.
-5. A list of what changed in git.
 
-The command never commits and never pushes. The texts carry the label
-"generated automatically, to be reviewed before distribution": a person reads
-them, then versions them.
+The texts carry the label "generated automatically, to be reviewed before
+distribution".
 
 Windows with Excel and Power BI Desktop only.
 
@@ -26,9 +24,9 @@ Run:  python -m src.pipeline.full_refresh
 from __future__ import annotations
 
 import os
-import subprocess
+import sys
 
-from src.config import EXCEL_REPORTS, PROJECT_ROOT
+from src.config import EXCEL_REPORTS
 from src.pipeline.refresh import refresh
 from src.reporting.power_bi_export import export_power_bi
 from src.reporting.power_bi_refresh import close_desktop, open_and_refresh
@@ -46,13 +44,6 @@ def annex_is_locked():
     except PermissionError:
         return True
     return False
-
-
-def changed_files():
-    completed = subprocess.run(
-        ["git", "status", "--short"], cwd=PROJECT_ROOT, capture_output=True, text=True, encoding="utf-8"
-    )
-    return [line for line in completed.stdout.splitlines() if line.strip()]
 
 
 def full_refresh():
@@ -76,20 +67,18 @@ def full_refresh():
 
     logger.info("Full refresh, step 3 of 3: annex, reconciliation and reports")
     result = refresh()
-    return {"export": export, "result": result, "changes": changed_files()}
+    return {"export": export, "result": result}
 
 
 def main():
+    # A redirected Windows console is not UTF-8: the summary must still print.
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     outcome = full_refresh()
     export = outcome["export"]
     executive = outcome["result"]["executive"]
     print(f"Power BI: {export['values']} values exported, model refreshed {export['refreshed']}")
     print(f"Executive report: {executive['report']} ({executive['pages']} pages)")
     print(f"Numbers checked: {executive['numbers_checked']}, alerts: {executive['alerts']}")
-    print()
-    print("Nothing is committed. Read the texts, then version them:")
-    for line in outcome["changes"]:
-        print(" ", line)
     if outcome["result"]["failures"]:
         for dataset_id, message in sorted(outcome["result"]["failures"].items()):
             print(f"FAILED {dataset_id}: {message}")

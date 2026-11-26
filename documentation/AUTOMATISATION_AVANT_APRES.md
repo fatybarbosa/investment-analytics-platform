@@ -56,11 +56,10 @@ Elle ne s'arrête pas pour un avertissement qualité : l'écart est enregistré,
 
 ## Ce que l'automatisation ne remplace pas
 
-- La relecture humaine des livrables avant diffusion. Chaque texte porte la mention qui le rappelle.
+- La relecture des livrables avant diffusion. Chaque texte porte la mention qui le rappelle.
 - La décision sur un écart. Le pipeline l'écrit, il ne le tranche pas.
 - La lecture des rapports de société pour le registre ODD. Elle reste manuelle, et sa source est nommée ligne par ligne.
 - La mise en forme du rapport Power BI. La commande complète actualise le modèle et exporte les mesures, mais n'enregistre jamais le rapport.
-- Le versionnement. Aucune commande ne commite ni ne publie.
 
 ## Le même raisonnement dans Excel
 

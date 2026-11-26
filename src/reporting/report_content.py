@@ -21,6 +21,7 @@ import pandas as pd
 from src.config import EXECUTIVE_REPORTS, PROJECT_ROOT
 from src.reporting.commentary import (
     BOOKS,
+    COMOVEMENT,
     FUND_RETURNS,
     FUND,
     LABELS,
@@ -288,7 +289,7 @@ def tail_figure():
 
 
 def sector_figure():
-    """Largest sector weight of each book over time, against the cap."""
+    """Largest sector weight of each book over time, against the working cap and the written cap."""
     frame = pd.read_csv(PROJECT_ROOT / LIMITS)
     figure, axis = plt.subplots(figsize=(7.4, 2.8))
     _style(axis)
@@ -297,10 +298,45 @@ def sector_figure():
         months = pd.to_datetime(rows["month"].astype(str) + "-01")
         axis.plot(months, rows["largest_sector_weight"].astype(float) * 100, color=SERIES_COLORS[book], linewidth=1.8, label=LABELS[book])
     cap = float(resolve(config("SECTOR_WEIGHT_CAP"))) * 100
-    axis.axhline(cap, color="#d03b3b", linewidth=1.2, linestyle=(0, (4, 2)), label="Plafond du mandat")
+    axis.axhline(cap, color="#d03b3b", linewidth=1.2, linestyle=(0, (4, 2)), label="Plafond de travail, non approuvé")
+    written = float(resolve(config("IPS_SECTOR_WEIGHT_CAP"))) * 100
+    axis.axhline(written, color="#d03b3b", linewidth=1.6, linestyle=(0, (1, 1)), label="Plafond écrit du mandat")
     axis.set_ylabel("Poids du premier secteur, en %", fontsize=8, color=MUTED)
-    axis.legend(loc="lower left", fontsize=8, frameon=False, ncol=4, handlelength=1.6, columnspacing=1.2, bbox_to_anchor=(0, 1.0))
+    axis.legend(loc="lower left", fontsize=8, frameon=False, ncol=3, handlelength=1.6, columnspacing=1.2, bbox_to_anchor=(0, 1.0))
     return _save(figure, "premier_secteur.png")
+
+
+def link_figure():
+    """One dot per month: the return of a book against the return of the fund, one panel per book."""
+    returns = pd.read_csv(PROJECT_ROOT / PATH)
+    fund = pd.read_csv(PROJECT_ROOT / FUND_RETURNS)
+    fund_returns = fund.set_index(fund["month"].astype(str))["benchmark_return_chf"].astype(float) * 100
+    measured = pd.read_csv(PROJECT_ROOT / COMOVEMENT).set_index("strategy")
+    figure, axes = plt.subplots(1, len(BOOKS), figsize=(7.4, 2.75), sharex=True, sharey=True)
+    for axis, book in zip(axes, BOOKS):
+        _style(axis)
+        axis.grid(axis="x", color=GRID, linewidth=0.6)
+        rows = returns.loc[returns["strategy"].astype(str).eq(book)].set_index("month")
+        own = rows["portfolio_return"].astype(float) * 100
+        other = fund_returns.reindex(own.index.astype(str))
+        if other.isna().any():
+            raise RuntimeError(f"{book}: a month of the book has no fund return.")
+        low = float(min(own.min(), other.min()))
+        high = float(max(own.max(), other.max()))
+        axis.plot([low, high], [low, high], color=MUTED, linewidth=0.9, linestyle=(0, (4, 2)), label="Même rendement")
+        beta = float(measured.loc[book, "beta"])
+        intercept = float(own.mean() - beta * other.mean())
+        axis.scatter(other.to_numpy(), own.to_numpy(), s=9, color=SERIES_COLORS[book], alpha=0.75, linewidths=0)
+        axis.plot(
+            [low, high], [intercept + beta * low, intercept + beta * high],
+            color=INK, linewidth=1.1, label="Droite ajustée",
+        )
+        axis.set_title(LABELS[book], fontsize=9, color=INK)
+        axis.set_aspect("equal", adjustable="box")
+    axes[0].set_ylabel("Rendement du livre, en %", fontsize=8, color=MUTED)
+    axes[1].set_xlabel("Rendement mensuel du fonds, en %", fontsize=8, color=MUTED)
+    axes[0].legend(loc="upper left", fontsize=7, frameon=False, handlelength=1.6)
+    return _save(figure, "lien_avec_le_fonds.png")
 
 
 def build_figures():
@@ -309,4 +345,5 @@ def build_figures():
         "stress": stress_figure(),
         "tail": tail_figure(),
         "sector": sector_figure(),
+        "link": link_figure(),
     }

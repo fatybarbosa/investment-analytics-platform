@@ -31,7 +31,7 @@ Le test d'injection travaille sur une copie. Il ne modifie pas les fichiers de p
 
 La fenêtre de mesure est mensuelle : un nouveau mois n'entre que lorsque le SARON et le rendement du fonds l'ont publié. Une reconstruction par mois suffit. Elle se fait en deux temps.
 
-**1. Les données, sans personne.** Sur la machine de travail, une tâche Windows `InvestmentAnalytics-MonthlyRefresh` lance `scripts/monthly_refresh.cmd` le 5 de chaque mois à 8 h. Si la machine est éteinte à ce moment, elle part au prochain démarrage. Le script lance `python -m src.pipeline.refresh --skip-office` et écrit dans `logs/monthly_refresh.log`. Il reconstruit les données, la base, les livres, le suivi, la performance, le risque, les chocs et la qualité. Il ne touche ni à l'annexe Excel ni aux rapports, n'ouvre pas Power BI et ne valide rien dans git. Un message à l'écran rappelle l'étape suivante.
+**1. Les données, sans personne.** Sur la machine de travail, une tâche Windows `InvestmentAnalytics-MonthlyRefresh` lance `scripts/monthly_refresh.cmd` le 5 de chaque mois à 8 h. Si la machine est éteinte à ce moment, elle part au prochain démarrage. Le script lance `python -m src.pipeline.refresh --skip-office` et écrit dans `logs/monthly_refresh.log`. Il reconstruit les données, la base, les livres, le suivi, la performance, le risque, les chocs et la qualité. Il ne touche ni à l'annexe Excel ni aux rapports et n'ouvre pas Power BI. Un message à l'écran rappelle l'étape suivante.
 
 **2. Le passage complet, devant l'écran.**
 
@@ -39,7 +39,7 @@ La fenêtre de mesure est mensuelle : un nouveau mois n'entre que lorsque le SAR
 python -m src.pipeline.full_refresh
 ```
 
-La commande vérifie que l'annexe n'est pas ouverte dans Excel, refait l'étape 1, ouvre Power BI Desktop s'il est fermé, actualise le modèle en mémoire, exporte les mesures, referme Desktop sans enregistrer s'il a été ouvert par la commande, puis lance le `refresh` complet : annexe, rapprochement Python, Excel et Power BI, rapports. Elle s'arrête si une ligne de rapprochement reste ouverte ou si un nombre d'un texte n'est dans aucun fichier. À la fin, elle liste les fichiers modifiés. Elle ne commite rien : les textes portent « à relire avant diffusion », une personne les lit, puis les versionne.
+La commande vérifie que l'annexe n'est pas ouverte dans Excel, refait l'étape 1, ouvre Power BI Desktop s'il est fermé, actualise le modèle en mémoire, exporte les mesures, referme Desktop sans enregistrer s'il a été ouvert par la commande, puis lance le `refresh` complet : annexe, rapprochement Python, Excel et Power BI, rapports. Elle s'arrête si une ligne de rapprochement reste ouverte ou si un nombre d'un texte n'est dans aucun fichier. À la fin, elle affiche le nombre de pages du rapport, de nombres vérifiés et d'alertes. Les textes portent « à relire avant diffusion ».
 
 Pour arrêter la tâche mensuelle : `schtasks /Delete /TN "InvestmentAnalytics-MonthlyRefresh" /F`.
 

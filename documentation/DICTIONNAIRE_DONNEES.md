@@ -337,6 +337,7 @@ Lignes : 8.
 | `capacity_ips` |
 | `sector_cap_working` |
 | `capacity_working` |
+| `names_short_ips` |
 
 ### `data/05_monitoring/monthly_report.csv`
 
@@ -470,6 +471,25 @@ Lignes : 3.
 | `maximum_drawdown` |
 | `recovered_month` |
 
+### `data/06_performance/fund_comovement.csv`
+
+Lignes : 3.
+
+| Colonne |
+|---|
+| `strategy` |
+| `months` |
+| `correlation` |
+| `r_squared` |
+| `beta` |
+| `fund_down_months` |
+| `book_mean_fund_down` |
+| `fund_mean_fund_down` |
+| `fund_up_months` |
+| `book_mean_fund_up` |
+| `fund_mean_fund_up` |
+| `active_t_statistic` |
+
 ### `data/06_performance/performance_metrics.csv`
 
 Lignes : 4.
@@ -601,7 +621,7 @@ Fichier local `database/sdg_investment.db`. Tables : 26.
 
 ### `acquisition_log`
 
-Lignes : 224.
+Lignes : 234.
 
 | Colonne |
 |---|
@@ -918,7 +938,7 @@ Lignes : 120.
 
 ### `quality_control_result`
 
-Lignes : 1710.
+Lignes : 1818.
 
 | Colonne |
 |---|
@@ -937,7 +957,7 @@ Lignes : 1710.
 
 ### `quality_metric_result`
 
-Lignes : 1524.
+Lignes : 1620.
 
 | Colonne |
 |---|
@@ -957,7 +977,7 @@ Lignes : 1524.
 
 ### `quality_run`
 
-Lignes : 39.
+Lignes : 41.
 
 | Colonne |
 |---|

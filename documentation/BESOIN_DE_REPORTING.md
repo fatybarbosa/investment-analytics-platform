@@ -12,8 +12,8 @@ Le client du mandat est CLIENT001. Le gérant suit les mêmes livres. Les deux r
 
 | | CLIENT001 | Gérant |
 |---|---|---|
-| Ce que la page montre | Allocation par secteur, zone et devise, limites du mandat | Lignes, contributeurs et détracteurs, mouvements de poids, devises |
-| Ce que la page laisse de côté | La performance, le risque, les chocs et le détail des lignes | Les limites et les tests de résistance |
+| Ce que la page montre | Recommandations, allocation par secteur, zone et devise, limites du mandat | Lignes, contributeurs et détracteurs, mouvements de poids, devises |
+| Ce que la page laisse de côté | Les tableaux de performance, de risque et de chocs, et le détail des lignes | Les limites et les tests de résistance |
 | Livrable | `reports/client/rapport_client.pdf` | `reports/client/rapport_gerant.pdf` |
 
 ## Attente, donnée, calcul, contrôle, livrable
@@ -25,6 +25,8 @@ Le client du mandat est CLIENT001. Le gérant suit les mêmes livres. Les deux r
 | Les limites sont-elles respectées ? | `limit_watch.csv`, plafonds de `src/config.py` | Comparaison du plus grand poids de chaque famille au plafond, chaque mois | Un dépassement est compté et conservé ; le seuil de vigilance du rapport n'est pas une limite du mandat | Rapport de CLIENT001, commentaires, page Monitoring |
 | Qu'est-ce qui a changé depuis le dernier rapport ? | `weight_changes.csv`, `turnover.csv` | Poids avant (dérive comprise) et après chaque rééquilibrage trimestriel | Les variations absolues reconstituent la rotation brute publiée | Rapport gérant |
 | Quelle performance, contre quoi ? | `portfolio_monthly_returns`, `benchmark_monthly_return`, `performance_metrics` | Rendement chaîné, annualisé, Sharpe, Sortino, écart de suivi, ratio d'information contre le fonds iShares en CHF | Excel recalcule à partir des seuls rendements ; Power BI relit la cellule ; écart laissé en EXCEPTION s'il dépasse la tolérance | Rapport exécutif, annexe Excel |
+| Les livres suivent-ils le fonds ? | `active_return.csv` | Corrélation, part de variance, bêta, moyennes des mois de baisse et de hausse du fonds, statistique t de l'écart | Les mêmes rendements mensuels que l'écart de suivi ; un test vérifie les formules sur des séries connues. Excel et Power BI ne recalculent pas ces mesures | Rapport exécutif, diapositive Lien avec le fonds |
+| Que faut-il faire ? | Les fichiers de performance, de suivi et du lien avec le fonds | Cinq règles écrites dans `src/reporting/commentary.py` | Chaque nombre est relu dans son fichier ; la phrase change avec les chiffres ; relecture avant diffusion | Rapport exécutif, rapport de CLIENT001, présentation, commentaires |
 | Quels titres ont contribué, lesquels ont pesé ? | `holding_contribution.csv` | Poids multiplié par rendement en CHF, par titre et par mois | Les titres d'un mois reconstituent le rendement du livre ; les titres d'un secteur reconstituent la ligne du secteur | Rapport gérant |
 | Où sont les concentrations et les expositions ? | `concentration.csv`, `top10_positions.csv`, matrice de corrélation | Poids des dix premières lignes, indice de concentration, nombre effectif de lignes, corrélation moyenne | Mêmes valeurs dans le rapport mensuel et dans le suivi des limites | Rapport exécutif, page Risk Analytics |
 | Quelle perte dans un mauvais mois ? | `risk_by_strategy`, `var_tail` | VaR historique et expected shortfall mensuels, niveau écrit dans le module de risque | La volatilité rejoint celle de la phase 5 ; la queue est publiée mois par mois | Rapport exécutif, Excel, Power BI |
@@ -47,4 +49,4 @@ Le client du mandat est CLIENT001. Le gérant suit les mêmes livres. Les deux r
 1. La demande est écrite dans cette page, avec la donnée qui y répond. Si la donnée n'existe pas dans une source nommée, la ligne va dans le tableau précédent.
 2. Le calcul est placé dans le module de la phase concernée, avec son contrôle. Un calcul sans contrôle n'est pas publié.
 3. Le livrable lit le fichier publié. Il ne recalcule pas.
-4. Le contrôle des nombres relit le livrable. La relecture humaine vient après, avant diffusion.
+4. Le contrôle des nombres relit le livrable. La relecture vient après, avant diffusion.

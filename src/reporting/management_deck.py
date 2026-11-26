@@ -13,6 +13,8 @@ reports/management/presentation_management.pptx
 
 from __future__ import annotations
 
+import re
+
 from pptx import Presentation
 from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE
@@ -39,6 +41,8 @@ from src.reporting.commentary import (
     WINDOW_START,
     config,
     LIMITS,
+    link,
+    retained_book,
     perf,
     quality_summary,
     reconciliation,
@@ -67,6 +71,11 @@ MARGIN = Inches(0.6)
 AUTHOR = "Pipeline du projet (généré automatiquement)"
 
 
+def _minus(text):
+    """A true minus sign before a number: a line never breaks between it and the digits."""
+    return re.sub(r"(?<![\w-])-(?=\d)", "\u2212", text)
+
+
 class Deck:
     def __init__(self, generated):
         self.generated = generated
@@ -93,7 +102,7 @@ class Deck:
         paragraph = frame.paragraphs[0]
         paragraph.alignment = align
         run = paragraph.add_run()
-        run.text = text
+        run.text = _minus(text)
         run.font.size = Pt(size)
         run.font.bold = bold
         run.font.italic = italic
@@ -139,7 +148,7 @@ class Deck:
                 lead.font.color.rgb = AMBER
                 lead.font.name = "Calibri"
             run = paragraph.add_run()
-            run.text = ("" if statement.kind == "alerte" else "• ") + statement.text
+            run.text = ("" if statement.kind == "alerte" else "• ") + _minus(statement.text)
             run.font.size = Pt(size)
             run.font.color.rgb = INK
             run.font.name = "Calibri"
@@ -233,13 +242,26 @@ def _messages():
         f"{d.count(reconciliation('statut_power_bi', {'statut_power_bi': 'OK'}))} sont aussi retrouvés dans Power BI, "
         f"{d.count(reconciliation('statut_power_bi', {'statut_power_bi': PENDING}))} y restent en attente."
     ))
+    chosen = retained_book()
+    d = Draft()
+    out["link"] = d.done("diapositive", (
+        f"Livre {LABELS[chosen]} : {d.pct(link(chosen, 'r_squared'), 0)} de la variance de ses rendements est associée "
+        f"à celle du fonds, avec un bêta de {d.num(link(chosen, 'beta', 'raw'))}."
+    ))
+    d = Draft()
+    out["advice"] = d.done("diapositive", (
+        f"Proposer le livre {LABELS[chosen]} comme base, sans promettre de battre le fonds et sans mise en œuvre "
+        "tant que le plafond de secteur n'est pas réglé."
+    ))
     return out
 
 
 def build_deck(sections, figures, generated):
     """Write the deck. Return the file, its statements and its structural strings."""
     deck = Deck(generated)
-    facts, risks, alerts, points = (sections[name] for name in ("faits", "risques", "alertes", "points"))
+    facts, risks, advice, alerts, points = (
+        sections[name] for name in ("faits", "risques", "recommandations", "alertes", "points")
+    )
     messages = _messages()
     full = WIDTH - 2 * MARGIN
 
@@ -257,14 +279,22 @@ def build_deck(sections, figures, generated):
     deck._text(slide, MARGIN, Inches(6.3), full, Inches(0.4), f"{AUTO_LABEL} Produit par le pipeline le {generated}.", 12, color=AMBER, italic=True)
     deck.footers.append(generated)
 
-    # Context
-    slide = deck.slide("Contexte", plain("diapositive", "Un client fictif veut faire croître son capital avec des actions alignées sur les Objectifs de développement durable."))
+    # Context and method
+    slide = deck.slide("Contexte et méthode", plain("diapositive", "Un client fictif veut faire croître son capital avec des actions alignées sur les Objectifs de développement durable."))
+    half = Inches(5.85)
     deck.bullets(slide, [
         plain("diapositive", "La question posée : trois façons de répartir le même panier de titres font-elles mieux que le fonds de référence, et avec quel risque ?"),
         plain("diapositive", "Trois livres : parts égales (équipondéré), le moins de variations possible (volatilité minimale), le meilleur rendement par unité de risque (Sharpe maximal)."),
         plain("diapositive", "Référence : le fonds iShares MSCI Global Sustainable Development Goals, converti en CHF."),
         plain("diapositive", "Ce travail est un exercice sur données publiques. Rien n'a été investi."),
-    ], size=18)
+    ], width=half, size=15)
+    deck.bullets(slide, [
+        plain("diapositive", "Collecte : positions et rendement du fonds (iShares), cours (Yahoo Finance), change et taux sans risque SARON (Banque nationale suisse)."),
+        plain("diapositive", "Contrôle qualité des données, conversion en CHF, construction des trois livres, plafonds, performance, risque et tests de résistance."),
+        plain("diapositive", "Second calcul indépendant dans Excel, lecture dans Power BI, puis comparaison des trois."),
+        plain("diapositive", "Rapport, présentation et commentaires écrits à partir des fichiers : chaque nombre est relu dans sa source. Une commande refait la chaîne et s'arrête si un contrôle échoue."),
+        plain("diapositive", f"{REAL_DATA_NOTE} Pas de données de conservation : ni positions réelles, ni transactions, ni frais, ni flux."),
+    ], left=WIDTH - MARGIN - half, width=half, size=15)
 
     # Mandate
     slide = deck.slide("Mandat et limites", plain("diapositive", "Les règles sont écrites avant le calcul. Le plafond de secteur écrit n'est pas tenu : les livres utilisent un plafond de travail, non approuvé par le client."))
@@ -273,17 +303,6 @@ def build_deck(sections, figures, generated):
         plain("diapositive", "Actions cotées seulement, sans vente à découvert ni levier. Les poids sont revus chaque trimestre."),
         plain("diapositive", "Un titre n'entre que s'il a le statut Eligible du registre ODD et un historique complet en CHF."),
     ], top=Inches(4.6), height=Inches(1.8), size=16)
-
-    # Method
-    slide = deck.slide("Méthode", plain("diapositive", "Une seule commande refait toute la chaîne, des données aux livrables, et s'arrête si un contrôle échoue."))
-    deck.bullets(slide, [
-        plain("diapositive", "Collecte : positions et rendement du fonds (iShares), cours (Yahoo Finance), change et taux sans risque SARON (Banque nationale suisse)."),
-        plain("diapositive", "Contrôle qualité des données, puis conversion des cours en CHF."),
-        plain("diapositive", "Construction des trois livres, suivi des plafonds, performance, risque, tests de résistance."),
-        plain("diapositive", "Second calcul indépendant dans Excel, lecture dans Power BI, puis comparaison des trois."),
-        plain("diapositive", "Rapport, présentation et commentaires écrits à partir des fichiers : chaque nombre est relu dans sa source."),
-        plain("diapositive", f"{REAL_DATA_NOTE} Pas de données de conservation : ni positions réelles, ni transactions, ni frais, ni flux."),
-    ], size=17)
 
     # Performance
     slide = deck.slide("Performance", messages["performance"])
@@ -309,6 +328,14 @@ def build_deck(sections, figures, generated):
         plain("diapositive", "Sharpe et Sortino : rendement obtenu au-dessus du taux sans risque, rapporté aux variations. Plus c'est haut, mieux c'est."),
         plain("diapositive", "Écart de suivi : à quel point un livre s'éloigne du fonds d'un mois à l'autre."),
     ], top=Inches(4.5), height=Inches(1.9), size=15)
+
+    # Link with the fund
+    slide = deck.slide("Lien avec le fonds", messages["link"])
+    deck.picture(slide, figures["link"], MARGIN, Inches(1.95), Inches(8.3))
+    deck.bullets(slide, pick(advice, "marche"), left=Inches(9.2), top=Inches(1.9), width=Inches(3.6), size=14)
+    deck.bullets(slide, [
+        plain("diapositive", "Chaque point est un mois. Sur la diagonale en pointillé, le livre et le fonds rendent autant. La droite ajustée a pour pente le bêta."),
+    ], left=MARGIN, top=Inches(5.9), width=Inches(8.3), height=Inches(0.6), size=13)
 
     # Risk
     slide = deck.slide("Risque", messages["risk"])
@@ -351,10 +378,14 @@ def build_deck(sections, figures, generated):
     flagged = [statement for statement in alerts if statement.kind == "alerte"]
     deck.bullets(slide, flagged, size=13 if len(flagged) > 5 else 15)
 
-    # Recommendations
-    slide = deck.slide("Points à instruire", plain("diapositive", "Des points à instruire, liés aux limites du mandat. Pas de conseil d'investissement personnalisé."))
+    # Recommendations. The one on the link with the fund is on its own slide, beside its figure.
+    slide = deck.slide("Recommandations", messages["advice"])
+    deck.bullets(slide, [item for item in advice if item.tag != "marche"], top=Inches(1.75), height=Inches(4.4), size=14)
+    deck.bullets(slide, [plain("diapositive", DISCLAIMER)], top=Inches(6.35), height=Inches(0.5), size=11)
+
+    # Open points
+    slide = deck.slide("Points à instruire", plain("diapositive", "Les décisions qui restent ouvertes."))
     deck.bullets(slide, points, size=15)
-    deck.bullets(slide, [plain("diapositive", DISCLAIMER)], top=Inches(6.2), height=Inches(0.5), size=12)
 
     # Limits
     slide = deck.slide("Limites", plain("diapositive", "Ce que ces résultats ne permettent pas de dire."))

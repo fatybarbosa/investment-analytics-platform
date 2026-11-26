@@ -2,7 +2,7 @@
 
 **Généré automatiquement, à relire avant diffusion.**
 
-Produit par `python -m src.pipeline.refresh` le 2026-11-26 09:45 UTC. Portefeuilles hypothétiques construits rétrospectivement sur des données publiques : ils n'ont jamais été détenus. Les cours, les cours de change et le SARON sont des données réelles et publiques. Pas de données de conservation et pas de frais. Les livres sont mesurés en rendement total brut : dividendes déclarés réinvestis au jour de détachement, avant frais et avant impôt à la source. Le fonds est mesuré par le rendement de sa valeur liquidative, net de ses frais : la comparaison avantage donc les livres.
+Produit par `python -m src.pipeline.refresh` le 2026-11-26 10:56 UTC. Portefeuilles hypothétiques construits rétrospectivement sur des données publiques : ils n'ont jamais été détenus. Les cours, les cours de change et le SARON sont des données réelles et publiques. Pas de données de conservation et pas de frais. Les livres sont mesurés en rendement total brut : dividendes déclarés réinvestis au jour de détachement, avant frais et avant impôt à la source. Le fonds est mesuré par le rendement de sa valeur liquidative, net de ses frais : la comparaison avantage donc les livres.
 
 Chaque nombre de ce texte est relu dans un fichier du pipeline par `src/reporting/number_check.py`. La liste des nombres et de leur source est dans `controle_des_nombres.csv`.
 
@@ -27,6 +27,16 @@ Chaque nombre de ce texte est relu dans un fichier du pipeline par `src/reportin
 - Le choc de marché (-20 % sur le dernier mois) est plus sévère que le pire mois réellement observé (-11,89 %, livre Sharpe maximal). Le choc de taux ne change pas le rendement des actions : il ne modifie que le taux sans risque, donc le ratio de Sharpe. Ce n'est pas un test de sensibilité des titres aux taux. Aucun scénario daté n'est rejoué en dehors des pires mois observés ci-dessus.
 - Éligibilité ODD : sur 120 titres examinés, 42 sont Eligible, 65 Indeterminate et 13 Not_Eligible. Les statuts sont saisis par un seul analyste à partir de rapports de sociétés qui ne sont pas versionnés : un tiers ne peut pas les rejouer depuis ce dépôt. La liste de titres est la composition actuelle du fonds de référence, et l'éligibilité ODD a été jugée à la date de saisie du registre puis appliquée à tout l'historique : les sociétés sorties du fonds n'y figurent pas, ce qui peut embellir le résultat.
 
+## Recommandations
+
+- Proposer à CLIENT001 le livre Équipondéré comme base : son ratio de Sharpe, 0,69, est le plus élevé des trois livres, avec un rendement annualisé de 7,97 % et un drawdown maximal de -22,90 %. Il a aussi le rendement le plus élevé et la baisse maximale la plus faible des trois. C'est le seul des trois dont l'écart de suivi (7,75 %) reste sous la cible de 8 %. Cette proposition n'autorise pas la mise en œuvre : le plafond de secteur écrit n'est pas tenu.
+- Ne pas retenir en l'état les deux autres livres : Volatilité minimale (Sharpe 0,59, rendement 6,31 %, écart de suivi 8,34 %) ; Sharpe maximal (Sharpe 0,57, rendement 6,25 %, écart de suivi 8,41 %). Sur la fenêtre, l'optimisation des poids n'a pas apporté un meilleur rendement par unité de risque que les parts égales. Une volatilité plus basse (Volatilité minimale 11,76 % et Sharpe maximal 12,14 %, contre 12,28 %) n'y compense pas un rendement plus faible.
+- Présenter le livre Équipondéré comme une exposition aux actions qui suit en grande partie le fonds : 67 % de la variance de ses rendements mensuels est associée à celle du fonds (corrélation 0,82, bêta 0,76). Les mois où le fonds baisse (51 mois), le livre rend en moyenne -1,90 % contre -2,95 % ; les mois où il monte (69 mois), 2,63 % contre 3,16 %. Il amortit les baisses sans les éviter et monte moins que le fonds : ne pas le présenter comme une protection. Une partie de ce lien vient de la construction, les titres étant choisis dans la composition actuelle du fonds ; il ne prouve pas une cause.
+- Ne pas promettre à CLIENT001 de faire mieux que le fonds : l'avance du livre Équipondéré (7,97 % contre 6,08 % par an) n'est pas établie statistiquement sur 120 mois (statistique t de l'écart mensuel 0,68, pour un seuil de lecture de 2,0). La comparaison avantage en outre le livre, mesuré brut de frais alors que le fonds est net des siens.
+- Avant toute mise en œuvre, élargir la liste éligible plutôt que relever le plafond de secteur, ce qui accepterait la concentration que le mandat veut éviter. Sur la liste actuelle, au plus 80 % d'un livre entièrement investi tient sous le plafond écrit de 20 %, et le livre Équipondéré place 35,71 % dans le secteur Health Care. Il faut au moins 4 titres éligibles de plus, hors des secteurs qui remplissent déjà ce plafond (Health Care, Real Estate). Réexaminer d'abord les 65 titres au statut Indeterminate du registre, sans abaisser les critères. La comparaison des trois livres sera alors à refaire ; d'ici là, rien ne se met en œuvre sans l'accord écrit du client sur le plafond de travail de 40 %.
+
+Ces recommandations portent sur le mandat fictif CLIENT001. Elles sont écrites par des règles à partir des chiffres d'une simulation rétrospective. Elles ne constituent ni un conseil en placement ni un ordre : la décision revient au gérant et au client.
+
 ## Alertes
 
 - Aux dates de décision, aucun livre ne dépasse un plafond de construction. Mois-livres au-dessus d'une limite, comptés sur les 123 mois-livres de décision (début de trimestre) : émetteur 0, secteur (plafond de travail) 0, zone 0, devise 0, bande de lignes 0. Plafonds : émetteur 5 %, zone 50 %, devise 40 %, secteur 40 % (plafond de travail, voir ci-dessous), 25 à 40 lignes pour les livres optimisés.
@@ -44,11 +54,8 @@ Chaque nombre de ce texte est relu dans un fichier du pipeline par `src/reportin
 ## Points à instruire
 
 - Faire revoir par le gérant, avant le prochain rééquilibrage, les livres proches d'un plafond : Volatilité minimale, Sharpe maximal. Une hausse relative du premier secteur ou de la première zone suffirait à franchir la limite entre deux rééquilibrages.
-- Faire approuver ou refuser par le client le plafond de travail de secteur de 40 %, contre 20 % écrit dans le mandat. Tant qu'il ne l'est pas, le dépassement du plafond écrit reste ouvert.
 - Décider du traitement des dépassements passifs : toléré jusqu'au rééquilibrage suivant, ou corrigé dès qu'il apparaît. Le mandat ne le dit pas.
 - Décider si la cible d'écart de suivi de 8 % doit entrer dans la construction des poids. Aujourd'hui elle est écrite dans la politique mais n'est pas appliquée.
 - Traiter l'anomalie de gravité MEDIUM du contrôle qualité : cohérence des devises, 11 titres de la table securities_master sans série de change. Ces titres ne peuvent pas être convertis en CHF et restent hors des livres.
 - Avant toute présentation comme performance réelle : obtenir des données de conservation (positions, transactions, frais, flux). La réconciliation prouve que les formules se recoupent, pas que les titres ont été détenus, ni que les définitions sont les bonnes.
 - Rendre la comparaison au fonds strictement homogène : le rendement total des livres est brut de frais et d'impôt à la source, celui du fonds est net de ses frais. Il manque une série de rendement du fonds avant frais.
-
-Ces points sont des constats et des alertes liés aux limites écrites du mandat. Ce ne sont pas des recommandations d'investissement personnalisées.

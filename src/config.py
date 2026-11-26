@@ -205,5 +205,11 @@ TEMPORARY_LOSS_REFERENCE = 0.30
 # Reporting watch level, as a share of a written cap. This is a reading
 # threshold of the report. It is not a limit of the mandate.
 REPORTING_WATCH_RATIO = 0.95
+# Reading thresholds of the recommendations. They choose no weight.
+# Share of variance above which a book is said to follow the fund for the most part.
+MARKET_LINK_MAJORITY = 0.5
+# Student t of the mean monthly gap with the fund below which a lead is not
+# called established. About the usual two-sided 5 % level.
+SIGNIFICANCE_T = 2.0
 # The executive report must fit in this number of pages.
 EXECUTIVE_REPORT_MAX_PAGES = 3

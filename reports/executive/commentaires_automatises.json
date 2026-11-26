@@ -1,8 +1,8 @@
 {
   "mention": "Généré automatiquement, à relire avant diffusion.",
-  "genere_le": "2026-11-26 09:45 UTC",
+  "genere_le": "2026-11-26 10:56 UTC",
   "perimetre": "Portefeuilles hypothétiques construits rétrospectivement sur des données publiques : ils n'ont jamais été détenus. Les cours, les cours de change et le SARON sont des données réelles et publiques. Pas de données de conservation et pas de frais. Les livres sont mesurés en rendement total brut : dividendes déclarés réinvestis au jour de détachement, avant frais et avant impôt à la source. Le fonds est mesuré par le rendement de sa valeur liquidative, net de ses frais : la comparaison avantage donc les livres.",
-  "avertissement": "Ces points sont des constats et des alertes liés aux limites écrites du mandat. Ce ne sont pas des recommandations d'investissement personnalisées.",
+  "avertissement": "Ces recommandations portent sur le mandat fictif CLIENT001. Elles sont écrites par des règles à partir des chiffres d'une simulation rétrospective. Elles ne constituent ni un conseil en placement ni un ordre : la décision revient au gérant et au client.",
   "sections": {
     "faits": [
       {
@@ -175,6 +175,72 @@
         ]
       }
     ],
+    "recommandations": [
+      {
+        "type": "recommandation",
+        "texte": "Proposer à CLIENT001 le livre Équipondéré comme base : son ratio de Sharpe, 0,69, est le plus élevé des trois livres, avec un rendement annualisé de 7,97 % et un drawdown maximal de -22,90 %. Il a aussi le rendement le plus élevé et la baisse maximale la plus faible des trois. C'est le seul des trois dont l'écart de suivi (7,75 %) reste sous la cible de 8 %. Cette proposition n'autorise pas la mise en œuvre : le plafond de secteur écrit n'est pas tenu.",
+        "sources": [
+          "data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=equal_weight",
+          "data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight",
+          "data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=equal_weight",
+          "data/06_performance/performance_metrics.csv | cell tracking_error | strategy=equal_weight",
+          "py:src.config | cell TRACKING_ERROR_TARGET"
+        ]
+      },
+      {
+        "type": "recommandation",
+        "texte": "Ne pas retenir en l'état les deux autres livres : Volatilité minimale (Sharpe 0,59, rendement 6,31 %, écart de suivi 8,34 %) ; Sharpe maximal (Sharpe 0,57, rendement 6,25 %, écart de suivi 8,41 %). Sur la fenêtre, l'optimisation des poids n'a pas apporté un meilleur rendement par unité de risque que les parts égales. Une volatilité plus basse (Volatilité minimale 11,76 % et Sharpe maximal 12,14 %, contre 12,28 %) n'y compense pas un rendement plus faible.",
+        "sources": [
+          "data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=minimum_volatility",
+          "data/06_performance/performance_metrics.csv | cell annualized_return | strategy=minimum_volatility",
+          "data/06_performance/performance_metrics.csv | cell tracking_error | strategy=minimum_volatility",
+          "data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=maximum_sharpe",
+          "data/06_performance/performance_metrics.csv | cell annualized_return | strategy=maximum_sharpe",
+          "data/06_performance/performance_metrics.csv | cell tracking_error | strategy=maximum_sharpe",
+          "data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=minimum_volatility",
+          "data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=maximum_sharpe",
+          "data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=equal_weight"
+        ]
+      },
+      {
+        "type": "recommandation",
+        "texte": "Présenter le livre Équipondéré comme une exposition aux actions qui suit en grande partie le fonds : 67 % de la variance de ses rendements mensuels est associée à celle du fonds (corrélation 0,82, bêta 0,76). Les mois où le fonds baisse (51 mois), le livre rend en moyenne -1,90 % contre -2,95 % ; les mois où il monte (69 mois), 2,63 % contre 3,16 %. Il amortit les baisses sans les éviter et monte moins que le fonds : ne pas le présenter comme une protection. Une partie de ce lien vient de la construction, les titres étant choisis dans la composition actuelle du fonds ; il ne prouve pas une cause.",
+        "sources": [
+          "data/06_performance/fund_comovement.csv | cell r_squared | strategy=equal_weight",
+          "data/06_performance/fund_comovement.csv | cell correlation | strategy=equal_weight",
+          "data/06_performance/fund_comovement.csv | cell beta | strategy=equal_weight",
+          "data/06_performance/fund_comovement.csv | cell fund_down_months | strategy=equal_weight",
+          "data/06_performance/fund_comovement.csv | cell book_mean_fund_down | strategy=equal_weight",
+          "data/06_performance/fund_comovement.csv | cell fund_mean_fund_down | strategy=equal_weight",
+          "data/06_performance/fund_comovement.csv | cell fund_up_months | strategy=equal_weight",
+          "data/06_performance/fund_comovement.csv | cell book_mean_fund_up | strategy=equal_weight",
+          "data/06_performance/fund_comovement.csv | cell fund_mean_fund_up | strategy=equal_weight"
+        ]
+      },
+      {
+        "type": "recommandation",
+        "texte": "Ne pas promettre à CLIENT001 de faire mieux que le fonds : l'avance du livre Équipondéré (7,97 % contre 6,08 % par an) n'est pas établie statistiquement sur 120 mois (statistique t de l'écart mensuel 0,68, pour un seuil de lecture de 2,0). La comparaison avantage en outre le livre, mesuré brut de frais alors que le fonds est net des siens.",
+        "sources": [
+          "data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight",
+          "data/06_performance/performance_metrics.csv | cell annualized_return | strategy=benchmark",
+          "data/06_performance/fund_comovement.csv | cell months | strategy=equal_weight",
+          "data/06_performance/fund_comovement.csv | cell active_t_statistic | strategy=equal_weight",
+          "py:src.config | cell SIGNIFICANCE_T"
+        ]
+      },
+      {
+        "type": "recommandation",
+        "texte": "Avant toute mise en œuvre, élargir la liste éligible plutôt que relever le plafond de secteur, ce qui accepterait la concentration que le mandat veut éviter. Sur la liste actuelle, au plus 80 % d'un livre entièrement investi tient sous le plafond écrit de 20 %, et le livre Équipondéré place 35,71 % dans le secteur Health Care. Il faut au moins 4 titres éligibles de plus, hors des secteurs qui remplissent déjà ce plafond (Health Care, Real Estate). Réexaminer d'abord les 65 titres au statut Indeterminate du registre, sans abaisser les critères. La comparaison des trois livres sera alors à refaire ; d'ici là, rien ne se met en œuvre sans l'accord écrit du client sur le plafond de travail de 40 %.",
+        "sources": [
+          "data/05_monitoring/mandate_feasibility.csv | cell capacity_ips | sector=TOTAL",
+          "py:src.config | cell IPS_SECTOR_WEIGHT_CAP",
+          "data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=equal_weight",
+          "data/05_monitoring/mandate_feasibility.csv | cell names_short_ips | sector=TOTAL",
+          "data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | odd_status=Indeterminate",
+          "py:src.config | cell SECTOR_WEIGHT_CAP"
+        ]
+      }
+    ],
     "alertes": [
       {
         "type": "constat",
@@ -277,16 +343,16 @@
           "audit/data_control_center.xlsx[Quality History] | last global_quality_score",
           "audit/data_control_center.xlsx[Quality Issues] | count issue_id",
           "audit/data_control_center.xlsx[Quality Controls] | count control_id",
-          "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-104200-240439-ISS-004",
-          "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-104200-240439-ISS-004",
-          "audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-104200-240439-ISS-004"
+          "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-114537-565825-ISS-004",
+          "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-114537-565825-ISS-004",
+          "audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-114537-565825-ISS-004"
         ]
       },
       {
         "type": "constat",
         "texte": "Le score de qualité est pondéré par les enregistrements : 651 748 lignes de cours sur 662 618 enregistrements contrôlés. Il masque donc les défauts qui touchent peu de lignes mais des titres entiers : le contrôle de cohérence des devises signale 11 titres sur 120 (9,17 %) sans série de change.",
         "sources": [
-          "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-104200-240439-ISS-005",
+          "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-114537-565825-ISS-005",
           "audit/data_control_center.xlsx[Quality History] | last records_checked",
           "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-005, dataset_id=DS-002",
           "audit/data_control_center.xlsx[Quality Issues] | cell records_checked | control_id=QC-005, dataset_id=DS-002",
@@ -313,14 +379,6 @@
       },
       {
         "type": "point",
-        "texte": "Faire approuver ou refuser par le client le plafond de travail de secteur de 40 %, contre 20 % écrit dans le mandat. Tant qu'il ne l'est pas, le dépassement du plafond écrit reste ouvert.",
-        "sources": [
-          "py:src.config | cell SECTOR_WEIGHT_CAP",
-          "py:src.config | cell IPS_SECTOR_WEIGHT_CAP"
-        ]
-      },
-      {
-        "type": "point",
         "texte": "Décider du traitement des dépassements passifs : toléré jusqu'au rééquilibrage suivant, ou corrigé dès qu'il apparaît. Le mandat ne le dit pas.",
         "sources": []
       },
@@ -335,7 +393,7 @@
         "type": "point",
         "texte": "Traiter l'anomalie de gravité MEDIUM du contrôle qualité : cohérence des devises, 11 titres de la table securities_master sans série de change. Ces titres ne peuvent pas être convertis en CHF et restent hors des livres.",
         "sources": [
-          "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-104200-240439-ISS-004"
+          "audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-114537-565825-ISS-004"
         ]
       },
       {

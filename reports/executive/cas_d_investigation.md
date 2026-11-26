@@ -2,7 +2,7 @@
 
 **Généré automatiquement, à relire avant diffusion.**
 
-Produit par le pipeline le 2026-11-26 09:45 UTC. Chaque nombre est relu dans un fichier du pipeline. Les cas décrivent ce que le pipeline a fait d'un défaut : il l'écarte et l'écrit, il ne le corrige pas en silence.
+Produit par le pipeline le 2026-11-26 10:56 UTC. Chaque nombre est relu dans un fichier du pipeline. Les cas décrivent ce que le pipeline a fait d'un défaut : il l'écarte et l'écrit, il ne le corrige pas en silence.
 
 ## Titres sans série de change
 

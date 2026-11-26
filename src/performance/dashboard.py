@@ -18,6 +18,7 @@ from src.config import (
     CURRENCY_WEIGHT_CAP,
     ISSUER_WEIGHT_CAP,
     PERFORMANCE_REPORTS,
+    IPS_SECTOR_WEIGHT_CAP,
     SECTOR_WEIGHT_CAP,
     ZONE_WEIGHT_CAP,
 )
@@ -385,7 +386,8 @@ Le fonds est sur chaque graphique de cette page, parce que la série existe.
 Contre lui-même, sa performance relative vaut 1 et son écart mensuel vaut 0.
 Son ratio d'information n'est pas tracé : l'écart de suivi est nul, le ratio n'est pas défini.
 Le poids de chaque trimestre a été fixé avec les soixante mois déjà observés,
-sous une limite de {ISSUER_WEIGHT_CAP * 100:.0f} % par émetteur, {SECTOR_WEIGHT_CAP * 100:.0f} % par secteur, {ZONE_WEIGHT_CAP * 100:.0f} % par zone
+sous une limite de {ISSUER_WEIGHT_CAP * 100:.0f} % par émetteur, {SECTOR_WEIGHT_CAP * 100:.0f} % par secteur (plafond de travail non approuvé, l'IPS écrit {IPS_SECTOR_WEIGHT_CAP * 100:.0f} %),
+{ZONE_WEIGHT_CAP * 100:.0f} % par zone
 et {CURRENCY_WEIGHT_CAP * 100:.0f} % par devise de cotation.
 Le premier graphique rapporte la performance à celle d'un placement resté au SARON.
 Le deuxième est le rendement glissant, produit des douze rendements mensuels précédant chaque date.

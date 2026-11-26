@@ -20,8 +20,14 @@ fund currency. These ratios describe the sample on which the weights
 were estimated. They are not the record of a mandate frozen in the
 first month.
 
+The link of each book with the fund is also published: correlation, share of
+variance, beta, mean return in the months the fund falls and in the months it
+rises, and the Student t of the mean monthly gap. These describe how the two
+series move together. They do not show that one causes the other.
+
 Output
 ------
+data/06_performance/fund_comovement.csv
 data/06_performance/benchmark_monthly_return.csv
 data/06_performance/performance_metrics.csv
 data/06_performance/active_return.csv
@@ -73,6 +79,21 @@ BENCHMARK_COLUMNS = (
     "chf_per_unit",
     "prior_chf_per_unit",
     "benchmark_return_chf",
+)
+COMOVEMENT_FILE = PERFORMANCE_DATA / "fund_comovement.csv"
+COMOVEMENT_COLUMNS = (
+    "strategy",
+    "months",
+    "correlation",
+    "r_squared",
+    "beta",
+    "fund_down_months",
+    "book_mean_fund_down",
+    "fund_mean_fund_down",
+    "fund_up_months",
+    "book_mean_fund_up",
+    "fund_mean_fund_up",
+    "active_t_statistic",
 )
 AGREEMENT = 1e-8
 OUTPUT_COLUMNS = (
@@ -376,6 +397,40 @@ def build_active_returns(returns, benchmark):
     return pd.concat(frames, ignore_index=True).loc[:, list(ACTIVE_COLUMNS)]
 
 
+def measure_comovement(active):
+    """How each book moves with the fund, read on the monthly returns already aligned."""
+    rows = []
+    for strategy in STRATEGY_IDS:
+        block = active.loc[active["strategy"].eq(strategy)]
+        book = block["portfolio_return"].astype(float).reset_index(drop=True)
+        fund = block["benchmark_return_chf"].astype(float).reset_index(drop=True)
+        gap = book - fund
+        if float(fund.var(ddof=1)) == 0.0 or float(book.var(ddof=1)) == 0.0 or float(gap.std(ddof=1)) == 0.0:
+            raise RuntimeError(f"{strategy}: a series does not vary, its link with the fund is not defined.")
+        down = fund < 0
+        up = fund > 0
+        if not down.any() or not up.any():
+            raise RuntimeError(f"{strategy}: the window needs months where the fund falls and months where it rises.")
+        correlation = float(book.corr(fund))
+        rows.append(
+            {
+                "strategy": strategy,
+                "months": int(len(book)),
+                "correlation": correlation,
+                "r_squared": correlation**2,
+                "beta": float(book.cov(fund) / fund.var(ddof=1)),
+                "fund_down_months": int(down.sum()),
+                "book_mean_fund_down": float(book[down].mean()),
+                "fund_mean_fund_down": float(fund[down].mean()),
+                "fund_up_months": int(up.sum()),
+                "book_mean_fund_up": float(book[up].mean()),
+                "fund_mean_fund_up": float(fund[up].mean()),
+                "active_t_statistic": float(gap.mean() / gap.std(ddof=1) * math.sqrt(len(gap))),
+            }
+        )
+    return pd.DataFrame(rows, columns=COMOVEMENT_COLUMNS)
+
+
 def build_drawdown_episodes(path):
     """Peak, trough and recovery of the deepest drawdown already on the path."""
     rows = []
@@ -427,6 +482,8 @@ def build_performance():
     active = build_active_returns(returns, benchmark)
     write_csv_atomically(active, ACTIVE_RETURNS_FILE, ACTIVE_COLUMNS)
     logger.info("Active returns written to %s", ACTIVE_RETURNS_FILE)
+    write_csv_atomically(measure_comovement(active), COMOVEMENT_FILE, COMOVEMENT_COLUMNS)
+    logger.info("Link with the fund written to %s", COMOVEMENT_FILE)
     episodes = build_drawdown_episodes(path)
     for strategy in STRATEGY_IDS:
         measured = float(metrics.loc[metrics["strategy"].eq(strategy), "maximum_drawdown"].iloc[0])
@@ -442,6 +499,7 @@ def build_performance():
         "metrics": METRICS_OUTPUT,
         "benchmark": BENCHMARK_RETURNS_FILE,
         "active": ACTIVE_RETURNS_FILE,
+        "comovement": COMOVEMENT_FILE,
         "episodes": DRAWDOWN_EPISODES_FILE,
         "dashboard": dashboard,
     }

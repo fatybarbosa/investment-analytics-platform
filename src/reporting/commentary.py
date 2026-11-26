@@ -1,14 +1,17 @@
 """
 Phase 11. Automated comments, written from the pipeline files.
 
-Four sections: faits marquants, risques identifiés, alertes, points à
-instruire. Every sentence is built with facts (file, row, column) and
+Five sections: faits marquants, risques identifiés, recommandations,
+alertes, points à instruire. Every sentence is built with facts (file, row, column) and
 checked by src.reporting.number_check before it is kept. A number that
 is not in a pipeline file stops the run.
 
-The comments state findings and alerts tied to the written limits of the
-mandate. They do not give personalised investment advice. They carry the
-label "Généré automatiquement, à relire avant diffusion."
+The comments state findings, alerts tied to the written limits of the
+mandate, and recommendations for the fictional mandate CLIENT001. A
+recommendation is written by a rule from the published figures: when the
+figures change, the sentence changes with them. It rests on a retrospective
+simulation, it is neither investment advice nor an order. The
+texts carry the label "Généré automatiquement, à relire avant diffusion."
 
 The books are simulated on public prices. They were never held. Nothing
 here is custody data.
@@ -48,6 +51,7 @@ METRICS = source_id(PORTFOLIO_DATA / "portfolio_metrics.csv")
 MEMBERSHIP = source_id(PORTFOLIO_DATA / "portfolio_membership.csv")
 PERFORMANCE = source_id(PERFORMANCE_DATA / "performance_metrics.csv")
 EPISODES = source_id(PERFORMANCE_DATA / "drawdown_episode.csv")
+COMOVEMENT = source_id(PERFORMANCE_DATA / "fund_comovement.csv")
 RISK = source_id(RISK_DATA / "risk_by_strategy.csv")
 TAIL = source_id(RISK_DATA / "var_tail.csv")
 CORRELATION = source_id(RISK_DATA / "universe_correlation.csv")
@@ -84,8 +88,9 @@ SHOCK_LABELS = {
 }
 PENDING = "en attente d'export Power BI"
 DISCLAIMER = (
-    "Ces points sont des constats et des alertes liés aux limites écrites du mandat. "
-    "Ce ne sont pas des recommandations d'investissement personnalisées."
+    "Ces recommandations portent sur le mandat fictif CLIENT001. Elles sont écrites par des règles à partir "
+    "des chiffres d'une simulation rétrospective. Elles ne constituent ni un conseil en placement ni un ordre : "
+    "la décision revient au gérant et au client."
 )
 PORTFOLIO_LABEL = "Portefeuilles hypothétiques construits rétrospectivement sur des données publiques"
 REAL_DATA_NOTE = "Les cours, les cours de change et le SARON sont des données réelles et publiques."
@@ -105,6 +110,7 @@ UNIVERSE_NOTE = (
 SECTION_TITLES = {
     "faits": "Faits marquants",
     "risques": "Risques identifiés",
+    "recommandations": "Recommandations",
     "alertes": "Alertes",
     "points": "Points à instruire",
 }
@@ -128,6 +134,10 @@ def metric(book, column, scale="raw"):
 
 def report(book, column, scale="ratio"):
     return fact(REPORT, column, {"strategy": book}, scale=scale)
+
+
+def link(book, column, scale="ratio"):
+    return fact(COMOVEMENT, column, {"strategy": book}, scale=scale)
 
 
 def stress(book, shock, column, scale="raw"):
@@ -191,7 +201,7 @@ def _highlights():
         f"Les trois livres, hypothétiques et construits rétrospectivement sur des données publiques, partagent la même liste de {d.count(NAMES)} titres : "
         f"ce sont les titres au statut Eligible du registre ODD qui ont un historique complet en CHF, "
         f"sur {d.count(fact(MEMBERSHIP, 'yahoo_symbol', op='count'))} titres examinés."
-    )))
+    ), tag="fenetre"))
 
     best = _best(BOOKS, lambda book: perf(book, "annualized_return"))
     fund_return = float(resolve(perf(FUND, "annualized_return")))
@@ -221,7 +231,7 @@ def _highlights():
     out.append(d.done("faits", (
         f"Ratio de Sharpe contre le SARON : {listed}, fonds {d.num(perf(FUND, 'sharpe_ratio', 'raw'))}. "
         f"Le livre {LABELS[_best(BOOKS, lambda book: perf(book, 'sharpe_ratio', 'raw'))]} a le Sharpe le plus élevé des trois livres."
-    )))
+    ), tag="sharpe"))
 
     d = Draft()
     listed = ", ".join(
@@ -229,7 +239,7 @@ def _highlights():
     )
     out.append(d.done("faits", (
         f"Richesse finale pour 1 investi au début de la fenêtre, sans choc : {listed}."
-    ).replace("pour 1 investi", "pour une unité investie")))
+    ).replace("pour 1 investi", "pour une unité investie"), tag="richesse"))
 
     d = Draft()
     ok = reconciliation("statut", {"statut": "OK"})
@@ -239,7 +249,7 @@ def _highlights():
         f"Contrôle des calculs : sur {d.count(reconciliation('indicateur'))} lignes de réconciliation, "
         f"{d.count(ok)} sont OK entre Python et Excel, {d.count(exceptions)} en EXCEPTION et "
         f"{d.count(unpublished)} non publiée. La tolérance est de {d.sci(TOLERANCE)}, fixée avant la comparaison."
-    )))
+    ), tag="controle"))
     return out
 
 
@@ -534,6 +544,180 @@ def issue_item(dataset, control, column, scale="raw"):
     return fact(QUALITY, column, {"dataset_id": dataset, "control_id": control}, scale=scale, sheet="Quality Issues")
 
 
+def _value(item):
+    return float(resolve(item))
+
+
+def retained_book():
+    """The book the recommendations start from: the highest Sharpe ratio of the three."""
+    return _best(BOOKS, lambda book: perf(book, "sharpe_ratio", "raw"))
+
+
+def _capacity_short():
+    return _value(fact(FEASIBILITY, "capacity_ips", {"sector": "TOTAL"})) < 1.0 - CAP_TOLERANCE
+
+
+def _recommend_book(chosen):
+    d = Draft()
+    text = (
+        f"Proposer à CLIENT001 le livre {LABELS[chosen]} comme base : son ratio de Sharpe, "
+        f"{d.num(perf(chosen, 'sharpe_ratio', 'raw'))}, est le plus élevé des trois livres, avec un rendement annualisé "
+        f"de {d.pct(perf(chosen, 'annualized_return'))} et un drawdown maximal de {d.pct(perf(chosen, 'maximum_drawdown'))}."
+    )
+    also = []
+    if _best(BOOKS, lambda book: perf(book, "annualized_return")) == chosen:
+        also.append("le rendement le plus élevé")
+    if _best(BOOKS, lambda book: perf(book, "maximum_drawdown")) == chosen:
+        also.append("la baisse maximale la plus faible")
+    if also:
+        text += f" Il a aussi {' et '.join(also)} des trois."
+    target = _value(config("TRACKING_ERROR_TARGET"))
+    under = [book for book in BOOKS if _value(perf(book, "tracking_error")) <= target]
+    if chosen in under:
+        lead = "C'est le seul des trois dont" if under == [chosen] else "De plus,"
+        text += (
+            f" {lead} l'écart de suivi ({d.pct(perf(chosen, 'tracking_error'))}) reste sous la cible de "
+            f"{d.pct(config('TRACKING_ERROR_TARGET'), 0)}."
+        )
+    else:
+        text += (
+            f" Son écart de suivi ({d.pct(perf(chosen, 'tracking_error'))}) dépasse la cible de "
+            f"{d.pct(config('TRACKING_ERROR_TARGET'), 0)}, à traiter avant de le retenir."
+        )
+    if _capacity_short():
+        text += " Cette proposition n'autorise pas la mise en œuvre : le plafond de secteur écrit n'est pas tenu."
+    return d.done("recommandations", text, "recommandation", tag="retenir")
+
+
+def _recommend_against(chosen):
+    d = Draft()
+    others = [book for book in BOOKS if book != chosen]
+    listed = " ; ".join(
+        f"{LABELS[book]} (Sharpe {d.num(perf(book, 'sharpe_ratio', 'raw'))}, rendement "
+        f"{d.pct(perf(book, 'annualized_return'))}, écart de suivi {d.pct(perf(book, 'tracking_error'))})"
+        for book in others
+    )
+    text = f"Ne pas retenir en l'état les deux autres livres : {listed}."
+    if chosen == "equal_weight":
+        text += " Sur la fenêtre, l'optimisation des poids n'a pas apporté un meilleur rendement par unité de risque que les parts égales."
+    calmer = [
+        book for book in others
+        if _value(perf(book, "annualized_volatility")) < _value(perf(chosen, "annualized_volatility"))
+        and _value(perf(book, "annualized_return")) < _value(perf(chosen, "annualized_return"))
+    ]
+    if calmer:
+        listed = " et ".join(f"{LABELS[book]} {d.pct(perf(book, 'annualized_volatility'))}" for book in calmer)
+        text += (
+            f" Une volatilité plus basse ({listed}, contre {d.pct(perf(chosen, 'annualized_volatility'))}) "
+            "n'y compense pas un rendement plus faible."
+        )
+    return d.done("recommandations", text, "recommandation", tag="ecarter")
+
+
+def _recommend_market(chosen):
+    d = Draft()
+    mostly = _value(link(chosen, "r_squared")) > _value(config("MARKET_LINK_MAJORITY"))
+    lead = (
+        "une exposition aux actions qui suit en grande partie le fonds"
+        if mostly
+        else "une exposition aux actions qui s'écarte largement du fonds"
+    )
+    text = (
+        f"Présenter le livre {LABELS[chosen]} comme {lead} : {d.pct(link(chosen, 'r_squared'), 0)} de la variance de ses "
+        f"rendements mensuels est associée à celle du fonds (corrélation {d.num(link(chosen, 'correlation', 'raw'))}, "
+        f"bêta {d.num(link(chosen, 'beta', 'raw'))}). Les mois où le fonds baisse "
+        f"({d.count(link(chosen, 'fund_down_months', 'raw'))} mois), le livre rend en moyenne "
+        f"{d.pct(link(chosen, 'book_mean_fund_down'))} contre {d.pct(link(chosen, 'fund_mean_fund_down'))} ; les mois où il monte "
+        f"({d.count(link(chosen, 'fund_up_months', 'raw'))} mois), {d.pct(link(chosen, 'book_mean_fund_up'))} contre "
+        f"{d.pct(link(chosen, 'fund_mean_fund_up'))}."
+    )
+    down = _value(link(chosen, "book_mean_fund_down"))
+    cushions = _value(link(chosen, "fund_mean_fund_down")) < down < 0
+    lags = _value(link(chosen, "book_mean_fund_up")) < _value(link(chosen, "fund_mean_fund_up"))
+    if cushions and lags:
+        text += " Il amortit les baisses sans les éviter et monte moins que le fonds : ne pas le présenter comme une protection."
+    else:
+        text += " Ne pas le présenter comme une protection contre les baisses du marché."
+    text += (
+        " Une partie de ce lien vient de la construction, les titres étant choisis dans la composition actuelle du fonds ; "
+        "il ne prouve pas une cause."
+    )
+    return d.done("recommandations", text, "recommandation", tag="marche")
+
+
+def _recommend_expectation(chosen):
+    d = Draft()
+    ahead = _value(perf(chosen, "annualized_return")) > _value(perf(FUND, "annualized_return"))
+    established = abs(_value(link(chosen, "active_t_statistic", "raw"))) >= _value(config("SIGNIFICANCE_T"))
+    compared = f"({d.pct(perf(chosen, 'annualized_return'))} contre {d.pct(perf(FUND, 'annualized_return'))} par an)"
+    months = d.count(link(chosen, "months", "raw"))
+    measure = (
+        f"statistique t de l'écart mensuel {d.num(link(chosen, 'active_t_statistic', 'raw'))}, "
+        f"pour un seuil de lecture de {d.num(config('SIGNIFICANCE_T', 'raw'), 1)}"
+    )
+    if ahead and not established:
+        text = (
+            f"Ne pas promettre à CLIENT001 de faire mieux que le fonds : l'avance du livre {LABELS[chosen]} {compared} "
+            f"n'est pas établie statistiquement sur {months} mois ({measure})."
+        )
+    elif ahead:
+        text = (
+            f"Continuer à mesurer chaque mois l'avance du livre {LABELS[chosen]} sur le fonds {compared} : sur {months} mois, "
+            f"elle se distingue du hasard ({measure}), sans garantie pour la suite."
+        )
+    else:
+        text = (
+            f"Ne pas retenir le livre {LABELS[chosen]} pour faire mieux que le fonds : sur {months} mois, "
+            f"il ne le dépasse pas {compared} ({measure})."
+        )
+    if ahead:
+        text += " La comparaison avantage en outre le livre, mesuré brut de frais alors que le fonds est net des siens."
+    return d.done("recommandations", text, "recommandation", tag="attente")
+
+
+def _recommend_sector(chosen):
+    d = Draft()
+    total = {"sector": "TOTAL"}
+    if not _capacity_short():
+        return d.done("recommandations", (
+            f"Construire les livres avec le plafond de secteur écrit de {d.pct(config('IPS_SECTOR_WEIGHT_CAP'), 0)} "
+            "et retirer le plafond de travail : la liste actuelle le permet."
+        ), "recommandation", tag="secteur")
+    frame = pd.read_csv(resolve_path(FEASIBILITY))
+    full = frame.loc[
+        frame["sector"].ne("TOTAL") & (frame["capacity_ips"] >= frame["sector_cap_ips"] - CAP_TOLERANCE), "sector"
+    ].astype(str)
+    outside = f", hors des secteurs qui remplissent déjà ce plafond ({d.label(', '.join(full))})" if len(full) else ""
+    text = (
+        "Avant toute mise en œuvre, élargir la liste éligible plutôt que relever le plafond de secteur, ce qui accepterait "
+        "la concentration que le mandat veut éviter. Sur la liste actuelle, au plus "
+        f"{d.pct(fact(FEASIBILITY, 'capacity_ips', total, scale='ratio'), 0)} d'un livre entièrement investi tient sous le "
+        f"plafond écrit de {d.pct(config('IPS_SECTOR_WEIGHT_CAP'), 0)}, et le livre {LABELS[chosen]} place "
+        f"{d.pct(report(chosen, 'largest_sector_weight'))} dans le secteur {d.label(resolve(report(chosen, 'largest_sector', 'text')))}. "
+        f"Il faut au moins {d.count(fact(FEASIBILITY, 'names_short_ips', total))} titres éligibles de plus{outside}."
+    )
+    pending = fact(MEMBERSHIP, "yahoo_symbol", {"odd_status": "Indeterminate"}, op="count")
+    if _value(pending) > 0:
+        text += f" Réexaminer d'abord les {d.count(pending)} titres au statut Indeterminate du registre, sans abaisser les critères."
+    text += (
+        " La comparaison des trois livres sera alors à refaire ; d'ici là, rien ne se met en œuvre sans l'accord écrit "
+        f"du client sur le plafond de travail de {d.pct(config('SECTOR_WEIGHT_CAP'), 0)}."
+    )
+    return d.done("recommandations", text, "recommandation", tag="secteur")
+
+
+def _recommendations():
+    """Five recommendations for CLIENT001, each written by a rule from the published figures."""
+    chosen = retained_book()
+    return [
+        _recommend_book(chosen),
+        _recommend_against(chosen),
+        _recommend_market(chosen),
+        _recommend_expectation(chosen),
+        _recommend_sector(chosen),
+    ]
+
+
 def _points():
     out = []
     watch = float(resolve(config("REPORTING_WATCH_RATIO")))
@@ -551,13 +735,6 @@ def _points():
             f"Faire revoir par le gérant, avant le prochain rééquilibrage, les livres proches d'un plafond : "
             f"{', '.join(LABELS[book] for book in near)}. Une hausse relative du premier secteur ou de la première zone "
             "suffirait à franchir la limite entre deux rééquilibrages."
-        ), "point"))
-    capacity = float(resolve(fact(FEASIBILITY, "capacity_ips", {"sector": "TOTAL"})))
-    if capacity < 1.0 - CAP_TOLERANCE:
-        d = Draft()
-        out.append(d.done("points", (
-            f"Faire approuver ou refuser par le client le plafond de travail de secteur de {d.pct(config('SECTOR_WEIGHT_CAP'), 0)}, "
-            f"contre {d.pct(config('IPS_SECTOR_WEIGHT_CAP'), 0)} écrit dans le mandat. Tant qu'il ne l'est pas, le dépassement du plafond écrit reste ouvert."
         ), "point"))
     d = Draft()
     out.append(d.done("points", (
@@ -614,6 +791,7 @@ def build_statements():
     return {
         "faits": _highlights(),
         "risques": _risks(),
+        "recommandations": _recommendations(),
         "alertes": _alerts(),
         "points": _points(),
     }
@@ -639,7 +817,7 @@ def render_markdown(sections, generated):
         for statement in sections[name]:
             mark = "**Alerte.** " if statement.kind == "alerte" else ""
             lines.append(f"- {mark}{statement.text}")
-        if name == "points":
+        if name == "recommandations":
             lines += ["", DISCLAIMER]
     return "\n".join(lines) + "\n"
 

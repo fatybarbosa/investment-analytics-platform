@@ -1,9 +1,9 @@
-sector,names,issuer_cap,sector_cap_ips,capacity_ips,sector_cap_working,capacity_working
-Consumer Discretionary,1,0.05,0.2,0.05,0.4,0.05
-Consumer Staples,2,0.05,0.2,0.1,0.4,0.1
-Health Care,10,0.05,0.2,0.2,0.4,0.4
-Industrials,3,0.05,0.2,0.15000000000000002,0.4,0.15000000000000002
-Information Technology,1,0.05,0.2,0.05,0.4,0.05
-Real Estate,10,0.05,0.2,0.2,0.4,0.4
-Utilities,1,0.05,0.2,0.05,0.4,0.05
-TOTAL,28,0.05,0.2,0.8,0.4,1.2000000000000002
+sector,names,issuer_cap,sector_cap_ips,capacity_ips,sector_cap_working,capacity_working,names_short_ips
+Consumer Discretionary,1,0.05,0.2,0.05,0.4,0.05,
+Consumer Staples,2,0.05,0.2,0.1,0.4,0.1,
+Health Care,10,0.05,0.2,0.2,0.4,0.4,
+Industrials,3,0.05,0.2,0.15000000000000002,0.4,0.15000000000000002,
+Information Technology,1,0.05,0.2,0.05,0.4,0.05,
+Real Estate,10,0.05,0.2,0.2,0.4,0.4,
+Utilities,1,0.05,0.2,0.05,0.4,0.05,
+TOTAL,28,0.05,0.2,0.8,0.4,1.2000000000000002,4

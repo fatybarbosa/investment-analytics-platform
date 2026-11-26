@@ -30,6 +30,7 @@ data/05_monitoring/weight_changes.csv
 data/05_monitoring/mandate_feasibility.csv
 """
 
+import math
 from pathlib import Path
 
 import numpy as np
@@ -189,6 +190,7 @@ FEASIBILITY_COLUMNS = (
     "capacity_ips",
     "sector_cap_working",
     "capacity_working",
+    "names_short_ips",
 )
 FEASIBILITY_FILE = MONITORING_DATA / "mandate_feasibility.csv"
 TURNOVER_COLUMNS = (
@@ -666,6 +668,9 @@ def build_feasibility(classified_report_month):
     A sector can hold at most its cap, and at most its number of names times the
     issuer cap. If the sectors cannot add up to the whole book, no book on the
     list respects the cap. The result is read by the reports, not typed in them.
+
+    The TOTAL row also says how many more names, each at the issuer cap, would
+    be needed under the written cap, if all of them sat in sectors with room.
     """
     book = classified_report_month.loc[
         classified_report_month["strategy"].eq(STRATEGY_IDS[0])
@@ -696,7 +701,11 @@ def build_feasibility(classified_report_month):
         "sector_cap_working": SECTOR_WEIGHT_CAP,
         "capacity_working": float(frame["capacity_working"].sum()),
     }
-    return pd.concat([frame, pd.DataFrame([total])], ignore_index=True)
+    short = max(0.0, 1.0 - total["capacity_ips"])
+    total["names_short_ips"] = int(math.ceil((short - CAP_TOLERANCE) / ISSUER_WEIGHT_CAP)) if short > CAP_TOLERANCE else 0
+    return pd.concat([frame, pd.DataFrame([total])], ignore_index=True).loc[:, list(FEASIBILITY_COLUMNS)].astype(
+        {"names_short_ips": "Int64"}
+    )
 
 
 def build_concentration(history, metrics):

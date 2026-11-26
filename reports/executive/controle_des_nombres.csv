@@ -78,72 +78,104 @@ commentaires (phrase par phrase),risques #15,120,data/04_portfolios/portfolio_me
 commentaires (phrase par phrase),risques #15,42,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | odd_status=Eligible
 commentaires (phrase par phrase),risques #15,65,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | odd_status=Indeterminate
 commentaires (phrase par phrase),risques #15,13,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | odd_status=Not_Eligible
-commentaires (phrase par phrase),alertes #16,123,data/05_monitoring/limit_watch.csv | count month | rebalance_month=1
-commentaires (phrase par phrase),alertes #16,0,data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=1
-commentaires (phrase par phrase),alertes #16,0,data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=1
-commentaires (phrase par phrase),alertes #16,0,data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=1
-commentaires (phrase par phrase),alertes #16,0,data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=1
-commentaires (phrase par phrase),alertes #16,0,data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=1
-commentaires (phrase par phrase),alertes #16,5 %,py:src.config | cell ISSUER_WEIGHT_CAP
-commentaires (phrase par phrase),alertes #16,50 %,py:src.config | cell ZONE_WEIGHT_CAP
-commentaires (phrase par phrase),alertes #16,40 %,py:src.config | cell CURRENCY_WEIGHT_CAP
-commentaires (phrase par phrase),alertes #16,40 %,py:src.config | cell CURRENCY_WEIGHT_CAP
-commentaires (phrase par phrase),alertes #16,25,py:src.config | cell MIN_POSITIONS
-commentaires (phrase par phrase),alertes #16,40,py:src.config | cell MAX_POSITIONS
-commentaires (phrase par phrase),alertes #17,237,data/05_monitoring/limit_watch.csv | count month | rebalance_month=0
-commentaires (phrase par phrase),alertes #17,163,data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=0
-commentaires (phrase par phrase),alertes #17,52,data/05_monitoring/limit_watch.csv | sum sector_over_cap | rebalance_month=0
-commentaires (phrase par phrase),alertes #17,2,data/05_monitoring/limit_watch.csv | sum zone_over_cap | rebalance_month=0
-commentaires (phrase par phrase),alertes #17,0,data/05_monitoring/limit_watch.csv | sum currency_over_cap | rebalance_month=0
-commentaires (phrase par phrase),alertes #17,"7,11 %",data/05_monitoring/limit_watch.csv | max largest_issuer_weight
-commentaires (phrase par phrase),alertes #17,5 %,py:src.config | cell ISSUER_WEIGHT_CAP
-commentaires (phrase par phrase),alertes #18,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
-commentaires (phrase par phrase),alertes #18,360,data/05_monitoring/limit_watch.csv | sum sector_over_ips_cap
-commentaires (phrase par phrase),alertes #18,360,data/05_monitoring/limit_watch.csv | sum sector_over_ips_cap
-commentaires (phrase par phrase),alertes #18,80 %,data/05_monitoring/mandate_feasibility.csv | cell capacity_ips | sector=TOTAL
-commentaires (phrase par phrase),alertes #18,5 %,py:src.config | cell ISSUER_WEIGHT_CAP
-commentaires (phrase par phrase),alertes #18,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
-commentaires (phrase par phrase),alertes #19,"40,00 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-commentaires (phrase par phrase),alertes #19,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-commentaires (phrase par phrase),alertes #19,95 %,py:src.config | cell REPORTING_WATCH_RATIO
-commentaires (phrase par phrase),alertes #20,"39,19 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=maximum_sharpe
-commentaires (phrase par phrase),alertes #20,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
-commentaires (phrase par phrase),alertes #20,95 %,py:src.config | cell REPORTING_WATCH_RATIO
-commentaires (phrase par phrase),alertes #21,"49,96 %",data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=maximum_sharpe
-commentaires (phrase par phrase),alertes #21,50 %,data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=maximum_sharpe
-commentaires (phrase par phrase),alertes #21,95 %,py:src.config | cell REPORTING_WATCH_RATIO
-commentaires (phrase par phrase),alertes #22,"7,75 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=equal_weight
-commentaires (phrase par phrase),alertes #22,"8,34 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=minimum_volatility
-commentaires (phrase par phrase),alertes #22,"8,41 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=maximum_sharpe
-commentaires (phrase par phrase),alertes #22,8 %,data/06_performance/performance_metrics.csv | cell tracking_error | strategy=equal_weight
-commentaires (phrase par phrase),alertes #23,7,data/05_monitoring/turnover.csv | sum over_quarterly_cap | strategy=equal_weight
-commentaires (phrase par phrase),alertes #23,3,data/05_monitoring/turnover.csv | sum over_annual_cap | strategy=equal_weight
-commentaires (phrase par phrase),alertes #23,1,data/05_monitoring/turnover.csv | sum over_quarterly_cap | strategy=minimum_volatility
-commentaires (phrase par phrase),alertes #23,2,data/05_monitoring/turnover.csv | sum over_annual_cap | strategy=minimum_volatility
-commentaires (phrase par phrase),alertes #23,7,data/05_monitoring/turnover.csv | sum over_quarterly_cap | strategy=equal_weight
-commentaires (phrase par phrase),alertes #23,21,data/05_monitoring/turnover.csv | sum over_annual_cap | strategy=maximum_sharpe
-commentaires (phrase par phrase),alertes #23,"12,5 %",py:src.config | cell QUARTERLY_TURNOVER_CAP
-commentaires (phrase par phrase),alertes #23,"20,0 %",data/05_monitoring/turnover.csv | max gross_turnover
-commentaires (phrase par phrase),alertes #24,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
-commentaires (phrase par phrase),alertes #24,6,audit/data_control_center.xlsx[Quality Issues] | count issue_id
-commentaires (phrase par phrase),alertes #24,54,audit/data_control_center.xlsx[Quality Controls] | count control_id
-commentaires (phrase par phrase),alertes #24,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-104200-240439-ISS-004
-commentaires (phrase par phrase),alertes #24,120,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-104200-240439-ISS-004
-commentaires (phrase par phrase),alertes #24,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-104200-240439-ISS-004
-commentaires (phrase par phrase),alertes #25,651 748,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-104200-240439-ISS-005
-commentaires (phrase par phrase),alertes #25,662 618,audit/data_control_center.xlsx[Quality History] | last records_checked
-commentaires (phrase par phrase),alertes #25,11,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-005, dataset_id=DS-002"
-commentaires (phrase par phrase),alertes #25,120,"audit/data_control_center.xlsx[Quality Issues] | cell records_checked | control_id=QC-005, dataset_id=DS-002"
-commentaires (phrase par phrase),alertes #25,"9,17 %","audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | control_id=QC-005, dataset_id=DS-002"
-commentaires (phrase par phrase),alertes #26,101,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut_power_bi | statut_power_bi=OK
-commentaires (phrase par phrase),alertes #26,0,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut_power_bi | statut_power_bi=EXCEPTION
-commentaires (phrase par phrase),alertes #26,0,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut_power_bi | statut_power_bi=EXCEPTION
-commentaires (phrase par phrase),alertes #26,7,reports/excel/annexe_reporting.xlsx[Reconciliation] | count nature_power_bi | nature_power_bi=recalcul DAX
-commentaires (phrase par phrase),alertes #26,94,reports/excel/annexe_reporting.xlsx[Reconciliation] | count nature_power_bi | nature_power_bi=relecture
-commentaires (phrase par phrase),points #28,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
-commentaires (phrase par phrase),points #28,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
-commentaires (phrase par phrase),points #30,8 %,py:src.config | cell TRACKING_ERROR_TARGET
-commentaires (phrase par phrase),points #31,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-104200-240439-ISS-004
+commentaires (phrase par phrase),recommandations #16,"0,69",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #16,"7,97 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #16,"-22,90 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #16,"7,75 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #16,8 %,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #17,"0,59",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=minimum_volatility
+commentaires (phrase par phrase),recommandations #17,"6,31 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=minimum_volatility
+commentaires (phrase par phrase),recommandations #17,"8,34 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=minimum_volatility
+commentaires (phrase par phrase),recommandations #17,"0,57",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=maximum_sharpe
+commentaires (phrase par phrase),recommandations #17,"6,25 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=maximum_sharpe
+commentaires (phrase par phrase),recommandations #17,"8,41 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=maximum_sharpe
+commentaires (phrase par phrase),recommandations #17,"11,76 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=minimum_volatility
+commentaires (phrase par phrase),recommandations #17,"12,14 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=maximum_sharpe
+commentaires (phrase par phrase),recommandations #17,"12,28 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #18,67 %,data/06_performance/fund_comovement.csv | cell r_squared | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #18,"0,82",data/06_performance/fund_comovement.csv | cell correlation | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #18,"0,76",data/06_performance/fund_comovement.csv | cell beta | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #18,51,data/06_performance/fund_comovement.csv | cell fund_down_months | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #18,"-1,90 %",data/06_performance/fund_comovement.csv | cell book_mean_fund_down | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #18,"-2,95 %",data/06_performance/fund_comovement.csv | cell fund_mean_fund_down | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #18,69,data/06_performance/fund_comovement.csv | cell fund_up_months | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #18,"2,63 %",data/06_performance/fund_comovement.csv | cell book_mean_fund_up | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #18,"3,16 %",data/06_performance/fund_comovement.csv | cell fund_mean_fund_up | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #19,"7,97 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #19,"6,08 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=benchmark
+commentaires (phrase par phrase),recommandations #19,120,data/06_performance/fund_comovement.csv | cell months | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #19,"0,68",data/06_performance/fund_comovement.csv | cell active_t_statistic | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #19,"2,0",py:src.config | cell SIGNIFICANCE_T
+commentaires (phrase par phrase),recommandations #20,80 %,data/05_monitoring/mandate_feasibility.csv | cell capacity_ips | sector=TOTAL
+commentaires (phrase par phrase),recommandations #20,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
+commentaires (phrase par phrase),recommandations #20,"35,71 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=equal_weight
+commentaires (phrase par phrase),recommandations #20,4,data/05_monitoring/mandate_feasibility.csv | cell names_short_ips | sector=TOTAL
+commentaires (phrase par phrase),recommandations #20,65,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | odd_status=Indeterminate
+commentaires (phrase par phrase),recommandations #20,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
+commentaires (phrase par phrase),alertes #21,123,data/05_monitoring/limit_watch.csv | count month | rebalance_month=1
+commentaires (phrase par phrase),alertes #21,0,data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=1
+commentaires (phrase par phrase),alertes #21,0,data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=1
+commentaires (phrase par phrase),alertes #21,0,data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=1
+commentaires (phrase par phrase),alertes #21,0,data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=1
+commentaires (phrase par phrase),alertes #21,0,data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=1
+commentaires (phrase par phrase),alertes #21,5 %,py:src.config | cell ISSUER_WEIGHT_CAP
+commentaires (phrase par phrase),alertes #21,50 %,py:src.config | cell ZONE_WEIGHT_CAP
+commentaires (phrase par phrase),alertes #21,40 %,py:src.config | cell CURRENCY_WEIGHT_CAP
+commentaires (phrase par phrase),alertes #21,40 %,py:src.config | cell CURRENCY_WEIGHT_CAP
+commentaires (phrase par phrase),alertes #21,25,py:src.config | cell MIN_POSITIONS
+commentaires (phrase par phrase),alertes #21,40,py:src.config | cell MAX_POSITIONS
+commentaires (phrase par phrase),alertes #22,237,data/05_monitoring/limit_watch.csv | count month | rebalance_month=0
+commentaires (phrase par phrase),alertes #22,163,data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=0
+commentaires (phrase par phrase),alertes #22,52,data/05_monitoring/limit_watch.csv | sum sector_over_cap | rebalance_month=0
+commentaires (phrase par phrase),alertes #22,2,data/05_monitoring/limit_watch.csv | sum zone_over_cap | rebalance_month=0
+commentaires (phrase par phrase),alertes #22,0,data/05_monitoring/limit_watch.csv | sum currency_over_cap | rebalance_month=0
+commentaires (phrase par phrase),alertes #22,"7,11 %",data/05_monitoring/limit_watch.csv | max largest_issuer_weight
+commentaires (phrase par phrase),alertes #22,5 %,py:src.config | cell ISSUER_WEIGHT_CAP
+commentaires (phrase par phrase),alertes #23,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
+commentaires (phrase par phrase),alertes #23,360,data/05_monitoring/limit_watch.csv | sum sector_over_ips_cap
+commentaires (phrase par phrase),alertes #23,360,data/05_monitoring/limit_watch.csv | sum sector_over_ips_cap
+commentaires (phrase par phrase),alertes #23,80 %,data/05_monitoring/mandate_feasibility.csv | cell capacity_ips | sector=TOTAL
+commentaires (phrase par phrase),alertes #23,5 %,py:src.config | cell ISSUER_WEIGHT_CAP
+commentaires (phrase par phrase),alertes #23,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
+commentaires (phrase par phrase),alertes #24,"40,00 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
+commentaires (phrase par phrase),alertes #24,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
+commentaires (phrase par phrase),alertes #24,95 %,py:src.config | cell REPORTING_WATCH_RATIO
+commentaires (phrase par phrase),alertes #25,"39,19 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=maximum_sharpe
+commentaires (phrase par phrase),alertes #25,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
+commentaires (phrase par phrase),alertes #25,95 %,py:src.config | cell REPORTING_WATCH_RATIO
+commentaires (phrase par phrase),alertes #26,"49,96 %",data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=maximum_sharpe
+commentaires (phrase par phrase),alertes #26,50 %,data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=maximum_sharpe
+commentaires (phrase par phrase),alertes #26,95 %,py:src.config | cell REPORTING_WATCH_RATIO
+commentaires (phrase par phrase),alertes #27,"7,75 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=equal_weight
+commentaires (phrase par phrase),alertes #27,"8,34 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=minimum_volatility
+commentaires (phrase par phrase),alertes #27,"8,41 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=maximum_sharpe
+commentaires (phrase par phrase),alertes #27,8 %,data/06_performance/performance_metrics.csv | cell tracking_error | strategy=equal_weight
+commentaires (phrase par phrase),alertes #28,7,data/05_monitoring/turnover.csv | sum over_quarterly_cap | strategy=equal_weight
+commentaires (phrase par phrase),alertes #28,3,data/05_monitoring/turnover.csv | sum over_annual_cap | strategy=equal_weight
+commentaires (phrase par phrase),alertes #28,1,data/05_monitoring/turnover.csv | sum over_quarterly_cap | strategy=minimum_volatility
+commentaires (phrase par phrase),alertes #28,2,data/05_monitoring/turnover.csv | sum over_annual_cap | strategy=minimum_volatility
+commentaires (phrase par phrase),alertes #28,7,data/05_monitoring/turnover.csv | sum over_quarterly_cap | strategy=equal_weight
+commentaires (phrase par phrase),alertes #28,21,data/05_monitoring/turnover.csv | sum over_annual_cap | strategy=maximum_sharpe
+commentaires (phrase par phrase),alertes #28,"12,5 %",py:src.config | cell QUARTERLY_TURNOVER_CAP
+commentaires (phrase par phrase),alertes #28,"20,0 %",data/05_monitoring/turnover.csv | max gross_turnover
+commentaires (phrase par phrase),alertes #29,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
+commentaires (phrase par phrase),alertes #29,6,audit/data_control_center.xlsx[Quality Issues] | count issue_id
+commentaires (phrase par phrase),alertes #29,54,audit/data_control_center.xlsx[Quality Controls] | count control_id
+commentaires (phrase par phrase),alertes #29,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-114537-565825-ISS-004
+commentaires (phrase par phrase),alertes #29,120,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-114537-565825-ISS-004
+commentaires (phrase par phrase),alertes #29,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-114537-565825-ISS-004
+commentaires (phrase par phrase),alertes #30,651 748,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-114537-565825-ISS-005
+commentaires (phrase par phrase),alertes #30,662 618,audit/data_control_center.xlsx[Quality History] | last records_checked
+commentaires (phrase par phrase),alertes #30,11,"audit/data_control_center.xlsx[Quality Issues] | cell issue_count | control_id=QC-005, dataset_id=DS-002"
+commentaires (phrase par phrase),alertes #30,120,"audit/data_control_center.xlsx[Quality Issues] | cell records_checked | control_id=QC-005, dataset_id=DS-002"
+commentaires (phrase par phrase),alertes #30,"9,17 %","audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | control_id=QC-005, dataset_id=DS-002"
+commentaires (phrase par phrase),alertes #31,101,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut_power_bi | statut_power_bi=OK
+commentaires (phrase par phrase),alertes #31,0,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut_power_bi | statut_power_bi=EXCEPTION
+commentaires (phrase par phrase),alertes #31,0,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut_power_bi | statut_power_bi=EXCEPTION
+commentaires (phrase par phrase),alertes #31,7,reports/excel/annexe_reporting.xlsx[Reconciliation] | count nature_power_bi | nature_power_bi=recalcul DAX
+commentaires (phrase par phrase),alertes #31,94,reports/excel/annexe_reporting.xlsx[Reconciliation] | count nature_power_bi | nature_power_bi=relecture
+commentaires (phrase par phrase),points #34,8 %,py:src.config | cell TRACKING_ERROR_TARGET
+commentaires (phrase par phrase),points #35,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-114537-565825-ISS-004
 commentaires_automatises.md,commentaires_automatises.md,2016-11,data/04_portfolios/portfolio_metrics.csv | cell window_start | strategy=equal_weight
 commentaires_automatises.md,commentaires_automatises.md,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
 commentaires_automatises.md,commentaires_automatises.md,2020-03,"data/07_risk/var_tail.csv | cell month | rank=1, strategy=equal_weight"
@@ -223,6 +255,40 @@ commentaires_automatises.md,commentaires_automatises.md,120,data/04_portfolios/p
 commentaires_automatises.md,commentaires_automatises.md,42,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | odd_status=Eligible
 commentaires_automatises.md,commentaires_automatises.md,65,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | odd_status=Indeterminate
 commentaires_automatises.md,commentaires_automatises.md,13,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | odd_status=Not_Eligible
+commentaires_automatises.md,commentaires_automatises.md,"0,69",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,"7,97 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,"-22,90 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,"7,75 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,8 %,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,"0,59",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=minimum_volatility
+commentaires_automatises.md,commentaires_automatises.md,"6,31 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=minimum_volatility
+commentaires_automatises.md,commentaires_automatises.md,"8,34 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=minimum_volatility
+commentaires_automatises.md,commentaires_automatises.md,"0,57",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=maximum_sharpe
+commentaires_automatises.md,commentaires_automatises.md,"6,25 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=maximum_sharpe
+commentaires_automatises.md,commentaires_automatises.md,"8,41 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=maximum_sharpe
+commentaires_automatises.md,commentaires_automatises.md,"11,76 %",data/07_risk/risk_by_strategy.csv | cell annualized_volatility | strategy=minimum_volatility
+commentaires_automatises.md,commentaires_automatises.md,"12,14 %",data/07_risk/risk_by_strategy.csv | cell annualized_volatility | strategy=maximum_sharpe
+commentaires_automatises.md,commentaires_automatises.md,"12,28 %",data/07_risk/risk_by_strategy.csv | cell annualized_volatility | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,67 %,data/06_performance/fund_comovement.csv | cell r_squared | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,"0,82",data/06_performance/fund_comovement.csv | cell correlation | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,"0,76",data/06_performance/fund_comovement.csv | cell beta | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,51,data/06_performance/fund_comovement.csv | cell fund_down_months | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,"-1,90 %",data/06_performance/fund_comovement.csv | cell book_mean_fund_down | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,"-2,95 %",data/06_performance/fund_comovement.csv | cell fund_mean_fund_down | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,69,data/06_performance/fund_comovement.csv | cell fund_up_months | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,"2,63 %",data/06_performance/fund_comovement.csv | cell book_mean_fund_up | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,"3,16 %",data/06_performance/fund_comovement.csv | cell fund_mean_fund_up | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,"7,97 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,"6,08 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=benchmark
+commentaires_automatises.md,commentaires_automatises.md,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,"0,68",data/06_performance/fund_comovement.csv | cell active_t_statistic | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,"2,0",py:src.config | cell SIGNIFICANCE_T
+commentaires_automatises.md,commentaires_automatises.md,80 %,data/05_monitoring/mandate_feasibility.csv | cell capacity_ips | sector=TOTAL
+commentaires_automatises.md,commentaires_automatises.md,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
+commentaires_automatises.md,commentaires_automatises.md,"35,71 %",data/05_monitoring/monthly_report.csv | cell top_10_weight | strategy=equal_weight
+commentaires_automatises.md,commentaires_automatises.md,4,data/05_monitoring/mandate_feasibility.csv | cell names_short_ips | sector=TOTAL
+commentaires_automatises.md,commentaires_automatises.md,65,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | odd_status=Indeterminate
+commentaires_automatises.md,commentaires_automatises.md,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
 commentaires_automatises.md,commentaires_automatises.md,123,data/05_monitoring/limit_watch.csv | count month | rebalance_month=1
 commentaires_automatises.md,commentaires_automatises.md,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 commentaires_automatises.md,commentaires_automatises.md,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
@@ -272,23 +338,21 @@ commentaires_automatises.md,commentaires_automatises.md,"20,0 %",py:src.config 
 commentaires_automatises.md,commentaires_automatises.md,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
 commentaires_automatises.md,commentaires_automatises.md,6,data/07_risk/var_tail.csv | count rank | strategy=equal_weight
 commentaires_automatises.md,commentaires_automatises.md,54,audit/data_control_center.xlsx[Quality Controls] | count control_id
-commentaires_automatises.md,commentaires_automatises.md,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-104200-240439-ISS-004
+commentaires_automatises.md,commentaires_automatises.md,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-114537-565825-ISS-004
 commentaires_automatises.md,commentaires_automatises.md,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-commentaires_automatises.md,commentaires_automatises.md,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-104200-240439-ISS-004
-commentaires_automatises.md,commentaires_automatises.md,651 748,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-104200-240439-ISS-005
+commentaires_automatises.md,commentaires_automatises.md,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-114537-565825-ISS-004
+commentaires_automatises.md,commentaires_automatises.md,651 748,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-114537-565825-ISS-005
 commentaires_automatises.md,commentaires_automatises.md,662 618,audit/data_control_center.xlsx[Quality History] | last records_checked
-commentaires_automatises.md,commentaires_automatises.md,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-104200-240439-ISS-004
+commentaires_automatises.md,commentaires_automatises.md,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-114537-565825-ISS-004
 commentaires_automatises.md,commentaires_automatises.md,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-commentaires_automatises.md,commentaires_automatises.md,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-104200-240439-ISS-004
+commentaires_automatises.md,commentaires_automatises.md,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-114537-565825-ISS-004
 commentaires_automatises.md,commentaires_automatises.md,101,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut | statut=OK
 commentaires_automatises.md,commentaires_automatises.md,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 commentaires_automatises.md,commentaires_automatises.md,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 commentaires_automatises.md,commentaires_automatises.md,7,data/05_monitoring/turnover.csv | sum over_quarterly_cap | strategy=equal_weight
 commentaires_automatises.md,commentaires_automatises.md,94,reports/excel/annexe_reporting.xlsx[Reconciliation] | count nature_power_bi | nature_power_bi=relecture
-commentaires_automatises.md,commentaires_automatises.md,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-commentaires_automatises.md,commentaires_automatises.md,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
 commentaires_automatises.md,commentaires_automatises.md,8 %,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
-commentaires_automatises.md,commentaires_automatises.md,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-104200-240439-ISS-004
+commentaires_automatises.md,commentaires_automatises.md,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-114537-565825-ISS-004
 rapport_executif.pdf,rapport_executif.pdf,2016-11,data/04_portfolios/portfolio_metrics.csv | cell window_start | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,2020-03,"data/07_risk/var_tail.csv | cell month | rank=1, strategy=equal_weight"
@@ -310,17 +374,39 @@ rapport_executif.pdf,rapport_executif.pdf,"6,31 %",data/06_performance/performan
 rapport_executif.pdf,rapport_executif.pdf,"6,25 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=maximum_sharpe
 rapport_executif.pdf,rapport_executif.pdf,"6,08 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=benchmark
 rapport_executif.pdf,rapport_executif.pdf,"0,69",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,"7,97 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,"-22,90 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,"7,75 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,8 %,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,"0,59",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=minimum_volatility
+rapport_executif.pdf,rapport_executif.pdf,"6,31 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=minimum_volatility
+rapport_executif.pdf,rapport_executif.pdf,"8,34 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=minimum_volatility
 rapport_executif.pdf,rapport_executif.pdf,"0,57",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=maximum_sharpe
-rapport_executif.pdf,rapport_executif.pdf,"0,52",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=benchmark
-rapport_executif.pdf,rapport_executif.pdf,"2,15","data/08_stress/stress_results.csv | cell terminal_wealth | shock=aucun, strategy=equal_weight"
-rapport_executif.pdf,rapport_executif.pdf,"1,84","data/08_stress/stress_results.csv | cell terminal_wealth | shock=aucun, strategy=minimum_volatility"
-rapport_executif.pdf,rapport_executif.pdf,"1,83","data/08_stress/stress_results.csv | cell terminal_wealth | shock=aucun, strategy=maximum_sharpe"
-rapport_executif.pdf,rapport_executif.pdf,102,reports/excel/annexe_reporting.xlsx[Reconciliation] | count indicateur
-rapport_executif.pdf,rapport_executif.pdf,101,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut | statut=OK
-rapport_executif.pdf,rapport_executif.pdf,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
-rapport_executif.pdf,rapport_executif.pdf,1,data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=equal_weight
-rapport_executif.pdf,rapport_executif.pdf,1e-8,py:src.portfolio_monitoring.build_monitoring | cell CONTRIBUTION_TOLERANCE
+rapport_executif.pdf,rapport_executif.pdf,"6,25 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=maximum_sharpe
+rapport_executif.pdf,rapport_executif.pdf,"8,41 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=maximum_sharpe
+rapport_executif.pdf,rapport_executif.pdf,"11,76 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=minimum_volatility
+rapport_executif.pdf,rapport_executif.pdf,"12,14 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=maximum_sharpe
+rapport_executif.pdf,rapport_executif.pdf,"12,28 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,67 %,data/06_performance/fund_comovement.csv | cell r_squared | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,"0,82",data/06_performance/fund_comovement.csv | cell correlation | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,"0,76",data/06_performance/fund_comovement.csv | cell beta | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,51,data/06_performance/fund_comovement.csv | cell fund_down_months | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,"-1,90 %",data/06_performance/fund_comovement.csv | cell book_mean_fund_down | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,"-2,95 %",data/06_performance/fund_comovement.csv | cell fund_mean_fund_down | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,69,data/06_performance/fund_comovement.csv | cell fund_up_months | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,"2,63 %",data/06_performance/fund_comovement.csv | cell book_mean_fund_up | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,"3,16 %",data/06_performance/fund_comovement.csv | cell fund_mean_fund_up | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,"7,97 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,"6,08 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=benchmark
+rapport_executif.pdf,rapport_executif.pdf,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,"0,68",data/06_performance/fund_comovement.csv | cell active_t_statistic | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,"2,0",py:src.config | cell SIGNIFICANCE_T
+rapport_executif.pdf,rapport_executif.pdf,80 %,data/05_monitoring/mandate_feasibility.csv | cell capacity_ips | sector=TOTAL
+rapport_executif.pdf,rapport_executif.pdf,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
+rapport_executif.pdf,rapport_executif.pdf,"35,71 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,4,data/05_monitoring/mandate_feasibility.csv | cell names_short_ips | sector=TOTAL
+rapport_executif.pdf,rapport_executif.pdf,65,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | odd_status=Indeterminate
+rapport_executif.pdf,rapport_executif.pdf,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
 rapport_executif.pdf,rapport_executif.pdf,"7,97 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,"12,28 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,"0,69",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=equal_weight
@@ -334,14 +420,14 @@ rapport_executif.pdf,rapport_executif.pdf,"0,59",data/06_performance/performance
 rapport_executif.pdf,rapport_executif.pdf,"0,90",data/06_performance/performance_metrics.csv | cell sortino_ratio | strategy=minimum_volatility
 rapport_executif.pdf,rapport_executif.pdf,"-23,14 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=minimum_volatility
 rapport_executif.pdf,rapport_executif.pdf,"8,34 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=minimum_volatility
-rapport_executif.pdf,rapport_executif.pdf,"0,00",reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut | statut=EXCEPTION
+rapport_executif.pdf,rapport_executif.pdf,"0,00",data/06_performance/performance_metrics.csv | cell information_ratio | strategy=minimum_volatility
 rapport_executif.pdf,rapport_executif.pdf,"6,25 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=maximum_sharpe
 rapport_executif.pdf,rapport_executif.pdf,"12,14 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=maximum_sharpe
 rapport_executif.pdf,rapport_executif.pdf,"0,57",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=maximum_sharpe
 rapport_executif.pdf,rapport_executif.pdf,"0,84",data/06_performance/performance_metrics.csv | cell sortino_ratio | strategy=maximum_sharpe
 rapport_executif.pdf,rapport_executif.pdf,"-27,42 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=maximum_sharpe
 rapport_executif.pdf,rapport_executif.pdf,"8,41 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=maximum_sharpe
-rapport_executif.pdf,rapport_executif.pdf,"0,00",reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut | statut=EXCEPTION
+rapport_executif.pdf,rapport_executif.pdf,"0,00",data/06_performance/performance_metrics.csv | cell information_ratio | strategy=minimum_volatility
 rapport_executif.pdf,rapport_executif.pdf,"6,08 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=benchmark
 rapport_executif.pdf,rapport_executif.pdf,"13,24 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=benchmark
 rapport_executif.pdf,rapport_executif.pdf,"0,52",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=benchmark
@@ -380,22 +466,22 @@ rapport_executif.pdf,rapport_executif.pdf,"-27,42 %",data/06_performance/perform
 rapport_executif.pdf,rapport_executif.pdf,"0,16",data/07_risk/universe_correlation.csv | last average_correlation
 rapport_executif.pdf,rapport_executif.pdf,28,data/04_portfolios/portfolio_metrics.csv | cell names | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,"0,77",data/07_risk/correlation_matrix.csv | cell GFC.PA | symbol=COV.PA
-rapport_executif.pdf,rapport_executif.pdf,"35,71 %",data/05_monitoring/monthly_report.csv | cell top_10_weight | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,"35,71 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,10,py:src.portfolio_monitoring.build_monitoring | cell TOP_POSITIONS
 rapport_executif.pdf,rapport_executif.pdf,"28,0",data/04_portfolios/portfolio_metrics.csv | cell names | strategy=equal_weight
-rapport_executif.pdf,rapport_executif.pdf,"35,71 %",data/05_monitoring/monthly_report.csv | cell top_10_weight | strategy=equal_weight
+rapport_executif.pdf,rapport_executif.pdf,"35,71 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,"49,78 %",data/05_monitoring/monthly_report.csv | cell top_10_weight | strategy=minimum_volatility
 rapport_executif.pdf,rapport_executif.pdf,10,py:src.portfolio_monitoring.build_monitoring | cell TOP_POSITIONS
 rapport_executif.pdf,rapport_executif.pdf,"22,7",data/05_monitoring/monthly_report.csv | cell effective_holdings | strategy=minimum_volatility
-rapport_executif.pdf,rapport_executif.pdf,"40,00 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
+rapport_executif.pdf,rapport_executif.pdf,"40,00 %",py:src.config | cell SECTOR_WEIGHT_CAP
 rapport_executif.pdf,rapport_executif.pdf,"49,18 %",data/05_monitoring/monthly_report.csv | cell top_10_weight | strategy=maximum_sharpe
 rapport_executif.pdf,rapport_executif.pdf,10,py:src.portfolio_monitoring.build_monitoring | cell TOP_POSITIONS
 rapport_executif.pdf,rapport_executif.pdf,"22,6",data/05_monitoring/monthly_report.csv | cell effective_holdings | strategy=maximum_sharpe
 rapport_executif.pdf,rapport_executif.pdf,"39,19 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=maximum_sharpe
 rapport_executif.pdf,rapport_executif.pdf,-20 %,py:src.config | cell MARKET_SHOCK_RETURN
-rapport_executif.pdf,rapport_executif.pdf,2,"data/08_stress/stress_results.csv | cell terminal_wealth | shock=aucun, strategy=equal_weight"
+rapport_executif.pdf,rapport_executif.pdf,2,py:src.config | cell SIGNIFICANCE_T
 rapport_executif.pdf,rapport_executif.pdf,6,data/07_risk/var_tail.csv | count rank | strategy=equal_weight
-rapport_executif.pdf,rapport_executif.pdf,-3 %,py:src.config | cell RECESSION_SHOCK_RETURN
+rapport_executif.pdf,rapport_executif.pdf,-3 %,data/06_performance/fund_comovement.csv | cell fund_mean_fund_down | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,"1,5",py:src.config | cell VOLATILITY_SHOCK_MULTIPLIER
 rapport_executif.pdf,rapport_executif.pdf,"2,15","data/08_stress/stress_results.csv | cell terminal_wealth | shock=aucun, strategy=equal_weight"
 rapport_executif.pdf,rapport_executif.pdf,"1,68","data/08_stress/stress_results.csv | cell terminal_wealth | shock=marche, strategy=equal_weight"
@@ -412,25 +498,19 @@ rapport_executif.pdf,rapport_executif.pdf,"1,44","data/08_stress/stress_results.
 rapport_executif.pdf,rapport_executif.pdf,"1,83","data/08_stress/stress_results.csv | cell terminal_wealth | shock=aucun, strategy=maximum_sharpe"
 rapport_executif.pdf,rapport_executif.pdf,"1,43","data/08_stress/stress_results.csv | cell terminal_wealth | shock=recession, strategy=maximum_sharpe"
 rapport_executif.pdf,rapport_executif.pdf,"1,67","data/08_stress/stress_results.csv | cell terminal_wealth | shock=volatilite, strategy=maximum_sharpe"
-rapport_executif.pdf,rapport_executif.pdf,"1,64","data/08_stress/stress_results.csv | cell terminal_wealth | shock=recession, strategy=equal_weight"
-rapport_executif.pdf,rapport_executif.pdf,"2,15","data/08_stress/stress_results.csv | cell terminal_wealth | shock=aucun, strategy=equal_weight"
-rapport_executif.pdf,rapport_executif.pdf,"1,45","data/08_stress/stress_results.csv | cell terminal_wealth | shock=recession, strategy=minimum_volatility"
-rapport_executif.pdf,rapport_executif.pdf,"1,84","data/08_stress/stress_results.csv | cell terminal_wealth | shock=aucun, strategy=minimum_volatility"
-rapport_executif.pdf,rapport_executif.pdf,"1,43","data/08_stress/stress_results.csv | cell terminal_wealth | shock=recession, strategy=maximum_sharpe"
-rapport_executif.pdf,rapport_executif.pdf,"1,83","data/08_stress/stress_results.csv | cell terminal_wealth | shock=aucun, strategy=maximum_sharpe"
 rapport_executif.pdf,rapport_executif.pdf,-20 %,py:src.config | cell MARKET_SHOCK_RETURN
 rapport_executif.pdf,rapport_executif.pdf,"-11,89 %","data/07_risk/var_tail.csv | cell portfolio_return | rank=1, strategy=equal_weight"
 rapport_executif.pdf,rapport_executif.pdf,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
 rapport_executif.pdf,rapport_executif.pdf,6,data/07_risk/var_tail.csv | count rank | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,54,audit/data_control_center.xlsx[Quality Controls] | count control_id
-rapport_executif.pdf,rapport_executif.pdf,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-104200-240439-ISS-004
+rapport_executif.pdf,rapport_executif.pdf,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-114537-565825-ISS-004
 rapport_executif.pdf,rapport_executif.pdf,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-rapport_executif.pdf,rapport_executif.pdf,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-104200-240439-ISS-004
-rapport_executif.pdf,rapport_executif.pdf,651 748,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-104200-240439-ISS-005
+rapport_executif.pdf,rapport_executif.pdf,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-114537-565825-ISS-004
+rapport_executif.pdf,rapport_executif.pdf,651 748,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-114537-565825-ISS-005
 rapport_executif.pdf,rapport_executif.pdf,662 618,audit/data_control_center.xlsx[Quality History] | last records_checked
-rapport_executif.pdf,rapport_executif.pdf,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-104200-240439-ISS-004
+rapport_executif.pdf,rapport_executif.pdf,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-114537-565825-ISS-004
 rapport_executif.pdf,rapport_executif.pdf,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-rapport_executif.pdf,rapport_executif.pdf,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-104200-240439-ISS-004
+rapport_executif.pdf,rapport_executif.pdf,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-114537-565825-ISS-004
 rapport_executif.pdf,rapport_executif.pdf,"99,97 %",audit/data_control_center.xlsx[Quality Dashboard] | cell value | metric=Valeurs manquantes
 rapport_executif.pdf,rapport_executif.pdf,"100,00 %",audit/data_control_center.xlsx[Quality Dashboard] | cell value | metric=Doublons
 rapport_executif.pdf,rapport_executif.pdf,"99,86 %",audit/data_control_center.xlsx[Quality Dashboard] | cell value | metric=Valeurs aberrantes
@@ -455,14 +535,14 @@ rapport_executif.pdf,rapport_executif.pdf,0,data/06_performance/performance_metr
 rapport_executif.pdf,rapport_executif.pdf,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,5 %,py:src.risk.build_risk | cell VAR_LEVEL
 rapport_executif.pdf,rapport_executif.pdf,50 %,data/05_monitoring/monthly_report.csv | cell top_10_weight | strategy=minimum_volatility
-rapport_executif.pdf,rapport_executif.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_executif.pdf,rapport_executif.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
+rapport_executif.pdf,rapport_executif.pdf,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
+rapport_executif.pdf,rapport_executif.pdf,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
 rapport_executif.pdf,rapport_executif.pdf,25,py:src.config | cell MIN_POSITIONS
 rapport_executif.pdf,rapport_executif.pdf,40,py:src.config | cell MAX_POSITIONS
 rapport_executif.pdf,rapport_executif.pdf,237,data/05_monitoring/limit_watch.csv | count month | rebalance_month=0
 rapport_executif.pdf,rapport_executif.pdf,163,data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=0
 rapport_executif.pdf,rapport_executif.pdf,52,data/05_monitoring/limit_watch.csv | sum sector_over_cap | rebalance_month=0
-rapport_executif.pdf,rapport_executif.pdf,2,"data/08_stress/stress_results.csv | cell terminal_wealth | shock=aucun, strategy=equal_weight"
+rapport_executif.pdf,rapport_executif.pdf,2,py:src.config | cell SIGNIFICANCE_T
 rapport_executif.pdf,rapport_executif.pdf,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,"7,11 %",data/05_monitoring/limit_watch.csv | max largest_issuer_weight
 rapport_executif.pdf,rapport_executif.pdf,5 %,py:src.risk.build_risk | cell VAR_LEVEL
@@ -471,12 +551,12 @@ rapport_executif.pdf,rapport_executif.pdf,360,data/05_monitoring/limit_watch.csv
 rapport_executif.pdf,rapport_executif.pdf,360,data/05_monitoring/limit_watch.csv | sum sector_over_ips_cap
 rapport_executif.pdf,rapport_executif.pdf,80 %,data/05_monitoring/mandate_feasibility.csv | cell capacity_ips | sector=TOTAL
 rapport_executif.pdf,rapport_executif.pdf,5 %,py:src.risk.build_risk | cell VAR_LEVEL
-rapport_executif.pdf,rapport_executif.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_executif.pdf,rapport_executif.pdf,"40,00 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_executif.pdf,rapport_executif.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
+rapport_executif.pdf,rapport_executif.pdf,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
+rapport_executif.pdf,rapport_executif.pdf,"40,00 %",py:src.config | cell SECTOR_WEIGHT_CAP
+rapport_executif.pdf,rapport_executif.pdf,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
 rapport_executif.pdf,rapport_executif.pdf,95 %,py:src.config | cell REPORTING_WATCH_RATIO
 rapport_executif.pdf,rapport_executif.pdf,"39,19 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=maximum_sharpe
-rapport_executif.pdf,rapport_executif.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
+rapport_executif.pdf,rapport_executif.pdf,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
 rapport_executif.pdf,rapport_executif.pdf,95 %,py:src.config | cell REPORTING_WATCH_RATIO
 rapport_executif.pdf,rapport_executif.pdf,"49,96 %",data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=maximum_sharpe
 rapport_executif.pdf,rapport_executif.pdf,50 %,data/05_monitoring/monthly_report.csv | cell top_10_weight | strategy=minimum_volatility
@@ -488,7 +568,7 @@ rapport_executif.pdf,rapport_executif.pdf,8 %,data/06_performance/performance_me
 rapport_executif.pdf,rapport_executif.pdf,7,data/05_monitoring/turnover.csv | sum over_quarterly_cap | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,3,data/05_monitoring/turnover.csv | sum over_annual_cap | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,1,data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=equal_weight
-rapport_executif.pdf,rapport_executif.pdf,2,"data/08_stress/stress_results.csv | cell terminal_wealth | shock=aucun, strategy=equal_weight"
+rapport_executif.pdf,rapport_executif.pdf,2,py:src.config | cell SIGNIFICANCE_T
 rapport_executif.pdf,rapport_executif.pdf,7,data/05_monitoring/turnover.csv | sum over_quarterly_cap | strategy=equal_weight
 rapport_executif.pdf,rapport_executif.pdf,21,data/05_monitoring/turnover.csv | sum over_annual_cap | strategy=maximum_sharpe
 rapport_executif.pdf,rapport_executif.pdf,"12,5 %",py:src.config | cell QUARTERLY_TURNOVER_CAP
@@ -502,10 +582,8 @@ rapport_executif.pdf,rapport_executif.pdf,120,data/04_portfolios/portfolio_metri
 rapport_executif.pdf,rapport_executif.pdf,42,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | odd_status=Eligible
 rapport_executif.pdf,rapport_executif.pdf,65,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | odd_status=Indeterminate
 rapport_executif.pdf,rapport_executif.pdf,13,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | odd_status=Not_Eligible
-rapport_executif.pdf,rapport_executif.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_executif.pdf,rapport_executif.pdf,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
 rapport_executif.pdf,rapport_executif.pdf,8 %,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
-rapport_executif.pdf,rapport_executif.pdf,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-104200-240439-ISS-004
+rapport_executif.pdf,rapport_executif.pdf,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-114537-565825-ISS-004
 presentation_management.pptx,presentation_management.pptx,2016-11,data/04_portfolios/portfolio_metrics.csv | cell window_start | strategy=equal_weight
 presentation_management.pptx,presentation_management.pptx,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
 presentation_management.pptx,presentation_management.pptx,2021-08,data/06_performance/drawdown_episode.csv | cell peak_month | strategy=equal_weight
@@ -566,6 +644,17 @@ presentation_management.pptx,presentation_management.pptx,"13,24 %",data/06_per
 presentation_management.pptx,presentation_management.pptx,"0,52",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=benchmark
 presentation_management.pptx,presentation_management.pptx,"0,81",data/06_performance/performance_metrics.csv | cell sortino_ratio | strategy=benchmark
 presentation_management.pptx,presentation_management.pptx,"-29,67 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=benchmark
+presentation_management.pptx,presentation_management.pptx,67 %,data/06_performance/fund_comovement.csv | cell r_squared | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,"0,76",data/06_performance/fund_comovement.csv | cell beta | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,67 %,data/06_performance/fund_comovement.csv | cell r_squared | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,"0,82",data/06_performance/fund_comovement.csv | cell correlation | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,"0,76",data/06_performance/fund_comovement.csv | cell beta | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,51,data/06_performance/fund_comovement.csv | cell fund_down_months | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,"-1,90 %",data/06_performance/fund_comovement.csv | cell book_mean_fund_down | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,"-2,95 %",data/06_performance/fund_comovement.csv | cell fund_mean_fund_down | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,69,data/06_performance/fund_comovement.csv | cell fund_up_months | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,"2,63 %",data/06_performance/fund_comovement.csv | cell book_mean_fund_up | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,"3,16 %",data/06_performance/fund_comovement.csv | cell fund_mean_fund_up | strategy=equal_weight
 presentation_management.pptx,presentation_management.pptx,"-5,5 %",data/07_risk/risk_by_strategy.csv | cell var_95 | strategy=equal_weight
 presentation_management.pptx,presentation_management.pptx,"-5,9 %",data/07_risk/risk_by_strategy.csv | cell var_95 | strategy=maximum_sharpe
 presentation_management.pptx,presentation_management.pptx,"-27,4 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=maximum_sharpe
@@ -591,7 +680,7 @@ presentation_management.pptx,presentation_management.pptx,"1,43","data/08_stress
 presentation_management.pptx,presentation_management.pptx,-20 %,py:src.config | cell MARKET_SHOCK_RETURN
 presentation_management.pptx,presentation_management.pptx,2,"data/08_stress/stress_results.csv | cell terminal_wealth | shock=aucun, strategy=maximum_sharpe"
 presentation_management.pptx,presentation_management.pptx,6,py:src.config | cell RECESSION_SHOCK_MONTHS
-presentation_management.pptx,presentation_management.pptx,-3 %,py:src.config | cell RECESSION_SHOCK_RETURN
+presentation_management.pptx,presentation_management.pptx,-3 %,data/06_performance/fund_comovement.csv | cell fund_mean_fund_down | strategy=equal_weight
 presentation_management.pptx,presentation_management.pptx,"1,5",py:src.config | cell VOLATILITY_SHOCK_MULTIPLIER
 presentation_management.pptx,presentation_management.pptx,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
 presentation_management.pptx,presentation_management.pptx,"99,97 %",audit/data_control_center.xlsx[Quality Dashboard] | cell value | metric=Valeurs manquantes
@@ -603,14 +692,14 @@ presentation_management.pptx,presentation_management.pptx,"100,00 %",audit/data
 presentation_management.pptx,presentation_management.pptx,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
 presentation_management.pptx,presentation_management.pptx,6,py:src.config | cell RECESSION_SHOCK_MONTHS
 presentation_management.pptx,presentation_management.pptx,54,audit/data_control_center.xlsx[Quality Controls] | count control_id
-presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-104200-240439-ISS-004
+presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-114537-565825-ISS-004
 presentation_management.pptx,presentation_management.pptx,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-presentation_management.pptx,presentation_management.pptx,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-104200-240439-ISS-004
-presentation_management.pptx,presentation_management.pptx,651 748,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-104200-240439-ISS-005
+presentation_management.pptx,presentation_management.pptx,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-114537-565825-ISS-004
+presentation_management.pptx,presentation_management.pptx,651 748,audit/data_control_center.xlsx[Quality Issues] | cell records_checked | issue_id=DQ-20261126-114537-565825-ISS-005
 presentation_management.pptx,presentation_management.pptx,662 618,audit/data_control_center.xlsx[Quality History] | last records_checked
-presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-104200-240439-ISS-004
+presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-114537-565825-ISS-004
 presentation_management.pptx,presentation_management.pptx,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-presentation_management.pptx,presentation_management.pptx,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-104200-240439-ISS-004
+presentation_management.pptx,presentation_management.pptx,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-114537-565825-ISS-004
 presentation_management.pptx,presentation_management.pptx,101,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut | statut=OK
 presentation_management.pptx,presentation_management.pptx,102,reports/excel/annexe_reporting.xlsx[Reconciliation] | count indicateur
 presentation_management.pptx,presentation_management.pptx,101,reports/excel/annexe_reporting.xlsx[Reconciliation] | count statut | statut=OK
@@ -662,17 +751,74 @@ presentation_management.pptx,presentation_management.pptx,"20,0 %",py:src.confi
 presentation_management.pptx,presentation_management.pptx,"99,68 %",audit/data_control_center.xlsx[Quality History] | last global_quality_score
 presentation_management.pptx,presentation_management.pptx,6,py:src.config | cell RECESSION_SHOCK_MONTHS
 presentation_management.pptx,presentation_management.pptx,54,audit/data_control_center.xlsx[Quality Controls] | count control_id
-presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-104200-240439-ISS-004
+presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-114537-565825-ISS-004
 presentation_management.pptx,presentation_management.pptx,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
-presentation_management.pptx,presentation_management.pptx,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-104200-240439-ISS-004
-presentation_management.pptx,presentation_management.pptx,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-presentation_management.pptx,presentation_management.pptx,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
+presentation_management.pptx,presentation_management.pptx,"9,17 %",audit/data_control_center.xlsx[Quality Issues] | cell issue_rate | issue_id=DQ-20261126-114537-565825-ISS-004
+presentation_management.pptx,presentation_management.pptx,"0,69",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,"7,97 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,"-22,90 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,"7,75 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=equal_weight
 presentation_management.pptx,presentation_management.pptx,8 %,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
-presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-104200-240439-ISS-004
+presentation_management.pptx,presentation_management.pptx,"0,59",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=minimum_volatility
+presentation_management.pptx,presentation_management.pptx,"6,31 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=minimum_volatility
+presentation_management.pptx,presentation_management.pptx,"8,34 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=minimum_volatility
+presentation_management.pptx,presentation_management.pptx,"0,57",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=maximum_sharpe
+presentation_management.pptx,presentation_management.pptx,"6,25 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=maximum_sharpe
+presentation_management.pptx,presentation_management.pptx,"8,41 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=maximum_sharpe
+presentation_management.pptx,presentation_management.pptx,"11,76 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=minimum_volatility
+presentation_management.pptx,presentation_management.pptx,"12,14 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=maximum_sharpe
+presentation_management.pptx,presentation_management.pptx,"12,28 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,"7,97 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,"6,08 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=benchmark
+presentation_management.pptx,presentation_management.pptx,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,"0,68",data/06_performance/fund_comovement.csv | cell active_t_statistic | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,"2,0",py:src.config | cell RATE_SHOCK_ANNUAL_POINTS
+presentation_management.pptx,presentation_management.pptx,80 %,data/05_monitoring/mandate_feasibility.csv | cell capacity_ips | sector=TOTAL
+presentation_management.pptx,presentation_management.pptx,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
+presentation_management.pptx,presentation_management.pptx,"35,71 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,4,data/05_monitoring/mandate_feasibility.csv | cell names_short_ips | sector=TOTAL
+presentation_management.pptx,presentation_management.pptx,65,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | odd_status=Indeterminate
+presentation_management.pptx,presentation_management.pptx,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
+presentation_management.pptx,presentation_management.pptx,8 %,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+presentation_management.pptx,presentation_management.pptx,11,audit/data_control_center.xlsx[Quality Issues] | cell issue_count | issue_id=DQ-20261126-114537-565825-ISS-004
 rapport_client.pdf,rapport_client.pdf,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
 rapport_client.pdf,rapport_client.pdf,2016-11,data/04_portfolios/portfolio_metrics.csv | cell window_start | strategy=equal_weight
 rapport_client.pdf,rapport_client.pdf,2026-10,data/04_portfolios/portfolio_metrics.csv | cell window_end | strategy=equal_weight
 rapport_client.pdf,rapport_client.pdf,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,"0,69",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,"7,97 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,"-22,90 %",data/06_performance/performance_metrics.csv | cell maximum_drawdown | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,"7,75 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,8 %,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,"0,59",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=minimum_volatility
+rapport_client.pdf,rapport_client.pdf,"6,31 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=minimum_volatility
+rapport_client.pdf,rapport_client.pdf,"8,34 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=minimum_volatility
+rapport_client.pdf,rapport_client.pdf,"0,57",data/06_performance/performance_metrics.csv | cell sharpe_ratio | strategy=maximum_sharpe
+rapport_client.pdf,rapport_client.pdf,"6,25 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=maximum_sharpe
+rapport_client.pdf,rapport_client.pdf,"8,41 %",data/06_performance/performance_metrics.csv | cell tracking_error | strategy=maximum_sharpe
+rapport_client.pdf,rapport_client.pdf,"11,76 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=minimum_volatility
+rapport_client.pdf,rapport_client.pdf,"12,14 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=maximum_sharpe
+rapport_client.pdf,rapport_client.pdf,"12,28 %",data/06_performance/performance_metrics.csv | cell annualized_volatility | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,67 %,data/06_performance/fund_comovement.csv | cell r_squared | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,"0,82",data/06_performance/fund_comovement.csv | cell correlation | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,"0,76",data/06_performance/fund_comovement.csv | cell beta | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,51,data/06_performance/fund_comovement.csv | cell fund_down_months | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,"-1,90 %",data/06_performance/fund_comovement.csv | cell book_mean_fund_down | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,"-2,95 %",data/06_performance/fund_comovement.csv | cell fund_mean_fund_down | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,69,data/06_performance/fund_comovement.csv | cell fund_up_months | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,"2,63 %",data/06_performance/fund_comovement.csv | cell book_mean_fund_up | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,"3,16 %",data/06_performance/fund_comovement.csv | cell fund_mean_fund_up | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,"7,97 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,"6,08 %",data/06_performance/performance_metrics.csv | cell annualized_return | strategy=benchmark
+rapport_client.pdf,rapport_client.pdf,120,data/04_portfolios/portfolio_metrics.csv | cell months | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,"0,68",data/06_performance/fund_comovement.csv | cell active_t_statistic | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,"2,0",py:src.config | cell SIGNIFICANCE_T
+rapport_client.pdf,rapport_client.pdf,80 %,data/05_monitoring/mandate_feasibility.csv | cell capacity_ips | sector=TOTAL
+rapport_client.pdf,rapport_client.pdf,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
+rapport_client.pdf,rapport_client.pdf,"35,71 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,4,data/05_monitoring/mandate_feasibility.csv | cell names_short_ips | sector=TOTAL
+rapport_client.pdf,rapport_client.pdf,65,data/04_portfolios/portfolio_membership.csv | count yahoo_symbol | odd_status=Indeterminate
+rapport_client.pdf,rapport_client.pdf,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
 rapport_client.pdf,rapport_client.pdf,28,data/05_monitoring/monthly_report.csv | cell invested_names | strategy=equal_weight
 rapport_client.pdf,rapport_client.pdf,"3,57 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
 rapport_client.pdf,rapport_client.pdf,"35,71 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=equal_weight
@@ -680,7 +826,7 @@ rapport_client.pdf,rapport_client.pdf,"42,86 %",data/05_monitoring/monthly_repor
 rapport_client.pdf,rapport_client.pdf,"17,86 %",data/05_monitoring/monthly_report.csv | cell largest_currency_weight | strategy=equal_weight
 rapport_client.pdf,rapport_client.pdf,25,data/05_monitoring/monthly_report.csv | cell invested_names | strategy=minimum_volatility
 rapport_client.pdf,rapport_client.pdf,"5,00 %",data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
-rapport_client.pdf,rapport_client.pdf,"40,00 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
+rapport_client.pdf,rapport_client.pdf,"40,00 %",py:src.config | cell SECTOR_WEIGHT_CAP
 rapport_client.pdf,rapport_client.pdf,"45,90 %",data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=minimum_volatility
 rapport_client.pdf,rapport_client.pdf,"23,81 %",data/05_monitoring/monthly_report.csv | cell largest_currency_weight | strategy=minimum_volatility
 rapport_client.pdf,rapport_client.pdf,25,data/05_monitoring/monthly_report.csv | cell invested_names | strategy=minimum_volatility
@@ -693,25 +839,25 @@ rapport_client.pdf,rapport_client.pdf,40,py:src.config | cell MAX_POSITIONS
 rapport_client.pdf,rapport_client.pdf,5 %,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
 rapport_client.pdf,rapport_client.pdf,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
 rapport_client.pdf,rapport_client.pdf,50 %,data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=maximum_sharpe
-rapport_client.pdf,rapport_client.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_client.pdf,rapport_client.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
+rapport_client.pdf,rapport_client.pdf,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
+rapport_client.pdf,rapport_client.pdf,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
 rapport_client.pdf,rapport_client.pdf,123,data/05_monitoring/limit_watch.csv | count month | rebalance_month=1
-rapport_client.pdf,rapport_client.pdf,0,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_client.pdf,rapport_client.pdf,0,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_client.pdf,rapport_client.pdf,0,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_client.pdf,rapport_client.pdf,0,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
-rapport_client.pdf,rapport_client.pdf,0,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 rapport_client.pdf,rapport_client.pdf,5 %,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
 rapport_client.pdf,rapport_client.pdf,50 %,data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=maximum_sharpe
-rapport_client.pdf,rapport_client.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_client.pdf,rapport_client.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
+rapport_client.pdf,rapport_client.pdf,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
+rapport_client.pdf,rapport_client.pdf,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
 rapport_client.pdf,rapport_client.pdf,25,data/05_monitoring/monthly_report.csv | cell invested_names | strategy=minimum_volatility
 rapport_client.pdf,rapport_client.pdf,40,py:src.config | cell MAX_POSITIONS
 rapport_client.pdf,rapport_client.pdf,237,data/05_monitoring/limit_watch.csv | count month | rebalance_month=0
 rapport_client.pdf,rapport_client.pdf,163,data/05_monitoring/limit_watch.csv | sum issuer_over_cap | rebalance_month=0
 rapport_client.pdf,rapport_client.pdf,52,data/05_monitoring/limit_watch.csv | sum sector_over_cap | rebalance_month=0
-rapport_client.pdf,rapport_client.pdf,2,data/05_monitoring/limit_watch.csv | sum zone_over_cap | rebalance_month=0
-rapport_client.pdf,rapport_client.pdf,0,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=equal_weight
+rapport_client.pdf,rapport_client.pdf,2,py:src.config | cell SIGNIFICANCE_T
+rapport_client.pdf,rapport_client.pdf,0,data/06_performance/performance_metrics.csv | cell annualized_return | strategy=equal_weight
 rapport_client.pdf,rapport_client.pdf,"7,11 %",data/05_monitoring/limit_watch.csv | max largest_issuer_weight
 rapport_client.pdf,rapport_client.pdf,5 %,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
 rapport_client.pdf,rapport_client.pdf,20 %,py:src.config | cell IPS_SECTOR_WEIGHT_CAP
@@ -719,12 +865,12 @@ rapport_client.pdf,rapport_client.pdf,360,data/05_monitoring/limit_watch.csv | s
 rapport_client.pdf,rapport_client.pdf,360,data/05_monitoring/limit_watch.csv | sum sector_over_ips_cap
 rapport_client.pdf,rapport_client.pdf,80 %,data/05_monitoring/mandate_feasibility.csv | cell capacity_ips | sector=TOTAL
 rapport_client.pdf,rapport_client.pdf,5 %,data/05_monitoring/monthly_report.csv | cell maximum_weight | strategy=minimum_volatility
-rapport_client.pdf,rapport_client.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_client.pdf,rapport_client.pdf,"40,00 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
-rapport_client.pdf,rapport_client.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
+rapport_client.pdf,rapport_client.pdf,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
+rapport_client.pdf,rapport_client.pdf,"40,00 %",py:src.config | cell SECTOR_WEIGHT_CAP
+rapport_client.pdf,rapport_client.pdf,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
 rapport_client.pdf,rapport_client.pdf,95 %,py:src.config | cell REPORTING_WATCH_RATIO
 rapport_client.pdf,rapport_client.pdf,"39,19 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=maximum_sharpe
-rapport_client.pdf,rapport_client.pdf,40 %,data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
+rapport_client.pdf,rapport_client.pdf,40 %,py:src.config | cell SECTOR_WEIGHT_CAP
 rapport_client.pdf,rapport_client.pdf,95 %,py:src.config | cell REPORTING_WATCH_RATIO
 rapport_client.pdf,rapport_client.pdf,"49,96 %",data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=maximum_sharpe
 rapport_client.pdf,rapport_client.pdf,50 %,data/05_monitoring/monthly_report.csv | cell largest_zone_weight | strategy=maximum_sharpe
@@ -736,7 +882,7 @@ rapport_client.pdf,rapport_client.pdf,"7,14 %","data/05_monitoring/allocation_by
 rapport_client.pdf,rapport_client.pdf,"4,90 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Consumer Staples, strategy=minimum_volatility"
 rapport_client.pdf,rapport_client.pdf,"5,57 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Consumer Staples, strategy=maximum_sharpe"
 rapport_client.pdf,rapport_client.pdf,"35,71 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=equal_weight
-rapport_client.pdf,rapport_client.pdf,"40,00 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=minimum_volatility
+rapport_client.pdf,rapport_client.pdf,"40,00 %",py:src.config | cell SECTOR_WEIGHT_CAP
 rapport_client.pdf,rapport_client.pdf,"39,19 %",data/05_monitoring/monthly_report.csv | cell largest_sector_weight | strategy=maximum_sharpe
 rapport_client.pdf,rapport_client.pdf,"10,71 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Industrials, strategy=equal_weight"
 rapport_client.pdf,rapport_client.pdf,"11,06 %","data/05_monitoring/allocation_by_sector.csv | cell weight | sector=Industrials, strategy=minimum_volatility"

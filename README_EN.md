@@ -6,7 +6,7 @@ English summary. The project documents, reports and comments are written in Fren
 
 ## What it is
 
-A reporting chain for a fictional discretionary equity mandate in Swiss francs, CLIENT001. From the client profile and the investment policy, it builds three hypothetical portfolios on public prices, monitors them against the written limits, measures performance and risk, applies four written shocks, and delivers the result as HTML pages, an Excel annex, a Power BI model, an executive PDF, a management deck, a client report and a manager report on the same books, and automated comments.
+A reporting chain for a fictional discretionary equity mandate in Swiss francs, CLIENT001. From the client profile and the investment policy, it builds three hypothetical portfolios on public prices, monitors them against the written limits, measures performance and risk, applies four written shocks, draws recommendations from the figures, and delivers the result as HTML pages, an Excel annex, a Power BI model, an executive PDF, a management deck, a client report and a manager report on the same books, and automated comments.
 
 The three books are hypothetical portfolios built retrospectively on public data. They were never held. Prices, exchange rates and the SARON rate are real public data: iShares for the fund's holdings and published return, Yahoo Finance for prices, the Swiss National Bank for exchange rates and SARON. The eligibility register is written by hand from the companies' public reports.
 
@@ -25,14 +25,15 @@ There is no custody data: no real positions, no transactions, no fees, no cash f
 | SQL | A local SQLite database rebuilt by the pipeline and sixteen queries in `sql/`: controls, joins, window functions, and a recursive query that chains the wealth a third way |
 | Python | `src/`, from acquisition to the reports |
 | Reporting output | `reports/executive/rapport_executif.pdf`, `reports/management/presentation_management.pptx`, `reports/client/` |
-| Automated comments | Sentences filled by written rules; every number is checked against its file and the pipeline fails otherwise |
+| Automated comments | Highlights, risks, recommendations, alerts and open points, filled by written rules; every number is checked against its file and the pipeline fails otherwise |
+| Decision support | Five recommendations for CLIENT001, with each book's correlation, beta, share of variance linked to the fund, behaviour in up and down months, and the t statistic of its lead (`data/06_performance/fund_comovement.csv`) |
 
 ## Rules the project keeps
 
 - Every figure in a text comes from a pipeline file. A check reads the finished PDF, deck and Markdown back and fails on a number it cannot find.
 - A tolerance is written before the comparison and never changed to make a control pass.
 - A defect is recorded with its cause and left out of the series. Nothing is interpolated or corrected in silence.
-- No personalised investment advice: findings and alerts tied to the written limits of the mandate only.
+- Recommendations are written by rules from the published figures, for the fictional mandate only: which book to put forward, which not to retain, how closely it follows the fund, what not to promise, and what to do about the sector cap. They rest on a retrospective simulation; they are neither investment advice nor an order.
 - Every generated text carries the label "generated automatically, to be reviewed before distribution".
 
 ## Limits
@@ -61,7 +62,7 @@ The complete pass in one command, including the Power BI refresh and export:
 python -m src.pipeline.full_refresh
 ```
 
-It opens Power BI Desktop if it is closed, refreshes the model in memory, exports the measures, closes Desktop without saving, then rebuilds the annex and the reports. It needs Excel and Power BI Desktop, and it commits nothing: the texts are read before they are versioned. A Windows scheduled task can rebuild the data layer monthly with `scripts/monthly_refresh.cmd`.
+It opens Power BI Desktop if it is closed, refreshes the model in memory, exports the measures, closes Desktop without saving, then rebuilds the annex and the reports. It needs Excel and Power BI Desktop. A Windows scheduled task can rebuild the data layer monthly with `scripts/monthly_refresh.cmd`.
 
 Without Excel or Windows, `python -m src.pipeline.refresh --skip-office` rebuilds everything except the Excel annex and the reports that read it. The raw Yahoo Finance prices are not versioned; `data/input_manifest.json` keeps the SHA-256 of the raw inputs of the last run, so a different result can be traced to different inputs. CI (`.github/workflows/tests.yml`) runs the tests that need neither Excel nor the raw prices.
 
